@@ -2,6 +2,8 @@ package se.eloff.ultimatemovielibrary;
 
 import java.sql.SQLException;
 
+import javax.swing.JFrame;
+
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
@@ -18,6 +20,7 @@ public class Main {
             ClassNotFoundException {
         AppFrame app = new AppFrame();
         app.setVisible(true);
+        app.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         Class.forName("org.sqlite.JDBC");
         String url = "jdbc:sqlite:database.db";
@@ -30,6 +33,10 @@ public class Main {
         if (!movieDao.isTableExists()) {
             TableUtils.createTable(source, Movie.class);
         }
+
+        Movie blodapelsinen = new Movie("Blodapelsinen", 1982);
+
+        movieDao.create(blodapelsinen);
     }
 
 }

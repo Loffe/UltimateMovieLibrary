@@ -8,14 +8,18 @@ public class Movie {
     @DatabaseField(id = true)
     private int id;
 
-    @DatabaseField
+    @DatabaseField(canBeNull = false)
     private String name;
+
+    @DatabaseField
+    private int year;
 
     public Movie() {
     }
 
-    public Movie(String name) {
+    public Movie(String name, int year) {
         this.name = name;
+        this.year = year;
     }
 
     public int getId() {
@@ -28,6 +32,14 @@ public class Movie {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
     }
 
 }
