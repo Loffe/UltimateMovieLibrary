@@ -6,7 +6,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * A folder scanner that scans a folder and all it´s subfolders for movie files.
+ * A folder scanner that scans a folder and all its subfolders for movie files.
  * It parses the filenames and tries to find the movie name and year, returns a
  * list of movies.
  * 
