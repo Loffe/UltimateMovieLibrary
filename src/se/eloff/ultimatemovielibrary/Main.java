@@ -1,5 +1,6 @@
 package se.eloff.ultimatemovielibrary;
 
+import java.io.File;
 import java.sql.SQLException;
 
 import javax.swing.JFrame;
@@ -37,6 +38,10 @@ public class Main {
         Movie blodapelsinen = new Movie("Blodapelsinen", 1982);
 
         movieDao.create(blodapelsinen);
+
+        // to try the scan, just enter a valid path on your disk where you have
+        // movies
+         DirScanner.ScanFolder(new File("Z:\\Filmer"));
     }
 
 }

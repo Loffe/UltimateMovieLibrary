@@ -4,7 +4,7 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable(tableName = "movies")
-public class Movie {
+public class Movie implements Comparable<Movie> {
     @DatabaseField(generatedId = true)
     private int id;
 
@@ -40,6 +40,11 @@ public class Movie {
 
     public void setYear(int year) {
         this.year = year;
+    }
+
+    @Override
+    public int compareTo(Movie arg0) {
+        return this.getName().toLowerCase().compareTo(arg0.getName().toLowerCase());
     }
 
 }
