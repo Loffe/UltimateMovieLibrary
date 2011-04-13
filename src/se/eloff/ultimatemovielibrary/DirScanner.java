@@ -101,6 +101,8 @@ public class DirScanner {
         // first remove the path
         String movieName = path.substring(path.lastIndexOf('\\') + 1,
                 path.length());
+        movieName = movieName.substring(movieName.lastIndexOf('/') + 1,
+                movieName.length());
 
         // remove the extension
         movieName = movieName.substring(0, movieName.lastIndexOf('.'));
@@ -119,10 +121,10 @@ public class DirScanner {
                 year = Integer.parseInt(string.replaceAll("\\D", ""));
                 // System.out.println("Found a year, name: "+ movieName +
                 // " year: " + year);
-                movieName.trim();
+                movieName = movieName.trim();
                 if (movieName.isEmpty())
                     return null;
-                return new Movie(movieName, year);
+                return new Movie(movieName, year, path);
             }
             // no year yet, maybe we have one of the split words, if so, break
             // here
@@ -131,19 +133,19 @@ public class DirScanner {
                 if (lowerCaseString.contains(splitWord)) {
                     // System.out.println("Found a splitWord, name: "+ movieName
                     // );
-                    movieName.trim();
+                    movieName = movieName.trim();
                     if (movieName.isEmpty())
                         return null;
-                    return new Movie(movieName, 0);
+                    return new Movie(movieName, 0, path);
                 }
             }
             // if we made it here, just add the word back to the name
             movieName += " " + string;
         }
         // nothing left to check, just return what we have
-        movieName.trim();
+        movieName = movieName.trim();
         if (movieName.isEmpty())
             return null;
-        return new Movie(movieName, 0);
+        return new Movie(movieName, 0, path);
     }
 }

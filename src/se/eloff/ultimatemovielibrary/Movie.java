@@ -14,12 +14,24 @@ public class Movie implements Comparable<Movie> {
     @DatabaseField
     private int year;
 
+    @DatabaseField
+    private int discnumber;
+    
+    @DatabaseField
+    private String filepath;
+
     public Movie() {
     }
+    
+    public Movie(String name, int year, String filepath) {
+        this(name, year, filepath, 1);
+    }
 
-    public Movie(String name, int year) {
+    public Movie(String name, int year, String filepath, int discnumber) {
         this.name = name;
         this.year = year;
+        this.discnumber = discnumber;
+        this.filepath = filepath;
     }
 
     public int getId() {
@@ -42,8 +54,26 @@ public class Movie implements Comparable<Movie> {
         this.year = year;
     }
 
+    public void setDiscnumber(int discnumber) {
+        this.discnumber = discnumber;
+    }
+
+    public int getDiscnumber() {
+        return discnumber;
+    }
+
+    public void setFilepath(String filepath) {
+        this.filepath = filepath;
+    }
+
+    public String getFilepath() {
+        return filepath;
+    }
+
+    @Override
     public int compareTo(Movie arg0) {
-        return this.getName().toLowerCase().compareTo(arg0.getName().toLowerCase());
+        return this.getName().toLowerCase().compareTo(
+                arg0.getName().toLowerCase());
     }
 
 }
