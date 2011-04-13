@@ -57,8 +57,9 @@ public class DirScanner {
             if (file.isDirectory() && notOnIgnoreList(file)) {
                 ScanFolderInt(movies, file);
             } else if (hasValidExtension(file)) {
-
-                movies.add(movieFromPath(file.toString()));
+                Movie movie = movieFromPath(file);
+                if (movie != null)
+                movies.add(movie);
             }
 
         }
@@ -91,7 +92,8 @@ public class DirScanner {
         return true;
     }
 
-    private static Movie movieFromPath(String path) {
+    private static Movie movieFromPath(File file) {
+        String path = file.toString();
         System.out.println("Movie path: " + path);
 
         int year = 0;
@@ -117,7 +119,10 @@ public class DirScanner {
                 year = Integer.parseInt(string.replaceAll("\\D", ""));
                 // System.out.println("Found a year, name: "+ movieName +
                 // " year: " + year);
-                return new Movie(movieName.trim(), year);
+                movieName.trim();
+                if (movieName.isEmpty())
+                    return null;
+                return new Movie(movieName, year);
             }
             // no year yet, maybe we have one of the split words, if so, break
             // here
@@ -126,13 +131,19 @@ public class DirScanner {
                 if (lowerCaseString.contains(splitWord)) {
                     // System.out.println("Found a splitWord, name: "+ movieName
                     // );
-                    return new Movie(movieName.trim(), 0);
+                    movieName.trim();
+                    if (movieName.isEmpty())
+                        return null;
+                    return new Movie(movieName, 0);
                 }
             }
             // if we made it here, just add the word back to the name
             movieName += " " + string;
         }
         // nothing left to check, just return what we have
-        return new Movie(movieName.trim(), 0);
+        movieName.trim();
+        if (movieName.isEmpty())
+            return null;
+        return new Movie(movieName, 0);
     }
 }
