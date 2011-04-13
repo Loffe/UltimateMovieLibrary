@@ -3,23 +3,28 @@ package se.eloff.ultimatemovielibrary;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-public class RatingComponent extends JPanel {
+public class RatingComponent extends JPanel implements ActionListener {
 
     private static final long serialVersionUID = 2321500964797490876L;
+
+    private static final int MAX_RATING = 5;
 
     private RateButton[] buttons;
 
     public RatingComponent() {
         this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-        buttons = new RateButton[5];
-        for (int i = 0; i < 5; i++) {
+        buttons = new RateButton[MAX_RATING];
+        for (int i = 0; i < MAX_RATING; i++) {
             buttons[i] = new RateButton();
+            buttons[i].addActionListener(this);
             this.add(buttons[i]);
         }
     }
@@ -30,7 +35,18 @@ public class RatingComponent extends JPanel {
         private static final int width = 50;
         private static final int height = 50;
 
+        private boolean active = false;
+
         public RateButton() {
+        }
+
+        public void setActive(boolean active) {
+            this.active = active;
+            this.repaint();
+        }
+
+        public boolean isActive() {
+            return active;
         }
 
         @Override
@@ -47,7 +63,7 @@ public class RatingComponent extends JPanel {
         public Dimension getMaximumSize() {
             return new Dimension(width, height);
         }
-        
+
         @Override
         protected void paintBorder(Graphics g) {
         }
@@ -57,7 +73,7 @@ public class RatingComponent extends JPanel {
             int cross_w = 10;
             int cross_h = 40;
             int border = 2;
-            //super.paintComponent(g);
+            // super.paintComponent(g);
             g.setColor(new Color(0.9f, 0.5f, 0.3f));
             g.fillRect(width / 2 - cross_w / 2 - border, height / 2 - cross_h
                     / 2 - border, cross_w + 2 * border, cross_h + 2 * border);
@@ -65,8 +81,10 @@ public class RatingComponent extends JPanel {
                     / 2 - border, cross_h + 2 * border, cross_w + 2 * border);
             if (this.getModel().isRollover()) {
                 g.setColor(new Color(255, 230, 40));
-            } else {
+            } else if (isActive()) {
                 g.setColor(new Color(255, 200, 0));
+            } else {
+                g.setColor(new Color(255, 255, 255));
             }
             g.fillRect(width / 2 - cross_w / 2, height / 2 - cross_h / 2,
                     cross_w, cross_h);
@@ -82,5 +100,19 @@ public class RatingComponent extends JPanel {
         frame.add(new RatingComponent());
         frame.pack();
         frame.setVisible(true);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        boolean found_clicked = false;
+        for (int i = 0; i < MAX_RATING; i++) {
+            if (found_clicked)
+                buttons[i].setActive(false);
+            else
+                buttons[i].setActive(true);
+
+            if (e.getSource() == buttons[i])
+                found_clicked = true;
+        }
     }
 }
