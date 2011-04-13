@@ -23,6 +23,7 @@ public class Main {
         app.setVisible(true);
         app.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         app.add(new WatchFolderPanel());
+        app.pack();
 
         Class.forName("org.sqlite.JDBC");
         String url = "jdbc:sqlite:database.db";
