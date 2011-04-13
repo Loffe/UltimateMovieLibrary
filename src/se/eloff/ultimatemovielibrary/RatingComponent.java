@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -16,6 +17,8 @@ public class RatingComponent extends JPanel implements ActionListener {
     private static final long serialVersionUID = 2321500964797490876L;
 
     private static final int MAX_RATING = 5;
+
+    private int currentRating = 0;
 
     private RateButton[] buttons;
 
@@ -92,6 +95,21 @@ public class RatingComponent extends JPanel implements ActionListener {
                     cross_h, cross_w);
 
         }
+
+        @Override
+        protected void processMouseEvent(MouseEvent e) {
+
+            if (e.getID() == MouseEvent.MOUSE_ENTERED
+                    || e.getID() == MouseEvent.MOUSE_EXITED) {
+
+                String actionCommand = e.getID() == MouseEvent.MOUSE_ENTERED ? "hover_entered"
+                        : "hover_exited";
+                this.fireActionPerformed(new ActionEvent(this,
+                        ActionEvent.ACTION_PERFORMED, actionCommand));
+
+            }
+            super.processMouseEvent(e);
+        }
     }
 
     public static void main(String[] args) {
@@ -104,15 +122,24 @@ public class RatingComponent extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        boolean found_clicked = false;
+        int currentButtonIndex = 0;
         for (int i = 0; i < MAX_RATING; i++) {
-            if (found_clicked)
-                buttons[i].setActive(false);
-            else
-                buttons[i].setActive(true);
+            if (e.getSource() == buttons[i]) {
+                currentButtonIndex = i;
+                break;
+            }
+        }
 
-            if (e.getSource() == buttons[i])
-                found_clicked = true;
+        if (e.getActionCommand().equals("hover_exited")) {
+            currentButtonIndex = currentRating;
+        } else if (e.getActionCommand().equals("hover_entered")) {
+
+        } else {
+            currentRating = currentButtonIndex;
+        }
+
+        for (int i = 0; i < MAX_RATING; i++) {
+            buttons[i].setActive(i <= currentButtonIndex);
         }
     }
 }
