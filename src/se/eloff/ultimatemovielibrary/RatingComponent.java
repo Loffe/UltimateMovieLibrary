@@ -32,6 +32,29 @@ public class RatingComponent extends JPanel implements ActionListener {
         }
     }
 
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        int currentButtonIndex = 0;
+        for (int i = 0; i < MAX_RATING; i++) {
+            if (e.getSource() == buttons[i]) {
+                currentButtonIndex = i;
+                break;
+            }
+        }
+
+        if (e.getActionCommand().equals("hover_exited")) {
+            currentButtonIndex = currentRating;
+        } else if (e.getActionCommand().equals("hover_entered")) {
+
+        } else {
+            currentRating = currentButtonIndex;
+        }
+
+        for (int i = 0; i < MAX_RATING; i++) {
+            buttons[i].setActive(i <= currentButtonIndex);
+        }
+    }
+
     private class RateButton extends JButton {
 
         private static final long serialVersionUID = 6739554426559038970L;
@@ -133,28 +156,5 @@ public class RatingComponent extends JPanel implements ActionListener {
         frame.add(new RatingComponent());
         frame.pack();
         frame.setVisible(true);
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        int currentButtonIndex = 0;
-        for (int i = 0; i < MAX_RATING; i++) {
-            if (e.getSource() == buttons[i]) {
-                currentButtonIndex = i;
-                break;
-            }
-        }
-
-        if (e.getActionCommand().equals("hover_exited")) {
-            currentButtonIndex = currentRating;
-        } else if (e.getActionCommand().equals("hover_entered")) {
-
-        } else {
-            currentRating = currentButtonIndex;
-        }
-
-        for (int i = 0; i < MAX_RATING; i++) {
-            buttons[i].setActive(i <= currentButtonIndex);
-        }
     }
 }
