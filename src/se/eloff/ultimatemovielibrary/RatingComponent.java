@@ -31,6 +31,11 @@ public class RatingComponent extends JPanel implements ActionListener {
             this.add(buttons[i]);
         }
     }
+    
+    public void setRating(int rating) {
+        this.currentRating = rating;
+        this.invalidate();
+    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -151,10 +156,14 @@ public class RatingComponent extends JPanel implements ActionListener {
     }
 
     public static void main(String[] args) {
+        RatingComponent rating = new RatingComponent();
         JFrame frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.add(new RatingComponent());
+        frame.add(rating);
         frame.pack();
         frame.setVisible(true);
+        
+        rating.setRating(2);
+        
     }
 }
