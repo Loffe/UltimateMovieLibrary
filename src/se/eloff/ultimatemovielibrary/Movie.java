@@ -42,7 +42,6 @@ public class Movie implements Comparable<Movie> {
         this.year = year;
     }
 
-    @Override
     public int compareTo(Movie arg0) {
         return this.getName().toLowerCase().compareTo(arg0.getName().toLowerCase());
     }
