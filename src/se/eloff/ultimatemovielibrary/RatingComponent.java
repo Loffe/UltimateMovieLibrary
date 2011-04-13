@@ -38,6 +38,14 @@ public class RatingComponent extends JPanel implements ActionListener {
         private static final int width = 50;
         private static final int height = 50;
 
+        private final Color fillColorActive = new Color(255, 200, 0);
+        private final Color fillColorHigh = new Color(255, 230, 40);
+        private final Color fillColorInactive = new Color(230, 230, 192);
+
+        private final Color borderColorActive = new Color(230, 128, 80);
+        private final Color borderColorHigh = new Color(255, 150, 80);
+        private final Color borderColorInactive = new Color(220, 220, 180);
+
         private boolean active = false;
 
         public RateButton() {
@@ -76,19 +84,26 @@ public class RatingComponent extends JPanel implements ActionListener {
             int cross_w = 10;
             int cross_h = 40;
             int border = 2;
-            // super.paintComponent(g);
-            g.setColor(new Color(0.9f, 0.5f, 0.3f));
+
+            if (this.getModel().isRollover())
+                g.setColor(borderColorHigh);
+            else if (isActive())
+                g.setColor(borderColorActive);
+            else
+                g.setColor(borderColorInactive);
+
             g.fillRect(width / 2 - cross_w / 2 - border, height / 2 - cross_h
                     / 2 - border, cross_w + 2 * border, cross_h + 2 * border);
             g.fillRect(width / 2 - cross_h / 2 - border, height / 2 - cross_w
                     / 2 - border, cross_h + 2 * border, cross_w + 2 * border);
-            if (this.getModel().isRollover()) {
-                g.setColor(new Color(255, 230, 40));
-            } else if (isActive()) {
-                g.setColor(new Color(255, 200, 0));
-            } else {
-                g.setColor(new Color(255, 255, 255));
-            }
+
+            if (this.getModel().isRollover())
+                g.setColor(fillColorHigh);
+            else if (isActive())
+                g.setColor(fillColorActive);
+            else
+                g.setColor(fillColorInactive);
+
             g.fillRect(width / 2 - cross_w / 2, height / 2 - cross_h / 2,
                     cross_w, cross_h);
             g.fillRect(width / 2 - cross_h / 2, height / 2 - cross_w / 2,
