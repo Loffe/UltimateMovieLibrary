@@ -22,6 +22,8 @@ public class Main {
         AppFrame app = new AppFrame();
         app.setVisible(true);
         app.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        app.add(new WatchFolderPanel());
+        app.pack();
 
         Class.forName("org.sqlite.JDBC");
         String url = "jdbc:sqlite:database.db";
@@ -30,18 +32,19 @@ public class Main {
 
         Dao<Movie, Integer> movieDao = DaoManager
                 .createDao(source, Movie.class);
-
         if (!movieDao.isTableExists()) {
             TableUtils.createTable(source, Movie.class);
         }
 
-        Movie blodapelsinen = new Movie("Blodapelsinen", 1982, "");
-
-        movieDao.create(blodapelsinen);
+        Dao<WatchFolder, Integer> watchFolderDao = DaoManager.createDao(source,
+                WatchFolder.class);
+        if (!watchFolderDao.isTableExists()) {
+            TableUtils.createTable(source, WatchFolder.class);
+        }
 
         // to try the scan, just enter a valid path on your disk where you have
         // movies
-         DirScanner.ScanFolder(new File("movies"));
+        DirScanner.ScanFolder(new File("movies"));
     }
 
 }
