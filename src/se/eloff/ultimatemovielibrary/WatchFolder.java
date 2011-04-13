@@ -18,19 +18,14 @@ public class WatchFolder {
         super();
     }
 
-    public WatchFolder(int id, String folderPath, Long lastScanned) {
+    public WatchFolder(String folderPath, Long lastScanned) {
         super();
-        this.id = id;
         this.folderPath = folderPath;
         this.lastScanned = lastScanned;
     }
 
     public int getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getFolderPath() {
