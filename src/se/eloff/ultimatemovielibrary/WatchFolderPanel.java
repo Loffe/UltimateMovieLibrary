@@ -1,7 +1,6 @@
 package se.eloff.ultimatemovielibrary;
 
 import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
