@@ -1,6 +1,7 @@
 package se.eloff.ultimatemovielibrary;
 
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -22,17 +23,14 @@ public class WatchFolderPanel extends JPanel {
 
     private static final long serialVersionUID = 5721254657654204228L;
 
-    // The list view of the watch folders.
-    private JList watchFoldersListView;
-
     // The list model of the watch folders (where the actual data is).
     private DefaultListModel watchFoldersListModel = new DefaultListModel();
 
+    // Create a list view from the list model.
+    private JList watchFoldersListView = new JList(watchFoldersListModel);
+
     public WatchFolderPanel() {
         setLayout(new FlowLayout());
-
-        // Create a list view from the list model.
-        watchFoldersListView = new JList(watchFoldersListModel);
 
         // Only allow one item to be selected at a time.
         watchFoldersListView
@@ -74,16 +72,18 @@ public class WatchFolderPanel extends JPanel {
      * Add a folder to watch list.
      */
     private void addFolder() {
+        // Create a file chooser.
         JFileChooser fileChooser = new JFileChooser();
 
-        // Only allow to open directories.
+        // Only allow to select directories.
         fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 
-        // Show the dialog and get the result.
+        // Show the file chooser dialog and get the result.
         int result = fileChooser.showOpenDialog(this);
         if (result == JFileChooser.APPROVE_OPTION) {
-            watchFoldersListModel.addElement(fileChooser.getSelectedFile()
-                    .toString());
+            // Add the selected folder path.
+            String folderPath = fileChooser.getSelectedFile().toString();
+            watchFoldersListModel.addElement(folderPath);
         }
     }
 
@@ -94,7 +94,7 @@ public class WatchFolderPanel extends JPanel {
         // Get the currently selected folder from the list
         int index = watchFoldersListView.getSelectedIndex();
         if (index < 0) {
-           // Nothing is selected! Do nothing...
+            // Nothing is selected! Do nothing...
             return;
         }
         // Remove the folder.
