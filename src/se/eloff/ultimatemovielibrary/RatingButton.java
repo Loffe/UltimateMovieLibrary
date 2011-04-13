@@ -10,9 +10,8 @@ import java.awt.event.MouseEvent;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
-public class RatingComponent extends JPanel implements ActionListener {
+public class RatingButton extends JButton implements ActionListener {
 
     private static final long serialVersionUID = 2321500964797490876L;
 
@@ -22,7 +21,7 @@ public class RatingComponent extends JPanel implements ActionListener {
 
     private RateButton[] buttons;
 
-    public RatingComponent() {
+    public RatingButton() {
         this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
         buttons = new RateButton[MAX_RATING];
         for (int i = 0; i < MAX_RATING; i++) {
@@ -30,13 +29,19 @@ public class RatingComponent extends JPanel implements ActionListener {
             buttons[i].addActionListener(this);
             this.add(buttons[i]);
         }
+        this.setEnabled(false);
+        this.setBorderPainted(false);
     }
-    
+
     public int getRating() {
         return this.currentRating;
     }
 
     public void setRating(int rating) {
+        if (rating < 0 || rating > MAX_RATING)
+            throw new IllegalArgumentException("rating must be in interval 0.."
+                    + MAX_RATING);
+
         this.currentRating = rating;
         activateRating(rating);
     }
@@ -57,6 +62,8 @@ public class RatingComponent extends JPanel implements ActionListener {
 
         } else {
             currentRating = currentButtonIndex + 1;
+            fireActionPerformed(new ActionEvent(this,
+                    ActionEvent.ACTION_PERFORMED, "rating changed"));
         }
 
         activateRating(currentButtonIndex + 1);
@@ -85,6 +92,7 @@ public class RatingComponent extends JPanel implements ActionListener {
         private boolean active = false;
 
         public RateButton() {
+            this.setBorderPainted(false);
         }
 
         public void setActive(boolean active) {
@@ -109,10 +117,6 @@ public class RatingComponent extends JPanel implements ActionListener {
         @Override
         public Dimension getMaximumSize() {
             return new Dimension(width, height);
-        }
-
-        @Override
-        protected void paintBorder(Graphics g) {
         }
 
         @Override
@@ -164,7 +168,7 @@ public class RatingComponent extends JPanel implements ActionListener {
     }
 
     public static void main(String[] args) {
-        RatingComponent rating = new RatingComponent();
+        final RatingButton rating = new RatingButton();
         JFrame frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.add(rating);
@@ -172,6 +176,13 @@ public class RatingComponent extends JPanel implements ActionListener {
         frame.setVisible(true);
 
         rating.setRating(2);
+        rating.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("Clicked rating " + rating.getRating());
+            }
+        });
 
     }
 }
