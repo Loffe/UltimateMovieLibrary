@@ -32,9 +32,13 @@ public class RatingComponent extends JPanel implements ActionListener {
         }
     }
     
+    public int getRating() {
+        return this.currentRating;
+    }
+
     public void setRating(int rating) {
         this.currentRating = rating;
-        this.invalidate();
+        activateRating(rating);
     }
 
     @Override
@@ -48,15 +52,19 @@ public class RatingComponent extends JPanel implements ActionListener {
         }
 
         if (e.getActionCommand().equals("hover_exited")) {
-            currentButtonIndex = currentRating;
+            currentButtonIndex = currentRating - 1;
         } else if (e.getActionCommand().equals("hover_entered")) {
 
         } else {
-            currentRating = currentButtonIndex;
+            currentRating = currentButtonIndex + 1;
         }
 
+        activateRating(currentButtonIndex + 1);
+    }
+
+    private void activateRating(int rating) {
         for (int i = 0; i < MAX_RATING; i++) {
-            buttons[i].setActive(i <= currentButtonIndex);
+            buttons[i].setActive(i < rating);
         }
     }
 
@@ -162,8 +170,8 @@ public class RatingComponent extends JPanel implements ActionListener {
         frame.add(rating);
         frame.pack();
         frame.setVisible(true);
-        
+
         rating.setRating(2);
-        
+
     }
 }
