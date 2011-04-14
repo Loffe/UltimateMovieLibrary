@@ -27,7 +27,7 @@ public class DirScanner {
     private static String[] extensions = { "avi", "mpg", "mkv", "mp4" };
     private static String[] ignoreList = { "sample", "subs", "subtitles" };
     private static String[] splitWords = { "xvid", "720", "1080", "bluray",
-            "264", "brrip", "engsub", "swesub" };
+            "264", "brrip", "engsub", "swesub","cd", "dvd", "disk", "part" };
     private static String[] discWords = { "cd", "dvd", "disk", "part" };
 
     /**
@@ -115,16 +115,14 @@ public class DirScanner {
         String stringParts[] = movieName.split("\\s+");
         movieName = "";
 
+        partsLoop:
         for (String string : stringParts) {
             if (string.matches(".*\\d{4}.*")) {
                 // we have a year (probably)
                 year = Integer.parseInt(string.replaceAll("\\D", ""));
                 // System.out.println("Found a year, name: "+ movieName +
                 // " year: " + year);
-                movieName = movieName.trim();
-                if (movieName.isEmpty())
-                    return null;
-                return new Movie(movieName, year, path);
+                break partsLoop;
             }
             // no year yet, maybe we have one of the split words, if so, break
             // here
@@ -133,10 +131,7 @@ public class DirScanner {
                 if (lowerCaseString.contains(splitWord)) {
                     // System.out.println("Found a splitWord, name: "+ movieName
                     // );
-                    movieName = movieName.trim();
-                    if (movieName.isEmpty())
-                        return null;
-                    return new Movie(movieName, 0, path);
+                    break partsLoop;
                 }
             }
             // if we made it here, just add the word back to the name
@@ -146,6 +141,6 @@ public class DirScanner {
         movieName = movieName.trim();
         if (movieName.isEmpty())
             return null;
-        return new Movie(movieName, 0, path);
+        return new Movie(movieName, year, path);
     }
 }
