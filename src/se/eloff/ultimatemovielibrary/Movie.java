@@ -75,5 +75,4 @@ public class Movie implements Comparable<Movie> {
         return this.getName().toLowerCase().compareTo(
                 arg0.getName().toLowerCase());
     }
-
 }

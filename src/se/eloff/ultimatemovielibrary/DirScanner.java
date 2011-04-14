@@ -27,7 +27,8 @@ public class DirScanner {
     private static String[] extensions = { "avi", "mpg", "mkv", "mp4" };
     private static String[] ignoreList = { "sample", "subs", "subtitles" };
     private static String[] splitWords = { "xvid", "720", "1080", "bluray",
-            "264", "brrip", "engsub", "swesub", "cd", "dvd", "disc" };
+            "264", "brrip", "engsub", "swesub" };
+    private static String[] discWords = { "cd", "dvd", "disk", "part" };
 
     /**
      * Scans a folder and returns movies found
@@ -59,9 +60,8 @@ public class DirScanner {
             } else if (hasValidExtension(file)) {
                 Movie movie = movieFromPath(file);
                 if (movie != null)
-                movies.add(movie);
+                    movies.add(movie);
             }
-
         }
     }
 
