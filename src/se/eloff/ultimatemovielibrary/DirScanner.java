@@ -37,9 +37,7 @@ public class DirScanner {
     private static HashMap<String, DirScanner> runningScans = new HashMap<String, DirScanner>();
 
     private Boolean StopScanning = false;
-
     private DirScanner() {
-
     }
 
     /**
