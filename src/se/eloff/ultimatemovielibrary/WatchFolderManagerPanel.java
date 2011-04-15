@@ -36,9 +36,38 @@ public class WatchFolderManagerPanel extends JPanel {
         // TODO: Get all the watched folders from database and fill the
         // watchFolders list.
 
+        // Create a panel for info and buttons at the top.
+        JPanel topPanel = new JPanel(new BorderLayout());
+        add(topPanel, BorderLayout.PAGE_START);
+
         // Add a heading
-        add(new JLabel(Localization.manageWatchFolderHeading),
-                BorderLayout.PAGE_START);
+        JLabel heading = new JLabel(Localization.manageWatchFolderHeading);
+        topPanel.add(heading, BorderLayout.NORTH);
+
+        // Add a description
+        JLabel description = new JLabel(
+                Localization.manageWatchFolderDescription);
+        topPanel.add(description, BorderLayout.WEST);
+
+        // Create a button panel with a button to add new folders.
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+        topPanel.add(buttonPanel, BorderLayout.EAST);
+
+        JButton addFolderButton = new JButton(
+                Localization.addWatchFolderButtonText,
+                Localization.addWatchFolderButtonIcon);
+        addFolderButton
+                .setToolTipText(Localization.addWatchFolderButtonToolTip);
+        addFolderButton.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                addFolder();
+            }
+
+        });
+        buttonPanel.add(addFolderButton);
 
         // Make folders position along Y-axis.
         watchFoldersPanel.setLayout(new BoxLayout(watchFoldersPanel,
@@ -58,26 +87,6 @@ public class WatchFolderManagerPanel extends JPanel {
         JScrollPane scrollPane = new JScrollPane(outerPanel);
         scrollPane.setPreferredSize(new Dimension(600, 400));
         add(scrollPane, BorderLayout.CENTER);
-
-        // Create a button panel with a button to add new folders.
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
-        add(buttonPanel, BorderLayout.PAGE_END);
-
-        JButton addFolderButton = new JButton(
-                Localization.addWatchFolderButtonText,
-                Localization.addWatchFolderButtonIcon);
-        addFolderButton
-                .setToolTipText(Localization.addWatchFolderButtonToolTip);
-        addFolderButton.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                addFolder();
-            }
-
-        });
-        buttonPanel.add(addFolderButton);
     }
 
     /**

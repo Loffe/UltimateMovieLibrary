@@ -12,11 +12,12 @@ public final class Localization {
     public static final ImageIcon watchFolderIcon = new ImageIcon(
             "img/folder_32.png");
     public static final String manageWatchFolderHeading = "Hantera bevakade mappar";
+    public static final String manageWatchFolderDescription = "Här kan du välja att lägga till eller ta bort bevakade kataloger.";
 
-    public static final String addWatchFolderButtonText = "Bevaka ännu en katalog ...";
+    public static final String addWatchFolderButtonText = "Bevaka en katalog ...";
     public static final String addWatchFolderButtonToolTip = "Lägg till en katalog att bevaka";
     public static final ImageIcon addWatchFolderButtonIcon = new ImageIcon(
-            "img/plus_32.png");
+            "img/Folder-Add.png");
 
     public static final String removeWatchFolderButtonText = null;
     public static final String removeWatchFolderButtonToolTip = "Sluta bevaka den här katalogen";
