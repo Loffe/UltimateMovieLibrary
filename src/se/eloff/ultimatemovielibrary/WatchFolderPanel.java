@@ -1,103 +1,72 @@
 package se.eloff.ultimatemovielibrary;
 
-import java.awt.FlowLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
 
-import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFileChooser;
-import javax.swing.JList;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.ListSelectionModel;
 
 /**
- * A panel to handle (add/remove) what folders to watch (for movies).
- * 
- * @author freddieboi
- * 
+ * A panel to show and manage a watch folder.
  */
 public class WatchFolderPanel extends JPanel {
 
-    private static final long serialVersionUID = 5721254657654204228L;
+    private static final long serialVersionUID = 3051972291331973602L;
 
-    // The list model of the watch folders (where the actual data is).
-    private DefaultListModel watchFoldersListModel = new DefaultListModel();
+    // The actual WatchFolder.
+    private WatchFolder folder;
 
-    // Create a list view from the list model.
-    private JList watchFoldersListView = new JList(watchFoldersListModel);
+    // The remove button.
+    private JButton removeButton = new JButton(new ImageIcon(
+            "img/delete_16.png"));
 
-    public WatchFolderPanel() {
-        setLayout(new FlowLayout());
+    /**
+     * Constructor. Creates a new wrapper to show and manage a WatchFolder.
+     * 
+     * @param folder
+     *            the WatchFolder to show.
+     */
+    public WatchFolderPanel(WatchFolder folder) {
+        this.folder = folder;
 
-        // Only allow one item to be selected at a time.
-        watchFoldersListView
-                .setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        setLayout(new BorderLayout());
+        setPreferredSize(new Dimension(595, 35));
+        setBackground(Color.WHITE);
 
-        // Make the list scrollable.
-        JScrollPane scrollPane = new JScrollPane(watchFoldersListView);
-        add(scrollPane);
+        // Add a folder icon.
+        add(new JLabel(new ImageIcon("img/folder_32.png")), BorderLayout.WEST);
 
-        // Create a button to add new folders.
-        JButton addFolderButton = new JButton("Add folder");
-        addFolderButton.addActionListener(new ActionListener() {
+        // Add a label with the actual folder path.
+        add(new JLabel(folder.getFolderPath()), BorderLayout.CENTER);
 
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                addFolder();
-            }
+        // Add a remove button (Note: listeners rather added from parent).
+        JPanel buttonPanel = new JPanel();
+        removeButton.setToolTipText("Stop watching this folder");
+        buttonPanel.add(removeButton);
+        buttonPanel.setBackground(Color.WHITE);
+        add(buttonPanel, BorderLayout.EAST);
 
-        });
-        add(addFolderButton);
-
-        // Create a button to remove folders
-        JButton removeFolderButton = new JButton("Remove selected folder");
-        removeFolderButton.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                removeFolder();
-            }
-
-        });
-        add(removeFolderButton);
-
-        // Fix the layout, plz!!
-        this.invalidate();
     }
 
     /**
-     * Add a folder to watch list.
+     * Get the wrapped WatchFolder object.
+     * 
+     * @return the watch folder shown by this panel.
      */
-    private void addFolder() {
-        // Create a file chooser.
-        JFileChooser fileChooser = new JFileChooser();
-
-        // Only allow to select directories.
-        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-
-        // Show the file chooser dialog and get the result.
-        int result = fileChooser.showOpenDialog(this);
-        if (result == JFileChooser.APPROVE_OPTION) {
-            // Add the selected folder path.
-            String folderPath = fileChooser.getSelectedFile().toString();
-            watchFoldersListModel.addElement(folderPath);
-        }
+    public WatchFolder getFolder() {
+        return folder;
     }
 
     /**
-     * Remove a folder from watch list.
+     * Get the remove button (to enable adding listeners from elsewhere).
+     * 
+     * @return the remove button.
      */
-    private void removeFolder() {
-        // Get the currently selected folder from the list
-        int index = watchFoldersListView.getSelectedIndex();
-        if (index < 0) {
-            // Nothing is selected! Do nothing...
-            return;
-        }
-        // Remove the folder.
-        watchFoldersListModel.remove(index);
+    public JButton getRemoveButton() {
+        return removeButton;
     }
 
 }

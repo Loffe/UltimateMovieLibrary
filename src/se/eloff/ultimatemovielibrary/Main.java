@@ -3,6 +3,7 @@ package se.eloff.ultimatemovielibrary;
 import java.io.File;
 import java.sql.SQLException;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
 import com.j256.ormlite.dao.Dao;
@@ -22,7 +23,9 @@ public class Main {
         AppFrame app = new AppFrame();
         app.setVisible(true);
         app.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        app.add(new WatchFolderPanel());
+        app.setTitle("Ultimate Movie Library");
+        app.setIconImage(new ImageIcon("img/video_16.png").getImage());
+        app.add(new WatchFolderManagerPanel());
         app.pack();
 
         Class.forName("org.sqlite.JDBC");
