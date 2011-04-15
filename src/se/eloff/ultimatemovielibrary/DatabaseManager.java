@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
+import com.j256.ormlite.table.TableUtils;
 
 public class DatabaseManager {
     private static String url = "jdbc:sqlite:database.db";
@@ -29,16 +30,24 @@ public class DatabaseManager {
     }
 
     public Dao<Movie, Integer> getMovieDao() throws SQLException {
-        if (movieManager == null)
+        if (movieManager == null) {
             movieManager = DaoManager.createDao(source, Movie.class);
+            if (!movieManager.isTableExists()) {
+                TableUtils.createTable(source, Movie.class);
+            }
+        }
 
         return movieManager;
     }
 
     public Dao<WatchFolder, Integer> getWatchFolderDao() throws SQLException {
-        if (watchFolderManager == null)
+        if (watchFolderManager == null) {
             watchFolderManager = DaoManager
                     .createDao(source, WatchFolder.class);
+            if (!watchFolderManager.isTableExists()) {
+                TableUtils.createTable(source, WatchFolder.class);
+            }
+        }
 
         return watchFolderManager;
     }

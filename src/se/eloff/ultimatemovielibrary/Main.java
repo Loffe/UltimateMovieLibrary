@@ -36,22 +36,11 @@ public class Main {
         app.add(new WatchFolderManagerPanel());
         app.pack();
 
-        Class.forName("org.sqlite.JDBC");
-        String url = "jdbc:sqlite:database.db";
+        Dao<Movie, Integer> movieDao = DatabaseManager.getInstance()
+                .getMovieDao();
 
-        JdbcConnectionSource source = new JdbcConnectionSource(url);
-
-        Dao<Movie, Integer> movieDao = DaoManager
-                .createDao(source, Movie.class);
-        if (!movieDao.isTableExists()) {
-            TableUtils.createTable(source, Movie.class);
-        }
-
-        Dao<WatchFolder, Integer> watchFolderDao = DaoManager.createDao(source,
-                WatchFolder.class);
-        if (!watchFolderDao.isTableExists()) {
-            TableUtils.createTable(source, WatchFolder.class);
-        }
+        Dao<WatchFolder, Integer> watchFolderDao = DatabaseManager
+                .getInstance().getWatchFolderDao();
 
         ExternalPlayerLauncher movieLauncher = new ExternalPlayerLauncher();
 
