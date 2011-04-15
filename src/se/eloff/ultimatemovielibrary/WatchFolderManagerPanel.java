@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -31,8 +32,9 @@ public class WatchFolderManagerPanel extends JPanel {
 
     public WatchFolderManagerPanel() {
         setLayout(new BorderLayout());
-        
-        // TODO: Get all the watched folders from database and fill the watchFolders list.
+
+        // TODO: Get all the watched folders from database and fill the
+        // watchFolders list.
 
         // Add a heading
         add(new JLabel(Localization.manageWatchFolderHeading),
@@ -133,7 +135,7 @@ public class WatchFolderManagerPanel extends JPanel {
         // Stop the scan
         // TODO: Also remove folder from database.
         DirScanner.stopScan(folder);
-        
+
         // Remove the folder.
         getWatchFolders().remove(folder);
         watchFoldersPanel.remove(watchFolder);
@@ -147,6 +149,20 @@ public class WatchFolderManagerPanel extends JPanel {
      */
     public ArrayList<WatchFolder> getWatchFolders() {
         return watchFolders;
+    }
+
+    /**
+     * Test the WatchFolderManager
+     * 
+     * @param args
+     */
+    public static void main(String[] args) {
+        WatchFolderManagerPanel panel = new WatchFolderManagerPanel();
+        JFrame frame = new JFrame();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.add(panel);
+        frame.pack();
+        frame.setVisible(true);
     }
 
 }
