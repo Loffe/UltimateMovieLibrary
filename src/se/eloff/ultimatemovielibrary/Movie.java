@@ -17,7 +17,7 @@ public class Movie implements Comparable<Movie> {
     @DatabaseField
     private int discnumber;
     
-    @DatabaseField
+    @DatabaseField(unique = true)
     private String filepath;
 
     public Movie() {
