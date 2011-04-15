@@ -1,8 +1,11 @@
 package se.eloff.ultimatemovielibrary;
 
+import java.awt.Dimension;
+import java.awt.DisplayMode;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.HeadlessException;
+import java.awt.Toolkit;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -20,8 +23,16 @@ public class AppFrame extends JFrame {
 
         GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment()
                 .getDefaultScreenDevice();
-        this.setSize(gd.getDisplayMode().getWidth(), gd.getDisplayMode()
-                .getHeight());
+        DisplayMode displayMode = gd.getDisplayMode();
+        int width, height;
+        if (displayMode != null) {
+            width = displayMode.getWidth();
+            height = displayMode.getHeight();
+        } else {
+            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+            width = (int) screenSize.getWidth();
+            height = (int) screenSize.getHeight();
+        }
 
         try {
             if (gd.isFullScreenSupported()) {
@@ -33,7 +44,8 @@ public class AppFrame extends JFrame {
             this.setVisible(true);
             // Your business logic here
         } finally {
-            gd.setFullScreenWindow(null);
+            if (gd != null)
+                gd.setFullScreenWindow(null);
         }
 
     }
