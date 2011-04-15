@@ -4,6 +4,7 @@ import java.io.File;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 import com.j256.ormlite.dao.Dao;
@@ -33,6 +34,14 @@ public class DirScanner {
             "264", "brrip", "engsub", "swesub", "cd", "dvd", "disk", "part" };
     private static String[] discWords = { "cd", "dvd", "disk", "part" };
 
+    private static HashMap<String, DirScanner> runningScans = new HashMap<String, DirScanner>();
+
+    private Boolean StopScanning = false;
+
+    private DirScanner() {
+
+    }
+
     /**
      * Scans a folder and returns movies found
      * 
@@ -45,7 +54,10 @@ public class DirScanner {
             @Override
             public void run() {
                 System.out.println("Running new dirscanner thread");
-                ScanFolderInt(folder);
+                DirScanner scanner = new DirScanner();
+                runningScans.put(folder.toString(), scanner);
+                scanner.ScanFolderInt(folder);
+                runningScans.remove(folder.toString());
             }
         });
 
@@ -53,11 +65,25 @@ public class DirScanner {
         return true;
     }
 
+    public static void stopScan(final File folder) {
+        try {
+            runningScans.get(folder.toString()).stopScanning();
+            runningScans.remove(folder.toString());
+        } catch (Exception e) {
+
+        }
+    }
+
+    protected void stopScanning() {
+        StopScanning = true;
+    }
+
     // the internal scanfolder call, it will call itself recursively on all
     // subfolders
-    private static void ScanFolderInt(File folder) {
+    private void ScanFolderInt(File folder) {
         for (final File file : folder.listFiles()) {
-
+            if (StopScanning)
+                return;
             if (file.isDirectory() && notOnIgnoreList(file)) {
                 ScanFolderInt(file);
             } else if (hasValidExtension(file)) {
@@ -69,15 +95,17 @@ public class DirScanner {
                         db = DatabaseManager.getInstance().getMovieDao();
                         db.create(movie);
                     } catch (SQLException e) {
-                        System.out.println("Failed to save to db, maybe the movie is allready saved once");
+                        System.out
+                                .println("Failed to save to db, maybe the movie is allready saved once");
                     }
-                    System.out.println("Adding Movie: '" +  movie.getName() + "' year: " + movie.getYear());
+                    System.out.println("Adding Movie: '" + movie.getName()
+                            + "' year: " + movie.getYear());
                 }
             }
         }
     }
 
-    private static boolean hasValidExtension(File file) {
+    private boolean hasValidExtension(File file) {
         String fileName = file.toString().toLowerCase();
         String fileExtension = fileName.substring(
                 fileName.lastIndexOf('.') + 1, fileName.length());
@@ -90,7 +118,7 @@ public class DirScanner {
         return false;
     }
 
-    private static boolean notOnIgnoreList(File folder) {
+    private boolean notOnIgnoreList(File folder) {
         String folderName = folder.toString().toLowerCase();
         String subfolder = folderName.substring(
                 folderName.lastIndexOf('\\') + 1, folderName.length());
@@ -104,24 +132,18 @@ public class DirScanner {
         return true;
     }
 
-  /*  private static int scanDiscNumber(String name) {
-        String discNumber = "";
-        loop:
-        for (String word : discWords) {
-            int index = name.toLowerCase().indexOf(word);
-            if (index != -1){
-                //we found one of the magic discwords
-                //remove the disc word
-                name = name.substring(index + word.length(), name.length());
-                //now find all numbers and break when a non digit is found
+    /*
+     * private static int scanDiscNumber(String name) { String discNumber = "";
+     * loop: for (String word : discWords) { int index =
+     * name.toLowerCase().indexOf(word); if (index != -1){ //we found one of the
+     * magic discwords //remove the disc word name = name.substring(index +
+     * word.length(), name.length()); //now find all numbers and break when a
+     * non digit is found
+     * 
+     * } } } return 1; }
+     */
 
-                }
-            }
-        }
-        return 1;
-    }*/
-
-    private static Movie movieFromPath(File file) {
+    private Movie movieFromPath(File file) {
 
         String path = file.toString();
         System.out.println("Movie path: " + file.toString());
