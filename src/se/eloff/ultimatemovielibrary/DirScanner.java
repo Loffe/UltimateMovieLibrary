@@ -46,7 +46,7 @@ public class DirScanner {
      * @param folder
      * @return a collection of all movies
      */
-    public static boolean ScanFolder(final WatchFolder folder) {
+    public static boolean scanFolder(final WatchFolder folder) {
         Thread scanThread = new Thread(new Runnable() {
 
             @Override
