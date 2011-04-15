@@ -46,7 +46,7 @@ public class DirScanner {
      * @param folder
      * @return a collection of all movies
      */
-    public static boolean ScanFolder(final File folder) {
+    public static boolean ScanFolder(final WatchFolder folder) {
         Thread scanThread = new Thread(new Runnable() {
 
             @Override
@@ -54,7 +54,12 @@ public class DirScanner {
                 System.out.println("Running new dirscanner thread");
                 DirScanner scanner = new DirScanner();
                 runningScans.put(folder.toString(), scanner);
-                scanner.ScanFolderInt(folder);
+                try{
+                scanner.ScanFolderInt(new File(folder.getFolderPath()));
+                }
+                catch(Exception e){
+                    System.out.println("Failed to convert path to File type");
+                }
                 runningScans.remove(folder.toString());
             }
         });
@@ -63,10 +68,10 @@ public class DirScanner {
         return true;
     }
 
-    public static void stopScan(final File folder) {
+    public static void stopScan(final WatchFolder folder) {
         try {
-            runningScans.get(folder.toString()).stopScanning();
-            runningScans.remove(folder.toString());
+            runningScans.get(folder.getFolderPath()).stopScanning();
+            runningScans.remove(folder.getFolderPath());
         } catch (Exception e) {
 
         }

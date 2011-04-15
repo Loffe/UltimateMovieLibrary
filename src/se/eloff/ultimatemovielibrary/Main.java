@@ -46,7 +46,7 @@ public class Main {
 
         // to try the scan, just enter a valid path on your disk where you have
         // movies
-        DirScanner.ScanFolder(new File("movies"));
+        DirScanner.ScanFolder(new WatchFolder("movies", (long)0));
 
         // Uncomment to try the movie player
         // movieLauncher.playMovie(new Movie("Conan The Barbarian", 1,
