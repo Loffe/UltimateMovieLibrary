@@ -12,6 +12,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
@@ -30,6 +31,8 @@ public class WatchFolderManagerPanel extends JPanel {
 
     public WatchFolderManagerPanel() {
         setLayout(new BorderLayout());
+        
+        // TODO: Get all the watched folders from database and fill the watchFolders list.
 
         // Add a heading
         add(new JLabel(Localization.manageWatchFolderHeading),
@@ -93,6 +96,9 @@ public class WatchFolderManagerPanel extends JPanel {
 
             // Create a view of the folder.
             WatchFolder folder = new WatchFolder(folderPath, 0L);
+            // Start scanning the folder.
+            // TODO: Also add folder to database.
+            DirScanner.scanFolder(folder);
             final WatchFolderPanel watchFolder = new WatchFolderPanel(folder);
             // Add a listener on the remove button
             watchFolder.getRemoveButton().addActionListener(
@@ -100,7 +106,16 @@ public class WatchFolderManagerPanel extends JPanel {
 
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            removeFolder(watchFolder);
+                            // Confirm before removing
+                            int result = JOptionPane
+                                    .showConfirmDialog(
+                                            watchFoldersPanel,
+                                            Localization.removeWatchFolderConfirmationText
+                                                    + watchFolder.getFolder()
+                                                            .getFolderPath());
+                            if (result == JOptionPane.YES_OPTION) {
+                                removeFolder(watchFolder);
+                            }
                         }
                     });
 
@@ -114,8 +129,13 @@ public class WatchFolderManagerPanel extends JPanel {
      * Remove a folder from watch list.
      */
     private void removeFolder(WatchFolderPanel watchFolder) {
+        WatchFolder folder = watchFolder.getFolder();
+        // Stop the scan
+        // TODO: Also remove folder from database.
+        DirScanner.stopScan(folder);
+        
         // Remove the folder.
-        getWatchFolders().remove(watchFolder.getFolder());
+        getWatchFolders().remove(folder);
         watchFoldersPanel.remove(watchFolder);
         validate();
     }
