@@ -12,7 +12,7 @@ public class AppFrame extends JFrame {
     private static final long serialVersionUID = 5297734322373835993L;
 
     public AppFrame() throws HeadlessException {
-        this.setSize(800, 600);
+
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Ultimate Movie Library");
         setIconImage(new ImageIcon("img/video_16.png").getImage());
@@ -20,6 +20,9 @@ public class AppFrame extends JFrame {
 
         GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment()
                 .getDefaultScreenDevice();
+        this.setSize(gd.getDisplayMode().getWidth(), gd.getDisplayMode()
+                .getHeight());
+
         try {
             if (gd.isFullScreenSupported()) {
                 gd.setFullScreenWindow(this);
