@@ -5,6 +5,7 @@ import java.sql.SQLException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.UIManager;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
@@ -21,6 +22,13 @@ public class Main {
     public static void main(String[] args) throws SQLException,
             ClassNotFoundException {
         AppFrame app = new AppFrame();
+
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         app.setVisible(true);
         app.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         app.setTitle("Ultimate Movie Library");
