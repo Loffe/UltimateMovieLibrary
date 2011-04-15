@@ -30,11 +30,9 @@ public class Main {
         }
 
         app.setVisible(true);
-        app.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        app.setTitle("Ultimate Movie Library");
-        app.setIconImage(new ImageIcon("img/video_16.png").getImage());
-        app.add(new WatchFolderManagerPanel());
-        app.pack();
+
+//        app.add(new WatchFolderManagerPanel());
+//        app.pack();
 
         Dao<Movie, Integer> movieDao = DatabaseManager.getInstance()
                 .getMovieDao();
