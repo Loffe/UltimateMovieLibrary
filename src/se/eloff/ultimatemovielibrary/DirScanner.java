@@ -1,9 +1,12 @@
 package se.eloff.ultimatemovielibrary;
 
 import java.io.File;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import com.j256.ormlite.dao.Dao;
 
 /**
  * A folder scanner that scans a folder and all its subfolders for movie files.
@@ -27,7 +30,7 @@ public class DirScanner {
     private static String[] extensions = { "avi", "mpg", "mkv", "mp4" };
     private static String[] ignoreList = { "sample", "subs", "subtitles" };
     private static String[] splitWords = { "xvid", "720", "1080", "bluray",
-            "264", "brrip", "engsub", "swesub","cd", "dvd", "disk", "part" };
+            "264", "brrip", "engsub", "swesub", "cd", "dvd", "disk", "part" };
     private static String[] discWords = { "cd", "dvd", "disk", "part" };
 
     /**
@@ -36,31 +39,40 @@ public class DirScanner {
      * @param folder
      * @return a collection of all movies
      */
-    public static List<Movie> ScanFolder(File folder) {
-        List<Movie> movies = new ArrayList<Movie>();
-        ScanFolderInt(movies, folder);
+    public static boolean ScanFolder(final File folder) {
+        Thread scanThread = new Thread(new Runnable() {
 
-        // maybe some sorting or stuff goes here
-        Collections.sort(movies);
-        for (Movie movie : movies) {
-            System.out.println("Found movie: '" + movie.getName() + "' year: "
-                    + movie.getYear());
-        }
-        return movies;
+            @Override
+            public void run() {
+                System.out.println("Running new dirscanner thread");
+                ScanFolderInt(folder);
+            }
+        });
 
+        scanThread.start();
+        return true;
     }
 
     // the internal scanfolder call, it will call itself recursively on all
     // subfolders
-    private static void ScanFolderInt(List<Movie> movies, File folder) {
+    private static void ScanFolderInt(File folder) {
         for (final File file : folder.listFiles()) {
 
             if (file.isDirectory() && notOnIgnoreList(file)) {
-                ScanFolderInt(movies, file);
+                ScanFolderInt(file);
             } else if (hasValidExtension(file)) {
                 Movie movie = movieFromPath(file);
-                if (movie != null)
-                    movies.add(movie);
+                if (movie != null) {
+                    // movies.add(movie);
+                    Dao<Movie, Integer> db;
+                    try {
+                        db = DatabaseManager.getInstance().getMovieDao();
+                        db.create(movie);
+                    } catch (SQLException e) {
+                        System.out.println("Failed to save to db, maybe the movie is allready saved once");
+                    }
+                    System.out.println("Adding Movie: '" +  movie.getName() + "' year: " + movie.getYear());
+                }
             }
         }
     }
@@ -92,17 +104,32 @@ public class DirScanner {
         return true;
     }
 
+  /*  private static int scanDiscNumber(String name) {
+        String discNumber = "";
+        loop:
+        for (String word : discWords) {
+            int index = name.toLowerCase().indexOf(word);
+            if (index != -1){
+                //we found one of the magic discwords
+                //remove the disc word
+                name = name.substring(index + word.length(), name.length());
+                //now find all numbers and break when a non digit is found
+
+                }
+            }
+        }
+        return 1;
+    }*/
+
     private static Movie movieFromPath(File file) {
+
         String path = file.toString();
-        System.out.println("Movie path: " + path);
+        System.out.println("Movie path: " + file.toString());
 
         int year = 0;
 
         // first remove the path
-        String movieName = path.substring(path.lastIndexOf('\\') + 1,
-                path.length());
-        movieName = movieName.substring(movieName.lastIndexOf('/') + 1,
-                movieName.length());
+        String movieName = file.getName();
 
         // remove the extension
         movieName = movieName.substring(0, movieName.lastIndexOf('.'));
@@ -115,8 +142,7 @@ public class DirScanner {
         String stringParts[] = movieName.split("\\s+");
         movieName = "";
 
-        partsLoop:
-        for (String string : stringParts) {
+        partsLoop: for (String string : stringParts) {
             if (string.matches(".*\\d{4}.*")) {
                 // we have a year (probably)
                 year = Integer.parseInt(string.replaceAll("\\D", ""));
