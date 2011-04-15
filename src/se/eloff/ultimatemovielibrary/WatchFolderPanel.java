@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -20,8 +19,9 @@ public class WatchFolderPanel extends JPanel {
     private WatchFolder folder;
 
     // The remove button.
-    private JButton removeButton = new JButton(new ImageIcon(
-            "img/delete_16.png"));
+    private JButton removeButton = new JButton(
+            Localization.removeWatchFolderButtonText,
+            Localization.removeWatchFolderButtonIcon);
 
     /**
      * Constructor. Creates a new wrapper to show and manage a WatchFolder.
@@ -37,14 +37,15 @@ public class WatchFolderPanel extends JPanel {
         setBackground(Color.WHITE);
 
         // Add a folder icon.
-        add(new JLabel(new ImageIcon("img/folder_32.png")), BorderLayout.WEST);
+        add(new JLabel(Localization.watchFolderIcon), BorderLayout.WEST);
 
         // Add a label with the actual folder path.
         add(new JLabel(folder.getFolderPath()), BorderLayout.CENTER);
 
         // Add a remove button (Note: listeners rather added from parent).
         JPanel buttonPanel = new JPanel();
-        removeButton.setToolTipText("Stop watching this folder");
+        removeButton
+                .setToolTipText(Localization.removeWatchFolderButtonToolTip);
         buttonPanel.add(removeButton);
         buttonPanel.setBackground(Color.WHITE);
         add(buttonPanel, BorderLayout.EAST);

@@ -9,7 +9,6 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
@@ -33,7 +32,8 @@ public class WatchFolderManagerPanel extends JPanel {
         setLayout(new BorderLayout());
 
         // Add a heading
-        add(new JLabel("Manage watched folders"), BorderLayout.PAGE_START);
+        add(new JLabel(Localization.manageWatchFolderHeading),
+                BorderLayout.PAGE_START);
 
         // Make folders position along Y-axis.
         watchFoldersPanel.setLayout(new BoxLayout(watchFoldersPanel,
@@ -60,9 +60,10 @@ public class WatchFolderManagerPanel extends JPanel {
         add(buttonPanel, BorderLayout.PAGE_END);
 
         JButton addFolderButton = new JButton(
-                "Add another folder to watch ...", new ImageIcon(
-                        "img/plus_32.png"));
-        addFolderButton.setToolTipText("Add another folder to watch");
+                Localization.addWatchFolderButtonText,
+                Localization.addWatchFolderButtonIcon);
+        addFolderButton
+                .setToolTipText(Localization.addWatchFolderButtonToolTip);
         addFolderButton.addActionListener(new ActionListener() {
 
             @Override

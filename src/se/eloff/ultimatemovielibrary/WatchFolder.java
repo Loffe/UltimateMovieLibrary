@@ -7,10 +7,10 @@ import com.j256.ormlite.table.DatabaseTable;
 public class WatchFolder {
     @DatabaseField(generatedId = true)
     private int id;
-    
+
     @DatabaseField
     private String folderPath;
-    
+
     @DatabaseField
     private Long lastScanned;
 
