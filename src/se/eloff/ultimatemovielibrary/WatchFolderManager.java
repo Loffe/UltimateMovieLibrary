@@ -111,7 +111,7 @@ public class WatchFolderManager {
             return true;
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             System.out
 
                     .println("Failed to save to db, maybe the watchfolder is allready watched");
