@@ -25,4 +25,9 @@ public final class Localization {
             "img/delete_16.png");
     public static final String removeWatchFolderConfirmationText = "Vill du sluta bevaka katalogen?\n";
 
+    // Search
+    public static final String searchFieldLabelText = "Sök efter filmtitel:";
+    public static final String searchNoMatchText = "Din sökning matchade inte någon film.";
+    public static final String searchInProgressText = "Laddar filmer...";
+
 }
