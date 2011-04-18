@@ -1,14 +1,18 @@
 package se.eloff.ultimatemovielibrary;
 
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JButton;
 import javax.swing.GroupLayout;
+import javax.swing.JPanel;
 import javax.swing.LayoutStyle;
 
-public class ListElement extends JFrame {
+public class ListElement extends JComponent {
 
+    private Movie movie;
     /** Creates new form TheGui */
-    public ListElement() {
+    public ListElement(Movie movie) {
+        this.movie = movie;
         initComponents();
     }
     
@@ -30,7 +34,7 @@ public class ListElement extends JFrame {
         CoverPanel = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+       // setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         PlayButton.setText("Play");
         PlayButton.addActionListener(new java.awt.event.ActionListener() {
@@ -47,11 +51,11 @@ public class ListElement extends JFrame {
         });
 
         TitleLabel.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
-        TitleLabel.setText("The very longest movie title there ever was");
+        TitleLabel.setText(movie.getName());
         TitleLabel.setAlignmentY(0.0F);
 
         YearLabel.setFont(new java.awt.Font("Lucida Grande", 0, 16)); // NOI18N
-        YearLabel.setText("1983");
+        YearLabel.setText(Integer.toString(movie.getYear()));
         YearLabel.setAlignmentY(0.0F);
 
         RatingRadio.setText("Rating");
@@ -77,8 +81,8 @@ public class ListElement extends JFrame {
         jLabel1.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
         jLabel1.setText("219 min - Action | Adventure | Sci-fi");
         
-        GroupLayout layout = new GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        GroupLayout layout = new GroupLayout(this);
+        setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
@@ -128,11 +132,12 @@ public class ListElement extends JFrame {
                 .addContainerGap())
         );
 
-        pack();
+        //pack();
     }// </editor-fold>
 
     private void PlayButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
+        //TODO better way to use the ExternalPlayerLauncher, dont instance it here
+        new ExternalPlayerLauncher().playMovie(movie);
     }
 
     private void RatingRadioActionPerformed(java.awt.event.ActionEvent evt) {
@@ -143,17 +148,6 @@ public class ListElement extends JFrame {
         // TODO add your handling code here:
     }
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-
-            public void run() {
-                new ListElement().setVisible(true);
-            }
-        });
-    }
     // Variables declaration - do not modify
     private javax.swing.JPanel CoverPanel;
     private javax.swing.JButton PlayButton;

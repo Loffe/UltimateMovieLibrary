@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
+import com.j256.ormlite.logger.LocalLog;
 import com.j256.ormlite.table.TableUtils;
 
 public class DatabaseManager {
@@ -16,6 +17,7 @@ public class DatabaseManager {
     private Dao<WatchFolder, Integer> watchFolderManager;
 
     private DatabaseManager() {
+        System.setProperty(LocalLog.LOCAL_LOG_LEVEL_PROPERTY, "ERROR");
         try {
             Class.forName("org.sqlite.JDBC");
         } catch (ClassNotFoundException e) {
@@ -24,6 +26,7 @@ public class DatabaseManager {
 
         try {
             source = new JdbcConnectionSource(url);
+            
         } catch (SQLException e) {
             e.printStackTrace();
         }

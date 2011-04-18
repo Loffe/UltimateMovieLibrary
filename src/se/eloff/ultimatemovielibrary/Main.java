@@ -34,12 +34,13 @@ public class Main {
         // app.add(new WatchFolderManagerPanel());
         // app.pack();
 
-        Dao<Movie, Integer> movieDao = DatabaseManager.getInstance()
-                .getMovieDao();
-
-        Dao<WatchFolder, Integer> watchFolderDao = DatabaseManager
-                .getInstance().getWatchFolderDao();
-
+        /*
+         * Dao<Movie, Integer> movieDao = DatabaseManager.getInstance()
+         * .getMovieDao();
+         * 
+         * Dao<WatchFolder, Integer> watchFolderDao = DatabaseManager
+         * .getInstance().getWatchFolderDao();
+         */
         // ExternalPlayerLauncher movieLauncher = new ExternalPlayerLauncher();
 
         // Uncomment to try the movie player

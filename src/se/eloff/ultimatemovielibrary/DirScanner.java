@@ -114,9 +114,8 @@ public class DirScanner {
     /**
      * Extracts the disc number...
      * 
-     * The discnumber must come directly after the CD,DISC, ... word
-     * It will work on .....blabla...CD1....
-     * but not on ....sd....CD.2...
+     * The discnumber must come directly after the CD,DISC, ... word It will
+     * work on .....blabla...CD1.... but not on ....sd....CD.2...
      * 
      * @param name
      * @return
@@ -150,7 +149,7 @@ public class DirScanner {
     private Movie movieFromPath(File file) {
 
         String path = file.toString();
-        System.out.println("Movie path: " + file.toString());
+        // System.out.println("Movie path: " + file.toString());
 
         int year = 0;
 
@@ -161,7 +160,7 @@ public class DirScanner {
         movieName = movieName.substring(0, movieName.lastIndexOf('.'));
 
         // then remove all ._ and replace with space
-        movieName = movieName.replaceAll("[._]", " ");
+        movieName = movieName.replaceAll("[._]", " ").toLowerCase();
 
         // then try to split it at a potential yearstamp, if no year split at
         // the first of the splitWords list
@@ -170,15 +169,25 @@ public class DirScanner {
 
         partsLoop: for (String string : stringParts) {
             if (string.matches(".*\\d{4}.*")) {
+                // System.out.println("Begin year search...");
                 // we have a year (probably)
-                year = Integer.parseInt(string.replaceAll("\\D", ""));
+                // where do the year begins?
+                int index = 0;
+                for (; index < string.length(); index++) {
+                    if (Character.isDigit(string.charAt(index))
+                            && Character.isDigit(string.charAt(index + 1)))
+                        break;
+                }
+                // now we know the location of the first digit, read 4 ahead and
+                // assume that the movie is from in between year 999 and 9999
+                year = Integer.parseInt(string.substring(index, index + 4));
                 // System.out.println("Found a year, name: "+ movieName +
                 // " year: " + year);
                 break partsLoop;
             }
             // no year yet, maybe we have one of the split words, if so, break
             // here
-            String lowerCaseString = string.toLowerCase();
+            String lowerCaseString = string;
             for (String splitWord : splitWords) {
                 if (lowerCaseString.contains(splitWord)) {
                     // System.out.println("Found a splitWord, name: "+ movieName
@@ -186,8 +195,10 @@ public class DirScanner {
                     break partsLoop;
                 }
             }
-            // if we made it here, just add the word back to the name
-            newMovieName += " " + string;
+            // if we made it here, just add the word back to the name,
+            // capitalize the first char
+            newMovieName += " " + string.substring(0, 1).toUpperCase()
+                    + string.substring(1);
         }
         // nothing left to check, just return what we have
         newMovieName = newMovieName.trim();

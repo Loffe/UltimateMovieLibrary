@@ -75,7 +75,7 @@ public class WatchFolderManager {
             // remove the watchFolder
             dbWatchFolder = DatabaseManager.getInstance().getWatchFolderDao();
             dbWatchFolder.delete(folder);
-            
+
             // remove all movies with a path that begins with the folderpath
             // Note that if there are nested WatchFolders a removal of a higher
             // folder will also delete folders in subfolders and movies that
@@ -135,6 +135,8 @@ public class WatchFolderManager {
                     System.out.println("Failed to convert path to File type");
                 }
                 runningScans.remove(folder.toString());
+                System.out.println("Successfully scanned: "
+                        + folder.getFolderPath());
             }
         });
 
@@ -147,7 +149,6 @@ public class WatchFolderManager {
             runningScans.get(folder.getFolderPath()).stopScanning();
             runningScans.remove(folder.getFolderPath());
         } catch (Exception e) {
-
         }
     }
 }
