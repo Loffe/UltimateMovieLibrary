@@ -7,6 +7,7 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -33,8 +34,10 @@ public class WatchFolderManagerPanel extends JPanel {
     public WatchFolderManagerPanel() {
         setLayout(new BorderLayout());
 
-        // TODO: Get all the watched folders from database and fill the
-        // watchFolders list.
+        List<WatchFolder> folders = WatchFolderManager.getAllWatchFolders();
+        for (WatchFolder watchFolder2 : folders) {
+            addFolderToList(watchFolder2);
+        }
 
         // Create a panel for info and buttons at the top.
         JPanel topPanel = new JPanel(new BorderLayout());
@@ -89,6 +92,35 @@ public class WatchFolderManagerPanel extends JPanel {
         add(scrollPane, BorderLayout.CENTER);
     }
 
+    private void addFolderToList(WatchFolder watchFolder) {
+        // Start scanning the folder.
+        // TODO: Also add folder to database.
+
+        final WatchFolderPanel watchFolderPanel = new WatchFolderPanel(
+                watchFolder);
+        // Add a listener on the remove button
+        watchFolderPanel.getRemoveButton().addActionListener(
+                new ActionListener() {
+
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        // Confirm before removing
+                        int result = JOptionPane.showConfirmDialog(
+                                watchFoldersPanel,
+                                Localization.removeWatchFolderConfirmationText
+                                        + watchFolderPanel.getFolder()
+                                                .getFolderPath());
+                        if (result == JOptionPane.YES_OPTION) {
+                            removeFolder(watchFolderPanel);
+                        }
+                    }
+                });
+
+        getWatchFolders().add(watchFolderPanel.getFolder());
+        watchFoldersPanel.add(watchFolderPanel);
+        validate();
+    }
+
     /**
      * Add a folder to watch list.
      */
@@ -107,32 +139,8 @@ public class WatchFolderManagerPanel extends JPanel {
 
             // Create a view of the folder.
             WatchFolder folder = new WatchFolder(folderPath, 0L);
-            // Start scanning the folder.
-            // TODO: Also add folder to database.
-            DirScanner.scanFolder(folder);
-            final WatchFolderPanel watchFolder = new WatchFolderPanel(folder);
-            // Add a listener on the remove button
-            watchFolder.getRemoveButton().addActionListener(
-                    new ActionListener() {
-
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                            // Confirm before removing
-                            int result = JOptionPane
-                                    .showConfirmDialog(
-                                            watchFoldersPanel,
-                                            Localization.removeWatchFolderConfirmationText
-                                                    + watchFolder.getFolder()
-                                                            .getFolderPath());
-                            if (result == JOptionPane.YES_OPTION) {
-                                removeFolder(watchFolder);
-                            }
-                        }
-                    });
-
-            getWatchFolders().add(watchFolder.getFolder());
-            watchFoldersPanel.add(watchFolder);
-            validate();
+            if (WatchFolderManager.addWatchFolder(folder))
+                addFolderToList(folder);
         }
     }
 
@@ -143,7 +151,7 @@ public class WatchFolderManagerPanel extends JPanel {
         WatchFolder folder = watchFolder.getFolder();
         // Stop the scan
         // TODO: Also remove folder from database.
-        DirScanner.stopScan(folder);
+        WatchFolderManager.removeWatchFolder(folder);
 
         // Remove the folder.
         getWatchFolders().remove(folder);

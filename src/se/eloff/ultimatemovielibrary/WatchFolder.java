@@ -5,10 +5,10 @@ import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable(tableName = "watchfolders")
 public class WatchFolder {
-    @DatabaseField(generatedId = true)
-    private int id;
+   // @DatabaseField(generatedId = true)
+   // private int id;
 
-    @DatabaseField
+    @DatabaseField (id = true)
     private String folderPath;
 
     @DatabaseField
@@ -24,9 +24,9 @@ public class WatchFolder {
         this.lastScanned = lastScanned;
     }
 
-    public int getId() {
+   /* public int getId() {
         return id;
-    }
+    }*/
 
     public String getFolderPath() {
         return folderPath;

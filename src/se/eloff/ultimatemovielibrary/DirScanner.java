@@ -10,6 +10,8 @@ import java.util.List;
 import com.j256.ormlite.dao.Dao;
 
 /**
+ * Not to be used from anywhere except WatchFolderManager!
+ * 
  * A folder scanner that scans a folder and all its subfolders for movie files.
  * It parses the filenames and tries to find the movie name and year, returns a
  * list of movies.
@@ -28,70 +30,31 @@ import com.j256.ormlite.dao.Dao;
  */
 public class DirScanner {
 
-    private static String[] extensions = { "avi", "mpg", "mkv", "mp4" };
-    private static String[] ignoreList = { "sample", "subs", "subtitles" };
-    private static String[] splitWords = { "xvid", "720", "1080", "bluray",
-            "264", "brrip", "engsub", "swesub", "cd", "dvd", "disk", "part" };
-    private static String[] discWords = { "cd", "dvd", "disk", "part" };
-
-    private static HashMap<String, DirScanner> runningScans = new HashMap<String, DirScanner>();
+    private static final String[] extensions = { "avi", "mpg", "mkv", "mp4" };
+    private static final String[] ignoreList = { "sample", "subs", "subtitles" };
+    private static final String[] splitWords = { "xvid", "720", "1080",
+            "bluray", "264", "brrip", "engsub", "swesub", "cd", "dvd", "disk",
+            "part" };
+    private static final String[] discWords = { "cd", "disc" };
 
     private Boolean StopScanning = false;
-    private DirScanner() {
-    }
-
-    /**
-     * Scans a folder and returns movies found
-     * 
-     * @param folder
-     * @return a collection of all movies
-     */
-    public static boolean scanFolder(final WatchFolder folder) {
-        Thread scanThread = new Thread(new Runnable() {
-
-            @Override
-            public void run() {
-                System.out.println("Running new dirscanner thread");
-                DirScanner scanner = new DirScanner();
-                runningScans.put(folder.toString(), scanner);
-                try{
-                scanner.ScanFolderInt(new File(folder.getFolderPath()));
-                }
-                catch(Exception e){
-                    System.out.println("Failed to convert path to File type");
-                }
-                runningScans.remove(folder.toString());
-            }
-        });
-
-        scanThread.start();
-        return true;
-    }
-
-    public static void stopScan(final WatchFolder folder) {
-        try {
-            runningScans.get(folder.getFolderPath()).stopScanning();
-            runningScans.remove(folder.getFolderPath());
-        } catch (Exception e) {
-
-        }
-    }
 
     protected void stopScanning() {
         StopScanning = true;
     }
 
-    // the internal scanfolder call, it will call itself recursively on all
-    // subfolders
-    private void ScanFolderInt(File folder) {
+    /**
+     * Scans a folder and all its subfolders, the results are saved to the db
+     * 
+     * @param folder
+     */
+    public void ScanFolder(File folder) {
         for (final File file : folder.listFiles()) {
-            if (StopScanning)
-                return;
-            if (file.isDirectory() && notOnIgnoreList(file)) {
-                ScanFolderInt(file);
-            } else if (hasValidExtension(file)) {
+            if (!StopScanning && file.isDirectory() && notOnIgnoreList(file)) {
+                ScanFolder(file);
+            } else if (!StopScanning && hasValidExtension(file)) {
                 Movie movie = movieFromPath(file);
-                if (movie != null) {
+                if (!StopScanning && movie != null) {
                     // movies.add(movie);
                     Dao<Movie, Integer> db;
                     try {
@@ -102,12 +65,19 @@ public class DirScanner {
                                 .println("Failed to save to db, maybe the movie is allready saved once");
                     }
                     System.out.println("Adding Movie: '" + movie.getName()
-                            + "' year: " + movie.getYear());
+                            + "' year: " + movie.getYear() + " disc: "
+                            + movie.getDiscnumber());
                 }
             }
         }
     }
 
+    /**
+     * checks wither a file has a valid extension
+     * 
+     * @param file
+     * @return
+     */
     private boolean hasValidExtension(File file) {
         String fileName = file.toString().toLowerCase();
         String fileExtension = fileName.substring(
@@ -121,6 +91,12 @@ public class DirScanner {
         return false;
     }
 
+    /**
+     * returns true if the folder is not on the ignore list
+     * 
+     * @param folder
+     * @return
+     */
     private boolean notOnIgnoreList(File folder) {
         String folderName = folder.toString().toLowerCase();
         String subfolder = folderName.substring(
@@ -135,17 +111,42 @@ public class DirScanner {
         return true;
     }
 
-    /*
-     * private static int scanDiscNumber(String name) { String discNumber = "";
-     * loop: for (String word : discWords) { int index =
-     * name.toLowerCase().indexOf(word); if (index != -1){ //we found one of the
-     * magic discwords //remove the disc word name = name.substring(index +
-     * word.length(), name.length()); //now find all numbers and break when a
-     * non digit is found
+    /**
+     * Extracts the disc number...
      * 
-     * } } } return 1; }
+     * The discnumber must come directly after the CD,DISC, ... word
+     * It will work on .....blabla...CD1....
+     * but not on ....sd....CD.2...
+     * 
+     * @param name
+     * @return
      */
+    private int discNumberFromFileName(String name) {
+        String discNumber = "0";
+        for (String word : discWords) {
+            int index = name.toLowerCase().indexOf(word);
 
+            if (index != -1) {
+                // we found one of the magic discwords
+                // now find all numbers and break when a non-digit is found
+                for (int i = index + word.length(); i < name.length(); i++) {
+                    char e = name.charAt(i);
+                    if (!Character.isDigit(e))
+                        break;
+                    discNumber += e;
+                }
+                return Integer.parseInt(discNumber.replaceAll("\\D", ""));
+            }
+        }
+        return 1;
+    }
+
+    /**
+     * tries to resolve a movie name and a year from a filename
+     * 
+     * @param file
+     * @return
+     */
     private Movie movieFromPath(File file) {
 
         String path = file.toString();
@@ -159,13 +160,13 @@ public class DirScanner {
         // remove the extension
         movieName = movieName.substring(0, movieName.lastIndexOf('.'));
 
-        // then remove all .,_ and replace with space
-        movieName = movieName.replaceAll("[.'_]", " ");
+        // then remove all ._ and replace with space
+        movieName = movieName.replaceAll("[._]", " ");
 
         // then try to split it at a potential yearstamp, if no year split at
         // the first of the splitWords list
         String stringParts[] = movieName.split("\\s+");
-        movieName = "";
+        String newMovieName = "";
 
         partsLoop: for (String string : stringParts) {
             if (string.matches(".*\\d{4}.*")) {
@@ -186,12 +187,13 @@ public class DirScanner {
                 }
             }
             // if we made it here, just add the word back to the name
-            movieName += " " + string;
+            newMovieName += " " + string;
         }
         // nothing left to check, just return what we have
-        movieName = movieName.trim();
-        if (movieName.isEmpty())
+        newMovieName = newMovieName.trim();
+        if (newMovieName.isEmpty())
             return null;
-        return new Movie(movieName, year, path);
+        return new Movie(newMovieName, year, path,
+                discNumberFromFileName(movieName));
     }
 }
