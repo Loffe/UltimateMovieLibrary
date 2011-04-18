@@ -121,6 +121,10 @@ public class RatingButton extends JButton implements ActionListener {
 
         @Override
         protected void paintComponent(Graphics g) {
+
+            g.setColor(getBackground());
+            g.fillRect( 0, 0, this.getWidth(), this.getHeight() );
+            
             int cross_w = 10;
             int cross_h = 40;
             int border = 2;

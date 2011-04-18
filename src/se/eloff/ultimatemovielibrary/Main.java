@@ -31,8 +31,8 @@ public class Main {
 
         app.setVisible(true);
 
-//        app.add(new WatchFolderManagerPanel());
-//        app.pack();
+        // app.add(new WatchFolderManagerPanel());
+        // app.pack();
 
         Dao<Movie, Integer> movieDao = DatabaseManager.getInstance()
                 .getMovieDao();
@@ -40,11 +40,7 @@ public class Main {
         Dao<WatchFolder, Integer> watchFolderDao = DatabaseManager
                 .getInstance().getWatchFolderDao();
 
-        ExternalPlayerLauncher movieLauncher = new ExternalPlayerLauncher();
-
-        // to try the scan, just enter a valid path on your disk where you have
-        // movies
-   //     DirScanner.scanFolder(new WatchFolder("movies", (long)0));
+        // ExternalPlayerLauncher movieLauncher = new ExternalPlayerLauncher();
 
         // Uncomment to try the movie player
         // movieLauncher.playMovie(new Movie("Conan The Barbarian", 1,
