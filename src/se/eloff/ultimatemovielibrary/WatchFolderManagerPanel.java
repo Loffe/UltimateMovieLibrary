@@ -6,8 +6,6 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -25,19 +23,14 @@ public class WatchFolderManagerPanel extends JPanel {
 
     private static final long serialVersionUID = 5721254657654204228L;
 
-    // A list of all the currently watched folders.
-    private ArrayList<WatchFolder> watchFolders = new ArrayList<WatchFolder>();
-
-    // A list of the view components for every watched folder.
+    // A list of the visual components for every watched folder.
     private JPanel watchFoldersPanel = new JPanel();
 
+    /**
+     * Constructor. Create a new WatchFolderManagerPanel.
+     */
     public WatchFolderManagerPanel() {
         setLayout(new BorderLayout());
-
-        List<WatchFolder> folders = WatchFolderManager.getAllWatchFolders();
-        for (WatchFolder watchFolder2 : folders) {
-            addFolderToList(watchFolder2);
-        }
 
         // Create a panel for info and buttons at the top.
         JPanel topPanel = new JPanel(new BorderLayout());
@@ -90,12 +83,21 @@ public class WatchFolderManagerPanel extends JPanel {
         JScrollPane scrollPane = new JScrollPane(outerPanel);
         scrollPane.setPreferredSize(new Dimension(600, 400));
         add(scrollPane, BorderLayout.CENTER);
+
+        // Add all the currently watched folders from database.
+        for (WatchFolder watchFolder : WatchFolderManager.getAllWatchFolders()) {
+            addFolderToList(watchFolder);
+        }
     }
 
+    /**
+     * Add a new folder to the visual list of watched folders.
+     * 
+     * @param watchFolder
+     *            the folder to add.
+     */
     private void addFolderToList(WatchFolder watchFolder) {
-        // Start scanning the folder.
-        // TODO: Also add folder to database.
-
+        // Create a new visual panel to wrap and show the folder.
         final WatchFolderPanel watchFolderPanel = new WatchFolderPanel(
                 watchFolder);
         // Add a listener on the remove button
@@ -115,8 +117,7 @@ public class WatchFolderManagerPanel extends JPanel {
                         }
                     }
                 });
-
-        getWatchFolders().add(watchFolderPanel.getFolder());
+        // Add the folder to the visual list.
         watchFoldersPanel.add(watchFolderPanel);
         validate();
     }
@@ -139,6 +140,8 @@ public class WatchFolderManagerPanel extends JPanel {
 
             // Create a view of the folder.
             WatchFolder folder = new WatchFolder(folderPath, 0L);
+            // Add the folder to the database (and visual list) if needed.
+            // This will also start scanning the folder.
             if (WatchFolderManager.addWatchFolder(folder))
                 addFolderToList(folder);
         }
@@ -148,24 +151,15 @@ public class WatchFolderManagerPanel extends JPanel {
      * Remove a folder from watch list.
      */
     private void removeFolder(WatchFolderPanel watchFolder) {
+        // Get the real folder object.
         WatchFolder folder = watchFolder.getFolder();
-        // Stop the scan
-        // TODO: Also remove folder from database.
+
+        // Stop the scan and remove the folder from the database.
         WatchFolderManager.removeWatchFolder(folder);
 
-        // Remove the folder.
-        getWatchFolders().remove(folder);
+        // Remove the folder from the visual list.
         watchFoldersPanel.remove(watchFolder);
         validate();
-    }
-
-    /**
-     * Get all the folders to watch.
-     * 
-     * @return a list of all the folders to watch.
-     */
-    public ArrayList<WatchFolder> getWatchFolders() {
-        return watchFolders;
     }
 
     /**
