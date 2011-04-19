@@ -40,6 +40,7 @@ public class AppFrame extends JFrame {
             } else {
                 // Can't run fullscreen, need to bodge around it (setSize to
                 // screen size, etc)
+                setSize(width, height);
             }
             this.setVisible(true);
             // Your business logic here
