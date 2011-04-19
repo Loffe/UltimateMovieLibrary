@@ -27,7 +27,7 @@ public class Movie implements Comparable<Movie> {
     }
     
     public Movie(String name, int year, String filepath) {
-        this(name, year, filepath, 1, 1);
+        this(name, year, filepath, 1, 0);
     }
 
     public int getRating() {
