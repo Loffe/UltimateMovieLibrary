@@ -30,10 +30,6 @@ public class Main {
         }
 
         app.setVisible(true);
-
-        // app.add(new WatchFolderManagerPanel());
-        // app.pack();
-
         /*
          * Dao<Movie, Integer> movieDao = DatabaseManager.getInstance()
          * .getMovieDao();

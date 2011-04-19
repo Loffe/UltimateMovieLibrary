@@ -9,16 +9,46 @@ import java.awt.Toolkit;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class AppFrame extends JFrame {
 
     private static final long serialVersionUID = 5297734322373835993L;
+    private WatchFolderManagerPanel watchFolderManagerPanel;
+    private SearchPanel searchPanel;
 
     public AppFrame() throws HeadlessException {
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Ultimate Movie Library");
         setIconImage(new ImageIcon("img/video_16.png").getImage());
+
+        initializeFullScreen();
+
+        watchFolderManagerPanel = new WatchFolderManagerPanel();
+        searchPanel = new SearchPanel();
+
+        setCurrentPanel(GuiPanel.Search);
+    }
+
+    public void setCurrentPanel(GuiPanel panel) {
+        switch (panel) {
+        case WatchFolder:
+            setContentPane(watchFolderManagerPanel);
+            break;
+        case Search:
+            setContentPane(searchPanel);
+            break;
+
+        default:
+            throw new NotImplementedException();
+        }
+
+    }
+
+    private void initializeFullScreen() {
         this.setUndecorated(true);
 
         GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment()
@@ -48,6 +78,9 @@ public class AppFrame extends JFrame {
             if (gd != null)
                 gd.setFullScreenWindow(null);
         }
+    }
 
+    enum GuiPanel {
+        WatchFolder, Search, Profile
     }
 }
