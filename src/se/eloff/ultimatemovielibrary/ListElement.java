@@ -198,10 +198,8 @@ public class ListElement extends JComponent {
 
     private void RatingRadioActionPerformed(java.awt.event.ActionEvent evt) {
         movie.setRating(RatingRadio.getRating());
-        Dao<Movie, Integer> dbMovie;
         try {
-            dbMovie = DatabaseManager.getInstance().getMovieDao();
-            dbMovie.update(movie);
+            DatabaseManager.getInstance().getMovieDao().update(movie);
         } catch (SQLException e) {
             System.out.println("Failed to update movie with new rating");
         }
