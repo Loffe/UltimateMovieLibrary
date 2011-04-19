@@ -205,6 +205,6 @@ public class DirScanner {
         if (newMovieName.isEmpty())
             return null;
         return new Movie(newMovieName, year, path,
-                discNumberFromFileName(movieName));
+                discNumberFromFileName(movieName), 0);
     }
 }

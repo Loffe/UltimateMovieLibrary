@@ -1,9 +1,12 @@
 package se.eloff.ultimatemovielibrary;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 
 import javax.swing.BoxLayout;
 import javax.swing.GroupLayout;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -19,14 +22,16 @@ public class SearchPanel extends JPanel implements MovieSearchClient,
     private static final long serialVersionUID = 8595144249306891196L;
 
     private JScrollPane jScrollPanel;
-
     private JLabel titleLabel;
-
     private JTextField searchTextField;
-
     private JPanel resultPanel;
+    private JButton sortByTitle;
+    private JButton sortByYear;
+    private JButton sortByRating;
 
     private int lastSearchId;
+    private String orderColumn = "name";
+    private boolean orderAscending = true;
 
     public SearchPanel() {
         initComponents();
@@ -37,6 +42,9 @@ public class SearchPanel extends JPanel implements MovieSearchClient,
         jScrollPanel = new JScrollPane();
         searchTextField = new JTextField();
         titleLabel = new JLabel(Localization.searchFieldLabelText);
+        sortByTitle = new JButton(Localization.searchOrderButtonMovieTitle);
+        sortByYear = new JButton(Localization.searchOrderButtonMovieYear);
+        sortByRating = new JButton(Localization.searchOrderButtonMovieRating);
         resultPanel = new JPanel();
         resultPanel.setLayout(new BoxLayout(resultPanel, BoxLayout.Y_AXIS));
 
@@ -53,6 +61,9 @@ public class SearchPanel extends JPanel implements MovieSearchClient,
                         mainPanelLayout
                                 .createSequentialGroup()
                                 .addContainerGap(53, Short.MAX_VALUE)
+                                .addComponent(sortByTitle)
+                                .addComponent(sortByYear)
+                                .addComponent(sortByRating)
                                 .addComponent(titleLabel)
                                 .addGap(18, 18, 18)
                                 .addComponent(searchTextField,
@@ -72,6 +83,12 @@ public class SearchPanel extends JPanel implements MovieSearchClient,
                                                         .createParallelGroup(
                                                                 GroupLayout.Alignment.BASELINE)
                                                         .addComponent(
+                                                                sortByTitle)
+                                                        .addComponent(
+                                                                sortByYear)
+                                                        .addComponent(
+                                                                sortByRating)
+                                                        .addComponent(
                                                                 titleLabel)
                                                         .addComponent(
                                                                 searchTextField,
@@ -83,6 +100,47 @@ public class SearchPanel extends JPanel implements MovieSearchClient,
                                         .addComponent(jScrollPanel,
                                                 GroupLayout.DEFAULT_SIZE, 217,
                                                 Short.MAX_VALUE)));
+
+        // Action listeners for the sort buttons
+        sortByTitle.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                if (orderColumn.equals("name")) {
+                    orderAscending = !orderAscending;
+                } else {
+                    orderAscending = true;
+                    orderColumn = "name";
+                }
+                search();
+            }
+        });
+
+        sortByYear.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                if (orderColumn.equals("year")) {
+                    orderAscending = !orderAscending;
+                } else {
+                    orderAscending = true;
+                    orderColumn = "year";
+                }
+                search();
+            }
+        });
+
+        sortByRating.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                if (orderColumn.equals("rating")) {
+                    orderAscending = !orderAscending;
+                } else {
+                    orderAscending = true;
+                    orderColumn = "rating";
+                }
+                search();
+            }
+        });
+
         jScrollPanel.setViewportView(resultPanel);
 
         // add a listener to the input field
@@ -109,7 +167,10 @@ public class SearchPanel extends JPanel implements MovieSearchClient,
         resultPanel.add(new JLabel(Localization.searchInProgressText));
         jScrollPanel.updateUI();
         lastSearchId = MovieSearchProvider.searchByName(
-                searchTextField.getText(), this);
+                searchTextField.getText(), this, orderColumn, orderAscending);
+        // Try the featured movie feature (!)
+        // lastSearchId = MovieSearchProvider.getFeaturedMovies(3, this,
+        // orderColumn, orderAscending);
     }
 
     // input field actions

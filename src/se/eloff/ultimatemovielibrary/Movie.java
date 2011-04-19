@@ -19,19 +19,31 @@ public class Movie implements Comparable<Movie> {
     
     @DatabaseField(unique = true)
     private String filepath;
+    
+    @DatabaseField
+    private int rating;
 
     public Movie() {
     }
     
     public Movie(String name, int year, String filepath) {
-        this(name, year, filepath, 1);
+        this(name, year, filepath, 1, 1);
     }
 
-    public Movie(String name, int year, String filepath, int discnumber) {
+    public int getRating() {
+        return rating;
+    }
+
+    public void setRating(int rating) {
+        this.rating = rating;
+    }
+
+    public Movie(String name, int year, String filepath, int discnumber, int rating) {
         this.name = name;
         this.year = year;
         this.discnumber = discnumber;
         this.filepath = filepath;
+        this.rating = rating;
     }
 
     public int getId() {

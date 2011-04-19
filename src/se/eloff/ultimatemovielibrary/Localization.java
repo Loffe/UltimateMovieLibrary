@@ -29,5 +29,9 @@ public final class Localization {
     public static final String searchFieldLabelText = "Sök efter filmtitel:";
     public static final String searchNoMatchText = "Din sökning matchade inte någon film.";
     public static final String searchInProgressText = "Laddar filmer...";
+    public static final String searchOrderButtonMovieTitle = "Filmtitel";
+    public static final String searchOrderButtonMovieYear = "�r";
+    public static final String searchOrderButtonMovieRating = "Betyg";
+    
 
 }
