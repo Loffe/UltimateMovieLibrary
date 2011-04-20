@@ -1,23 +1,28 @@
 package se.eloff.ultimatemovielibrary;
 
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.DisplayMode;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.HeadlessException;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
-public class AppFrame extends JFrame {
+public class AppFrame extends JFrame implements ActionListener {
 
     private static final long serialVersionUID = 5297734322373835993L;
     private WatchFolderManagerPanel watchFolderManagerPanel;
     private SearchPanel searchPanel;
+    private Menubar menu;
 
     public AppFrame() throws HeadlessException {
 
@@ -27,6 +32,10 @@ public class AppFrame extends JFrame {
 
         initializeFullScreen();
 
+        menu = new Menubar();
+        menu.addActionListener(this);
+        getContentPane().add(menu, BorderLayout.PAGE_END);
+
         watchFolderManagerPanel = new WatchFolderManagerPanel();
         searchPanel = new SearchPanel();
 
@@ -34,17 +43,35 @@ public class AppFrame extends JFrame {
     }
 
     public void setCurrentPanel(GuiPanel panel) {
+        Container contentPane = getContentPane();
+        BorderLayout layout = (BorderLayout) contentPane.getLayout();
+        Component centerComponent = layout
+                .getLayoutComponent(BorderLayout.CENTER);
+
         switch (panel) {
         case WatchFolder:
-            setContentPane(watchFolderManagerPanel);
+            if (centerComponent != null) {
+                if (centerComponent != watchFolderManagerPanel) {
+                    contentPane.remove(centerComponent);
+                    contentPane.add(watchFolderManagerPanel,
+                            BorderLayout.CENTER);
+                }
+            } else {
+                contentPane.add(watchFolderManagerPanel, BorderLayout.CENTER);
+            }
             break;
         case Search:
-            setContentPane(searchPanel);
+            if (centerComponent != null && centerComponent != searchPanel) {
+                contentPane.remove(centerComponent);
+                contentPane.add(searchPanel, BorderLayout.CENTER);
+            }
             break;
 
         default:
             throw new NotImplementedException();
         }
+        this.invalidate();
+        this.repaint();
 
     }
 
@@ -82,5 +109,11 @@ public class AppFrame extends JFrame {
 
     enum GuiPanel {
         WatchFolder, Search, Profile
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        GuiPanel panel = GuiPanel.valueOf(e.getActionCommand());
+        setCurrentPanel(panel);
     }
 }
