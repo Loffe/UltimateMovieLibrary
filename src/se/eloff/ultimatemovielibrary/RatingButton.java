@@ -10,6 +10,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.UIManager;
 
 public class RatingButton extends JButton implements ActionListener {
 
@@ -31,6 +32,11 @@ public class RatingButton extends JButton implements ActionListener {
         }
         this.setEnabled(false);
         this.setBorderPainted(false);
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        // Make sure no big button is painted
     }
 
     public int getRating() {
@@ -121,10 +127,9 @@ public class RatingButton extends JButton implements ActionListener {
 
         @Override
         protected void paintComponent(Graphics g) {
+            g.setColor(UIManager.getColor("Panel.background"));
+            g.fillRect(0, 0, this.getWidth(), this.getHeight());
 
-            g.setColor(getBackground());
-            g.fillRect( 0, 0, this.getWidth(), this.getHeight() );
-            
             int cross_w = 10;
             int cross_h = 40;
             int border = 2;
