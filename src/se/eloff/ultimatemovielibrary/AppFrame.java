@@ -29,7 +29,10 @@ public class AppFrame extends JFrame implements ActionListener {
         setTitle("Ultimate Movie Library");
         setIconImage(new ImageIcon("img/video_16.png").getImage());
 
-        initializeFullScreen();
+        // TODO: decide on type of fullscreen
+        // initializeFullScreen();
+        this.setMinimumSize(new Dimension(640, 480));
+        this.setExtendedState(this.getExtendedState() | JFrame.MAXIMIZED_BOTH);
 
         menu = new Menubar();
         menu.addActionListener(this);
