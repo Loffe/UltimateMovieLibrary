@@ -33,4 +33,8 @@ public final class Localization {
     public static final String searchOrderButtonMovieYear = "År";
     public static final String searchOrderButtonMovieRating = "Betyg";
 
+    // Menu
+    public static final String menuSearch = "Sök";
+    public static final String menuProfile = "Profil";
+
 }
