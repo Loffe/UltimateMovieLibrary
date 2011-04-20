@@ -1,21 +1,23 @@
 package se.eloff.ultimatemovielibrary;
 
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 
 public class Menubar extends JButton implements ActionListener {
 
     private static final long serialVersionUID = -8430416772154328684L;
+    private static final int NUM_BUTTONS = 3;
+
     private JButton searchItem;
     private JButton profileItem;
     private JButton watchFolderItem;
 
     public Menubar() {
         this.setEnabled(false);
-        this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+        this.setLayout(new GridLayout(1, NUM_BUTTONS));
 
         searchItem = new JButton(Localization.menuSearch);
         searchItem.addActionListener(this);
