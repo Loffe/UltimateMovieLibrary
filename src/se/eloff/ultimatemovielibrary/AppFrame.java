@@ -1,8 +1,7 @@
 package se.eloff.ultimatemovielibrary;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.Container;
+import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.DisplayMode;
 import java.awt.GraphicsDevice;
@@ -16,14 +15,13 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
 public class AppFrame extends JFrame implements ActionListener {
 
     private static final long serialVersionUID = 5297734322373835993L;
     private WatchFolderManagerPanel watchFolderManagerPanel;
     private SearchPanel searchPanel;
     private Menubar menu;
+    private JPanel centerPanel;
 
     public AppFrame() throws HeadlessException {
 
@@ -35,48 +33,25 @@ public class AppFrame extends JFrame implements ActionListener {
 
         menu = new Menubar();
         menu.addActionListener(this);
-        getContentPane().add(menu, BorderLayout.PAGE_END);
+
+        centerPanel = new JPanel();
+        centerPanel.setLayout(new CardLayout());
 
         watchFolderManagerPanel = new WatchFolderManagerPanel();
         searchPanel = new SearchPanel();
+
+        centerPanel.add(watchFolderManagerPanel, GuiPanel.WatchFolder.name());
+        centerPanel.add(searchPanel, GuiPanel.Search.name());
+
+        getContentPane().add(centerPanel, BorderLayout.CENTER);
+        getContentPane().add(menu, BorderLayout.PAGE_END);
 
         setCurrentPanel(GuiPanel.Search);
     }
 
     public void setCurrentPanel(GuiPanel panel) {
-        Container contentPane = getContentPane();
-        BorderLayout layout = (BorderLayout) contentPane.getLayout();
-        Component currentCenterComponent = layout
-                .getLayoutComponent(BorderLayout.CENTER);
-
-        JPanel newPanel;
-        switch (panel) {
-        case WatchFolder:
-            newPanel = watchFolderManagerPanel;
-            break;
-        case Search:
-            newPanel = searchPanel;
-            break;
-
-        default:
-            throw new NotImplementedException();
-        }
-        swapCenterComponent(currentCenterComponent, newPanel);
-    }
-
-    private void swapCenterComponent(Component currentCenterComponent,
-            Component newPanel) {
-        Container contentPane = getContentPane();
-        if (currentCenterComponent == null) {
-            contentPane.add(newPanel, BorderLayout.CENTER);
-        } else if (currentCenterComponent != newPanel) {
-            contentPane.remove(currentCenterComponent);
-            contentPane.add(newPanel, BorderLayout.CENTER);
-        }
-        // Really force repaint of new panel
-        contentPane.invalidate();
-        contentPane.validate();
-        contentPane.repaint();
+        CardLayout layout = (CardLayout) centerPanel.getLayout();
+        layout.show(centerPanel, panel.name());
     }
 
     private void initializeFullScreen() {
