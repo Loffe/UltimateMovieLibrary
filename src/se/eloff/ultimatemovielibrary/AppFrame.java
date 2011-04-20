@@ -14,6 +14,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
@@ -45,34 +46,37 @@ public class AppFrame extends JFrame implements ActionListener {
     public void setCurrentPanel(GuiPanel panel) {
         Container contentPane = getContentPane();
         BorderLayout layout = (BorderLayout) contentPane.getLayout();
-        Component centerComponent = layout
+        Component currentCenterComponent = layout
                 .getLayoutComponent(BorderLayout.CENTER);
 
+        JPanel newPanel;
         switch (panel) {
         case WatchFolder:
-            if (centerComponent != null) {
-                if (centerComponent != watchFolderManagerPanel) {
-                    contentPane.remove(centerComponent);
-                    contentPane.add(watchFolderManagerPanel,
-                            BorderLayout.CENTER);
-                }
-            } else {
-                contentPane.add(watchFolderManagerPanel, BorderLayout.CENTER);
-            }
+            newPanel = watchFolderManagerPanel;
             break;
         case Search:
-            if (centerComponent != null && centerComponent != searchPanel) {
-                contentPane.remove(centerComponent);
-                contentPane.add(searchPanel, BorderLayout.CENTER);
-            }
+            newPanel = searchPanel;
             break;
 
         default:
             throw new NotImplementedException();
         }
-        this.invalidate();
-        this.repaint();
+        swapCenterComponent(currentCenterComponent, newPanel);
+    }
 
+    private void swapCenterComponent(Component currentCenterComponent,
+            Component newPanel) {
+        Container contentPane = getContentPane();
+        if (currentCenterComponent == null) {
+            contentPane.add(newPanel, BorderLayout.CENTER);
+        } else if (currentCenterComponent != newPanel) {
+            contentPane.remove(currentCenterComponent);
+            contentPane.add(newPanel, BorderLayout.CENTER);
+        }
+        // Really force repaint of new panel
+        contentPane.invalidate();
+        contentPane.validate();
+        contentPane.repaint();
     }
 
     private void initializeFullScreen() {
