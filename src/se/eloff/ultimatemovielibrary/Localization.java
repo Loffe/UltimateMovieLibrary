@@ -1,5 +1,7 @@
 package se.eloff.ultimatemovielibrary;
 
+import java.awt.Image;
+
 import javax.swing.ImageIcon;
 
 /**
@@ -7,6 +9,11 @@ import javax.swing.ImageIcon;
  * the code.
  */
 public final class Localization {
+
+    // App
+    public static final String title = "Ultimate Movie Library";
+    public static final Image icon = new ImageIcon("img/video_16.png")
+            .getImage();
 
     // Watch Folder Manager
     public static final ImageIcon watchFolderIcon = new ImageIcon(
@@ -34,8 +41,14 @@ public final class Localization {
     public static final String searchOrderButtonMovieRating = "Betyg";
 
     // Menu
-    public static final String menuSearch = "Sök";
-    public static final String menuProfile = "Profil";
-    public static final String menuWatchFolder = "Bevakade mappar";
+    public static final String menuSearchText = "Sök";
+    public static final String menuProfileText = "Profil";
+    public static final String menuRecommendText = "Rekommendationer";
+    public static final String menuManageWatchFolderText = null;
+    public static final ImageIcon menuManageWatchFolderIcon = new ImageIcon(
+            "img/Folder-Add.png");
+    public static final String menuExitText = null;
+    public static final ImageIcon menuExitIcon = new ImageIcon(
+            "img/delete_16.png");
 
 }

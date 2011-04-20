@@ -1,16 +1,8 @@
 package se.eloff.ultimatemovielibrary;
 
-import java.io.File;
 import java.sql.SQLException;
 
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
 import javax.swing.UIManager;
-
-import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.dao.DaoManager;
-import com.j256.ormlite.jdbc.JdbcConnectionSource;
-import com.j256.ormlite.table.TableUtils;
 
 public class Main {
 
@@ -29,18 +21,7 @@ public class Main {
 
         AppFrame app = new AppFrame();
         app.setVisible(true);
-        /*
-         * Dao<Movie, Integer> movieDao = DatabaseManager.getInstance()
-         * .getMovieDao();
-         * 
-         * Dao<WatchFolder, Integer> watchFolderDao = DatabaseManager
-         * .getInstance().getWatchFolderDao();
-         */
-        // ExternalPlayerLauncher movieLauncher = new ExternalPlayerLauncher();
 
-        // Uncomment to try the movie player
-        // movieLauncher.playMovie(new Movie("Conan The Barbarian", 1,
-        // "movies//Conan.The.Barbarian.1980.Disc1.avi"));
     }
 
 }

@@ -11,7 +11,7 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -20,22 +20,20 @@ public class AppFrame extends JFrame implements ActionListener {
     private static final long serialVersionUID = 5297734322373835993L;
     private WatchFolderManagerPanel watchFolderManagerPanel;
     private SearchPanel searchPanel;
-    private Menubar menu;
+    private DefaultMenuBar botMenu;
+    private DefaultMenuBar topMenu;
     private JPanel centerPanel;
 
     public AppFrame() throws HeadlessException {
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setTitle("Ultimate Movie Library");
-        setIconImage(new ImageIcon("img/video_16.png").getImage());
+        setTitle(Localization.title);
+        setIconImage(Localization.icon);
 
         // TODO: decide on type of fullscreen
         // initializeFullScreen();
         this.setMinimumSize(new Dimension(640, 480));
         this.setExtendedState(this.getExtendedState() | JFrame.MAXIMIZED_BOTH);
-
-        menu = new Menubar();
-        menu.addActionListener(this);
 
         centerPanel = new JPanel();
         centerPanel.setLayout(new CardLayout());
@@ -46,8 +44,13 @@ public class AppFrame extends JFrame implements ActionListener {
         centerPanel.add(watchFolderManagerPanel, GuiPanel.WatchFolder.name());
         centerPanel.add(searchPanel, GuiPanel.Search.name());
 
+        // Assemble menus
+        initializeTopMenu();
+        initializeBotMenu();
+
+        getContentPane().add(topMenu, BorderLayout.PAGE_START);
         getContentPane().add(centerPanel, BorderLayout.CENTER);
-        getContentPane().add(menu, BorderLayout.PAGE_END);
+        getContentPane().add(botMenu, BorderLayout.PAGE_END);
 
         setCurrentPanel(GuiPanel.Search);
     }
@@ -55,6 +58,40 @@ public class AppFrame extends JFrame implements ActionListener {
     public void setCurrentPanel(GuiPanel panel) {
         CardLayout layout = (CardLayout) centerPanel.getLayout();
         layout.show(centerPanel, panel.name());
+    }
+
+    private void initializeBotMenu() {
+        botMenu = new DefaultMenuBar();
+        botMenu.addActionListener(this);
+
+        JButton searchItem = new JButton(Localization.menuSearchText);
+        searchItem.setActionCommand(GuiPanel.Search.toString());
+        botMenu.addButton(searchItem);
+
+        JButton recommendItem = new JButton(Localization.menuRecommendText);
+        recommendItem.setActionCommand(GuiPanel.Recommend.toString());
+        botMenu.addButton(recommendItem);
+
+        JButton profileItem = new JButton(Localization.menuProfileText);
+        profileItem.setActionCommand(GuiPanel.Profile.toString());
+        botMenu.addButton(profileItem);
+    }
+
+    private void initializeTopMenu() {
+        topMenu = new DefaultMenuBar();
+        topMenu.addActionListener(this);
+
+        JButton watchFolderItem = new JButton(
+                Localization.menuManageWatchFolderText,
+                Localization.menuManageWatchFolderIcon);
+        watchFolderItem.setActionCommand(AppFrame.GuiPanel.WatchFolder
+                .toString());
+        topMenu.addButton(watchFolderItem);
+
+        JButton exitItem = new JButton(Localization.menuExitText,
+                Localization.menuExitIcon);
+        exitItem.setActionCommand(AppFrame.GuiPanel.Profile.toString());
+        topMenu.addButton(exitItem);
     }
 
     private void initializeFullScreen() {
@@ -90,7 +127,7 @@ public class AppFrame extends JFrame implements ActionListener {
     }
 
     enum GuiPanel {
-        WatchFolder, Search, Profile
+        WatchFolder, Search, Recommend, Profile
     }
 
     @Override
