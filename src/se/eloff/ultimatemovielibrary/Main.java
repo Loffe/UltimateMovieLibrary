@@ -21,14 +21,13 @@ public class Main {
      */
     public static void main(String[] args) throws SQLException,
             ClassNotFoundException {
-        AppFrame app = new AppFrame();
-
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception e) {
             e.printStackTrace();
         }
 
+        AppFrame app = new AppFrame();
         app.setVisible(true);
         /*
          * Dao<Movie, Integer> movieDao = DatabaseManager.getInstance()
