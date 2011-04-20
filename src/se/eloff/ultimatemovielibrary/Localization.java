@@ -36,5 +36,6 @@ public final class Localization {
     // Menu
     public static final String menuSearch = "Sök";
     public static final String menuProfile = "Profil";
+    public static final String menuWatchFolder = "Bevakade mappar";
 
 }
