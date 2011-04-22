@@ -105,39 +105,21 @@ public class SearchPanel extends JPanel implements MovieSearchClient,
         sortByTitle.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
-                if (orderColumn.equals("name")) {
-                    orderAscending = !orderAscending;
-                } else {
-                    orderAscending = true;
-                    orderColumn = "name";
-                }
-                search();
+                switchSort("name");
             }
         });
 
         sortByYear.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
-                if (orderColumn.equals("year")) {
-                    orderAscending = !orderAscending;
-                } else {
-                    orderAscending = true;
-                    orderColumn = "year";
-                }
-                search();
+                switchSort("year");
             }
         });
 
         sortByRating.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
-                if (orderColumn.equals("rating")) {
-                    orderAscending = !orderAscending;
-                } else {
-                    orderAscending = true;
-                    orderColumn = "rating";
-                }
-                search();
+                switchSort("rating");
             }
         });
 
@@ -145,6 +127,16 @@ public class SearchPanel extends JPanel implements MovieSearchClient,
 
         // add a listener to the input field
         searchTextField.getDocument().addDocumentListener(this);
+    }
+    
+    private void switchSort(String column){
+        if (orderColumn.equals(column)) {
+            orderAscending = !orderAscending;
+        } else {
+            orderAscending = true;
+            orderColumn = column;
+        }
+        search();
     }
 
     @Override
@@ -163,14 +155,12 @@ public class SearchPanel extends JPanel implements MovieSearchClient,
     }
 
     private void search() {
-        resultPanel.removeAll();
-        resultPanel.add(new JLabel(Localization.searchInProgressText));
-        jScrollPanel.updateUI();
+        //TODO better search in progress function, maybe some rotating thingy or so
+        //resultPanel.removeAll();
+        //resultPanel.add(new JLabel(Localization.searchInProgressText));
+        //jScrollPanel.updateUI();
         lastSearchId = MovieSearchProvider.searchByName(
                 searchTextField.getText(), this, orderColumn, orderAscending);
-        // Try the featured movie feature (!)
-        // lastSearchId = MovieSearchProvider.getFeaturedMovies(3, this,
-        // orderColumn, orderAscending);
     }
 
     // input field actions
@@ -187,14 +177,5 @@ public class SearchPanel extends JPanel implements MovieSearchClient,
     @Override
     public void removeUpdate(DocumentEvent arg0) {
         search();
-    }
-
-    public static void main(String[] args) {
-        SearchPanel panel = new SearchPanel();
-        JFrame frame = new JFrame();
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.add(panel);
-        frame.pack();
-        frame.setVisible(true);
     }
 }

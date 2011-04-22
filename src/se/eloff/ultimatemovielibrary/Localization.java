@@ -39,6 +39,13 @@ public final class Localization {
     public static final String searchOrderButtonMovieTitle = "Filmtitel";
     public static final String searchOrderButtonMovieYear = "År";
     public static final String searchOrderButtonMovieRating = "Betyg";
+    
+    // Recommended movies
+    public static final String recommendRefreshButtonText = "";
+    public static final ImageIcon recommendRefreshButtonIcon = new ImageIcon(
+    "img/Button-Refresh-icon.png");
+    public static final String recommendRefreshNoMatchText = "Inga filmer i databasen.";
+    public static final String recommendRefreshProgressText = "Laddar filmer...";
 
     // Menu
     public static final String menuSearchText = "Sök";
