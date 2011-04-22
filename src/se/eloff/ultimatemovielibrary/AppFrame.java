@@ -4,8 +4,10 @@ import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.DisplayMode;
+import java.awt.FlowLayout;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+import java.awt.GridLayout;
 import java.awt.HeadlessException;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -64,8 +66,10 @@ public class AppFrame extends JFrame implements ActionListener {
     }
 
     private void initializeBotMenu() {
+        // TODO: Break out to its own class?
         botMenu = new DefaultMenuBar();
         botMenu.addActionListener(this);
+        botMenu.setLayout(new GridLayout(1, 3));
 
         JButton searchItem = new JButton(Localization.menuSearchText);
         searchItem.setActionCommand(GuiPanel.Search.toString());
@@ -81,9 +85,13 @@ public class AppFrame extends JFrame implements ActionListener {
     }
 
     private void initializeTopMenu() {
+        // TODO: Break out to its own class?
         topMenu = new DefaultMenuBar();
         topMenu.addActionListener(this);
+        topMenu.setLayout(new FlowLayout(FlowLayout.RIGHT));
 
+        // TODO: Should this item pop a modal dialog instead
+        // as in the prototype?
         JButton watchFolderItem = new JButton(
                 Localization.menuManageWatchFolderText,
                 Localization.menuManageWatchFolderIcon);
@@ -94,6 +102,14 @@ public class AppFrame extends JFrame implements ActionListener {
         JButton exitItem = new JButton(Localization.menuExitText,
                 Localization.menuExitIcon);
         exitItem.setActionCommand(AppFrame.GuiPanel.Profile.toString());
+        exitItem.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                // TODO: Is a System.exit(0); needed if scans or so are running?
+            }
+        });
         topMenu.addButton(exitItem);
     }
 
