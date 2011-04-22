@@ -2,18 +2,12 @@ package se.eloff.ultimatemovielibrary;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Random;
-
-import sun.misc.Cleaner;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
-import com.j256.ormlite.stmt.Where;
 
 public class MovieSearchProvider {
 
@@ -96,13 +90,15 @@ public class MovieSearchProvider {
                     // the database in the first place... how?
                     dbMovie = DatabaseManager.getInstance().getMovieDao();
                     List<Movie> movies = dbMovie.queryForAll();
-                    List<Movie> randomMovies = new ArrayList<Movie>();
-                    Random randomGenerator = new Random();
-                    for (int i = 0; i < numberOfMovies; i++)
-                        randomMovies.add(movies.get(randomGenerator
-                                .nextInt(movies.size() - 1)));
+                    if (movies.size() > 0) { // Don't crash due to 0 movies
+                        List<Movie> randomMovies = new ArrayList<Movie>();
+                        Random randomGenerator = new Random();
+                        for (int i = 0; i < numberOfMovies; i++)
+                            randomMovies.add(movies.get(randomGenerator
+                                    .nextInt(movies.size() - 1)));
 
-                    client.searchFinished(randomMovies, assignedKey);
+                        client.searchFinished(randomMovies, assignedKey);
+                    }
                 } catch (SQLException e) {
                     System.out.println("error searching for movies");
                     e.printStackTrace();
