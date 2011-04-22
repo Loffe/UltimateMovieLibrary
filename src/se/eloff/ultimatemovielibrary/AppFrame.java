@@ -20,6 +20,7 @@ public class AppFrame extends JFrame implements ActionListener {
     private static final long serialVersionUID = 5297734322373835993L;
     private WatchFolderManagerPanel watchFolderManagerPanel;
     private SearchPanel searchPanel;
+    private RecommendPanel recomendPanel;
     private DefaultMenuBar botMenu;
     private DefaultMenuBar topMenu;
     private JPanel centerPanel;
@@ -40,9 +41,11 @@ public class AppFrame extends JFrame implements ActionListener {
 
         watchFolderManagerPanel = new WatchFolderManagerPanel();
         searchPanel = new SearchPanel();
+        recomendPanel = new RecommendPanel();
 
         centerPanel.add(watchFolderManagerPanel, GuiPanel.WatchFolder.name());
         centerPanel.add(searchPanel, GuiPanel.Search.name());
+        centerPanel.add(recomendPanel, GuiPanel.Recommend.name());
 
         // Assemble menus
         initializeTopMenu();
