@@ -46,6 +46,17 @@ public final class Localization {
     "img/Button-Refresh-icon.png");
     public static final String recommendRefreshNoMatchText = "Inga filmer i databasen.";
     public static final String recommendRefreshProgressText = "Laddar filmer...";
+    
+    //MovieElement
+    public static final ImageIcon moviePlayButtonIcon = new ImageIcon(
+    "img/Button-Play-icon_50.png");
+    public static final ImageIcon movieSeenButtonIcon = new ImageIcon(
+    "img/eye_50.png");
+    public static final ImageIcon movieFavoriteButtonIcon = new ImageIcon(
+    "img/Favorite-icon_50.png");
+    public static final ImageIcon movieStarButtonIcon = new ImageIcon(
+    "img/Button-Favorite-icon_50.png");
+    public static final String MovieNoYearText = "Okänt";
 
     // Menu
     public static final String menuSearchText = "Sök";
@@ -53,7 +64,7 @@ public final class Localization {
     public static final String menuRecommendText = "Rekommendationer";
     public static final String menuManageWatchFolderText = null;
     public static final ImageIcon menuManageWatchFolderIcon = new ImageIcon(
-            "img/Folder-Add.png");
+            "img/Folder-Add_16.png");
     public static final String menuExitText = null;
     public static final ImageIcon menuExitIcon = new ImageIcon(
             "img/delete_16.png");

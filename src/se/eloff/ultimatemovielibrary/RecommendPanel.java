@@ -81,8 +81,8 @@ public class RecommendPanel extends JPanel implements MovieSearchClient {
         // resultPanel.removeAll();
         // resultPanel.add(new JLabel(Localization.searchInProgressText));
         // jScrollPanel.updateUI();
-        lastSearchId = MovieSearchProvider.getFeaturedMovies(NUMOFMOVIES, this, "name",
-                true);
+        lastSearchId = MovieSearchProvider.getFeaturedMovies(NUMOFMOVIES, this, "rating",
+                false);
     }
 
     @Override
@@ -93,7 +93,7 @@ public class RecommendPanel extends JPanel implements MovieSearchClient {
                 resultPanel.add(new JLabel(Localization.searchNoMatchText));
             else {
                 for (Movie movie : movies) {
-                    resultPanel.add(new ListElement(movie));
+                    resultPanel.add(new ListElement2(movie));
                 }
             }
             jScrollPanel.updateUI();

@@ -46,7 +46,7 @@ public class SearchPanel extends JPanel implements MovieSearchClient,
         sortByYear = new JButton(Localization.searchOrderButtonMovieYear);
         sortByRating = new JButton(Localization.searchOrderButtonMovieRating);
         resultPanel = new JPanel();
-        resultPanel.setLayout(new BoxLayout(resultPanel, BoxLayout.Y_AXIS));
+        resultPanel.setLayout(new BoxLayout(resultPanel, BoxLayout.PAGE_AXIS));
 
         jScrollPanel.setName("searchResults");
 
@@ -147,7 +147,7 @@ public class SearchPanel extends JPanel implements MovieSearchClient,
                 resultPanel.add(new JLabel(Localization.searchNoMatchText));
             else {
                 for (Movie movie : movies) {
-                    resultPanel.add(new ListElement(movie));
+                    resultPanel.add(new ListElement2(movie));
                 }
             }
             jScrollPanel.updateUI();
