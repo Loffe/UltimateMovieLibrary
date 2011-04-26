@@ -67,8 +67,7 @@ public class MovieSearchProvider {
                             .eq("discnumber", 1);
                     queryBuilder.orderBy(orderByColumn, ascending);
 
-                    PreparedQuery<Movie> preparedQuery = queryBuilder.prepare();
-                    List<Movie> movies = dbMovie.query(preparedQuery);
+                    List<Movie> movies = dbMovie.query(queryBuilder.prepare());
                     client.searchFinished(movies, assignedKey);
                 } catch (SQLException e) {
                     System.out.println("error searching for movies");
@@ -89,16 +88,35 @@ public class MovieSearchProvider {
                     // TODO nicer random function, maybe get random objects from
                     // the database in the first place... how?
                     dbMovie = DatabaseManager.getInstance().getMovieDao();
-                    List<Movie> movies = dbMovie.queryForAll();
-                    if (movies.size() > 0) { // Don't crash due to 0 movies
+                    QueryBuilder<Movie, Integer> queryBuilder = dbMovie
+                            .queryBuilder();
+
+                    // select all movies that has discnumber 1
+                    queryBuilder.where().eq("discnumber", 1);
+                    queryBuilder.orderBy(orderByColumn, ascending);
+                    List<Movie> movies = dbMovie.query(queryBuilder.prepare());
+
+                    // Don't crash due to 0 movies
+                    if (movies.size() > numberOfMovies) {
                         List<Movie> randomMovies = new ArrayList<Movie>();
                         Random randomGenerator = new Random();
-                        for (int i = 0; i < numberOfMovies; i++)
-                            randomMovies.add(movies.get(randomGenerator
-                                    .nextInt(movies.size() - 1)));
-
+                        for (int i = 0; i < numberOfMovies;) {
+                            Movie movie = movies.get(randomGenerator
+                                    .nextInt(movies.size() - 1));
+                            // Only add unique movies, if its already in there,
+                            // try again
+                            if (!randomMovies.contains(movie)) {
+                                randomMovies.add(movie);
+                                i++;
+                            }
+                        }
+                        //TODO sort the list based on the orderByColumn value
                         client.searchFinished(randomMovies, assignedKey);
-                    }
+                    } else
+                        // if the database contains less then the requested
+                        // number of movies, return all we got
+                        client.searchFinished(movies, assignedKey);
+
                 } catch (SQLException e) {
                     System.out.println("error searching for movies");
                     e.printStackTrace();
