@@ -28,7 +28,7 @@ public class AppFrame extends JFrame implements ActionListener {
     private JPanel centerPanel;
 
     public AppFrame() throws HeadlessException {
-
+        setVisible(false); // Hide until ready, to avoid window "flashing"
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle(Localization.title);
         setIconImage(Localization.icon);
@@ -58,6 +58,7 @@ public class AppFrame extends JFrame implements ActionListener {
         getContentPane().add(botMenu, BorderLayout.PAGE_END);
 
         setCurrentPanel(GuiPanel.Search);
+        setVisible(true);
     }
 
     public void setCurrentPanel(GuiPanel panel) {
