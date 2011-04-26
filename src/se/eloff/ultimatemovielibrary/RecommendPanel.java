@@ -65,7 +65,7 @@ public class RecommendPanel extends JPanel implements MovieSearchClient {
                                 .addComponent(jScrollPanel,
                                         GroupLayout.DEFAULT_SIZE, 217,
                                         Short.MAX_VALUE)));
-        
+
         refreshButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
@@ -81,17 +81,18 @@ public class RecommendPanel extends JPanel implements MovieSearchClient {
         // resultPanel.removeAll();
         // resultPanel.add(new JLabel(Localization.searchInProgressText));
         // jScrollPanel.updateUI();
-        lastSearchId = MovieSearchProvider.getFeaturedMovies(NUMOFMOVIES, this, "rating",
-                false);
+        lastSearchId = MovieSearchProvider.getFeaturedMovies(NUMOFMOVIES, this,
+                "rating", false);
     }
 
     @Override
     public void searchFinished(List<Movie> movies, int searchKey) {
         if (lastSearchId == searchKey) {
             resultPanel.removeAll();
-            if (movies.isEmpty())
+            if (movies.isEmpty()) {
                 resultPanel.add(new JLabel(Localization.searchNoMatchText));
-            else {
+                jScrollPanel.repaint();
+            } else {
                 for (Movie movie : movies) {
                     resultPanel.add(new ListElement2(movie));
                 }

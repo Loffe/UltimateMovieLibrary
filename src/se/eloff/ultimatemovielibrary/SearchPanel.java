@@ -143,8 +143,10 @@ public class SearchPanel extends JPanel implements MovieSearchClient,
     public void searchFinished(List<Movie> movies, int searchKey) {
         if (lastSearchId == searchKey) {
             resultPanel.removeAll();
-            if (movies.isEmpty())
+            if (movies.isEmpty()){
                 resultPanel.add(new JLabel(Localization.searchNoMatchText));
+                jScrollPanel.repaint();
+            }
             else {
                 for (Movie movie : movies) {
                     resultPanel.add(new ListElement2(movie));
