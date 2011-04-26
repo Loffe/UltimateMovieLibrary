@@ -150,7 +150,7 @@ public class SearchPanel extends JPanel implements MovieSearchClient,
                     resultPanel.add(new ListElement2(movie));
                 }
             }
-            jScrollPanel.updateUI();
+            jScrollPanel.revalidate();
         }
     }
 

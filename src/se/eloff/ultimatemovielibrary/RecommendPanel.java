@@ -96,7 +96,7 @@ public class RecommendPanel extends JPanel implements MovieSearchClient {
                     resultPanel.add(new ListElement2(movie));
                 }
             }
-            jScrollPanel.updateUI();
+            jScrollPanel.revalidate();
         }
     }
 }
