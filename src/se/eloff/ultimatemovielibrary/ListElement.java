@@ -191,9 +191,7 @@ public class ListElement extends JComponent {
     }
 
     private void PlayButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO better way to use the ExternalPlayerLauncher, dont instance it
-        // here
-        new ExternalPlayerLauncher().playMovie(movie);
+        ExternalPlayerLauncher.getInstance().playMovie(movie);
     }
 
     private void RatingRadioActionPerformed(java.awt.event.ActionEvent evt) {

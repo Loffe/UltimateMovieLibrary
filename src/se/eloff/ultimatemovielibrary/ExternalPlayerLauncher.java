@@ -7,21 +7,26 @@ import java.io.IOException;
 import javax.swing.JFileChooser;
 
 /**
- * 
  * Launches VLC(or the default associated application), if it fails the user can
  * choose where the player is located
  * 
+ * Singleton.
+ * 
  * The chosen player is saved to the user settings ( not implemented)
- * 
- * @author david
- * 
  */
 public class ExternalPlayerLauncher {
 
-    File moviePlayer = null;
+    // The singleton instance.
+    private static ExternalPlayerLauncher instance = null;
 
-    public ExternalPlayerLauncher() {
-        //TODO: load the moviePlayer settings from db
+    private File moviePlayer = null;
+
+    /**
+     * Constructor. Create a new ExternalPlayerLauncher. Private constructor
+     * prevents instantiation from other classes.
+     */
+    private ExternalPlayerLauncher() {
+        // TODO: load the moviePlayer settings from db
     }
 
     /**
@@ -73,5 +78,16 @@ public class ExternalPlayerLauncher {
             return true;
         }
         return false;
+    }
+
+    /**
+     * Get the current instance of the ExternalPlayerLauncher.
+     * 
+     * @return the current instance of the ExternalPlayerLauncher.
+     */
+    public static ExternalPlayerLauncher getInstance() {
+        if (instance == null)
+            instance = new ExternalPlayerLauncher();
+        return instance;
     }
 }
