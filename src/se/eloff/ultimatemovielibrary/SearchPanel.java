@@ -124,6 +124,7 @@ public class SearchPanel extends JPanel implements MovieSearchClient,
         });
 
         jScrollPanel.setViewportView(resultPanel);
+        jScrollPanel.getVerticalScrollBar().setUnitIncrement(20);
 
         // add a listener to the input field
         searchTextField.getDocument().addDocumentListener(this);
