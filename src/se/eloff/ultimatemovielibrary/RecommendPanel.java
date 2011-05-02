@@ -25,7 +25,9 @@ public class RecommendPanel extends JPanel {
         refreshButton = new JButton(Localization.recommendRefreshButtonText,
                 Localization.recommendRefreshButtonIcon);
         resultPanel = new ResultPanel() {
-
+            {
+                setColumnHeaderView(null);
+            }
             @Override
             public void search() {
                 // TODO better search in progress function, maybe some rotating
