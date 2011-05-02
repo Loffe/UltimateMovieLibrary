@@ -26,7 +26,16 @@ public class MovieSearchProvider {
             String orderByColumn, boolean ascending) {
         int assignedKey = key;
         key++;
-        searchByNameAsync(name, assignedKey, client, orderByColumn, ascending);
+        searchByNameAsync(name, assignedKey, client, orderByColumn, ascending, false, false, false, false, false, false);
+        return assignedKey;
+    }
+
+    static public int searchByNameSeen(String name, MovieSearchClient client,
+            String orderByColumn, boolean ascending, boolean seen) {
+        int assignedKey = key;
+        key++;
+        searchByNameAsync(name, assignedKey, client, orderByColumn, ascending,
+                true, seen, false, false, false, false);
         return assignedKey;
     }
 
@@ -51,7 +60,9 @@ public class MovieSearchProvider {
 
     static private void searchByNameAsync(final String name,
             final int assignedKey, final MovieSearchClient client,
-            final String orderByColumn, final boolean ascending) {
+            final String orderByColumn, final boolean ascending,
+            boolean useSeen, boolean seen, boolean useWish, boolean wish,
+            boolean useFavorite, boolean favorite) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -63,7 +74,7 @@ public class MovieSearchProvider {
 
                     // select any movie that begins with the name string and is
                     // disc 1
-                    queryBuilder.where().like("name","%"+ name + "%").and()
+                    queryBuilder.where().like("name", "%" + name + "%").and()
                             .eq("discnumber", 1);
                     queryBuilder.orderBy(orderByColumn, ascending);
 
@@ -110,7 +121,7 @@ public class MovieSearchProvider {
                                 i++;
                             }
                         }
-                        //TODO sort the list based on the orderByColumn value
+                        // TODO sort the list based on the orderByColumn value
                         client.searchFinished(randomMovies, assignedKey);
                     } else
                         // if the database contains less then the requested
