@@ -91,6 +91,8 @@ public abstract class ResultPanel extends JScrollPane implements
         SortButton button = (SortButton) e.getSource();
         orderColumn = button.getColumnName();
         orderAscending = button.isOrderAscending();
+
+        search();
     }
 
     String getOrderColumn() {
