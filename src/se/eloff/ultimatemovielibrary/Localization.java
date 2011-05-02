@@ -24,7 +24,7 @@ public final class Localization {
     public static final String addWatchFolderButtonText = "Bevaka en katalog ...";
     public static final String addWatchFolderButtonToolTip = "Lägg till en katalog att bevaka";
     public static final ImageIcon addWatchFolderButtonIcon = new ImageIcon(
-            "img/Folder-Add.png");
+            "img/Folder-Add-64.png");
 
     public static final String removeWatchFolderButtonText = null;
     public static final String removeWatchFolderButtonToolTip = "Sluta bevaka den här katalogen";

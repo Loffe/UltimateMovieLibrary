@@ -37,7 +37,7 @@ public class AppFrame extends JFrame implements ActionListener {
         setIconImage(Localization.icon);
 
         // TODO: decide on type of fullscreen
-         initializeFullScreen();
+        // initializeFullScreen();
         this.setMinimumSize(new Dimension(640, 480));
         this.setExtendedState(this.getExtendedState() | JFrame.MAXIMIZED_BOTH);
         
