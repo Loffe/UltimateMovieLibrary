@@ -138,13 +138,13 @@ public class AppFrame extends JFrame implements ActionListener {
         }
 
         try {
-            if (gd.isFullScreenSupported()) {
-                gd.setFullScreenWindow(this);
-            } else {
+         //   if (gd.isFullScreenSupported()) {
+         //       gd.setFullScreenWindow(this);
+         //   } else {
                 // Can't run fullscreen, need to bodge around it (setSize to
                 // screen size, etc)
                 setSize(width, height);
-            }
+          //  }
             this.setVisible(true);
             // Your business logic here
         } finally {
