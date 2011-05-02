@@ -2,14 +2,10 @@ package se.eloff.ultimatemovielibrary;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.List;
 
-import javax.swing.BoxLayout;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.LayoutStyle;
 
 public class RecommendPanel extends JPanel {
