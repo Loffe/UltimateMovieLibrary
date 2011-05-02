@@ -28,13 +28,15 @@ public class AppFrame extends JFrame implements ActionListener {
     private JPanel centerPanel;
 
     public AppFrame() throws HeadlessException {
+        //scan the currently watch folders and look for new content
+        WatchFolderManager.updateLibrary();
         setVisible(false); // Hide until ready, to avoid window "flashing"
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle(Localization.title);
         setIconImage(Localization.icon);
 
         // TODO: decide on type of fullscreen
-        // initializeFullScreen();
+         initializeFullScreen();
         this.setMinimumSize(new Dimension(640, 480));
         this.setExtendedState(this.getExtendedState() | JFrame.MAXIMIZED_BOTH);
 
