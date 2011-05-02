@@ -77,4 +77,10 @@ public final class Localization {
     public static final ImageIcon menuExitIcon = new ImageIcon(
             "img/delete_16.png");
 
+    // ResultPanel
+    public static final ImageIcon resultPanelArrowUp = new ImageIcon(
+            "img/arrow-up.png");
+    public static final ImageIcon resultPanelArrowDown = new ImageIcon(
+            "img/arrow-down.png");
+
 }

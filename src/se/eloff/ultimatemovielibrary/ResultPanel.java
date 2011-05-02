@@ -1,6 +1,8 @@
 package se.eloff.ultimatemovielibrary;
 
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 
 import javax.swing.Box;
@@ -11,11 +13,13 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 public abstract class ResultPanel extends JScrollPane implements
-        MovieSearchClient {
+        MovieSearchClient, ActionListener {
 
     private static final long serialVersionUID = -7751458552907067506L;
     private JPanel resultPanel;
     protected int lastSearchId;
+
+    SortButton[] sortButtons = new SortButton[3];
 
     public ResultPanel() {
         resultPanel = new JPanel();
@@ -29,12 +33,16 @@ public abstract class ResultPanel extends JScrollPane implements
     private JComponent createHeader() {
         Box header = Box.createHorizontalBox();
 
-        JLabel titleLabel = new JLabel(Localization.searchOrderButtonMovieTitle);
-        titleLabel.setPreferredSize(new Dimension(200, 20));
-        header.add(titleLabel);
+        SortButton titleSortButton = new SortButton(
+                Localization.searchOrderButtonMovieTitle);
+        titleSortButton.setPreferredSize(new Dimension(200, 20));
+        titleSortButton.addActionListener(this);
+        header.add(titleSortButton);
 
-        JLabel yearLabel = new JLabel(Localization.searchOrderButtonMovieYear);
-        header.add(yearLabel);
+        SortButton yearSortButton = new SortButton(
+                Localization.searchOrderButtonMovieYear);
+        yearSortButton.addActionListener(this);
+        header.add(yearSortButton);
 
         header.add(Box.createHorizontalGlue());
 
@@ -42,10 +50,15 @@ public abstract class ResultPanel extends JScrollPane implements
         dummyLabel.setPreferredSize(new Dimension(180, 20));
         header.add(dummyLabel);
 
-        JLabel ratingLabel = new JLabel(
+        SortButton ratingSortButton = new SortButton(
                 Localization.searchOrderButtonMovieRating);
-        ratingLabel.setPreferredSize(new Dimension(300, 20));
-        header.add(ratingLabel);
+        ratingSortButton.setPreferredSize(new Dimension(300, 20));
+        ratingSortButton.addActionListener(this);
+        header.add(ratingSortButton);
+
+        sortButtons[0] = titleSortButton;
+        sortButtons[1] = yearSortButton;
+        sortButtons[2] = ratingSortButton;
 
         return header;
     }
@@ -63,6 +76,15 @@ public abstract class ResultPanel extends JScrollPane implements
                 }
             }
             revalidate();
+        }
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        for (SortButton button : sortButtons) {
+            if (button != e.getSource()) {
+                button.setUnselected();
+            }
         }
     }
 
