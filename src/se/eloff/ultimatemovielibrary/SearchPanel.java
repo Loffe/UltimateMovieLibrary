@@ -42,7 +42,6 @@ public class SearchPanel extends JPanel implements DocumentListener {
                 // resultPanel.add(new
                 // JLabel(Localization.searchInProgressText));
                 // jScrollPanel.updateUI();
-                System.out.println(getOrderColumn());
                 lastSearchId = MovieSearchProvider.searchByName(searchTextField
                         .getText(), resultPanel, getOrderColumn(),
                         isOrderAscending());

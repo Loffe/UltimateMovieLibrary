@@ -43,6 +43,7 @@ public class SortButton extends JToggleButton {
 
         public void setUnselected() {
             super.setSelected(false);
+            setIcon(null);
         }
 
         @Override

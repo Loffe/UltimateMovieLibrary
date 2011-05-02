@@ -43,6 +43,7 @@ public abstract class ResultPanel extends JScrollPane implements
 
         SortButton yearSortButton = new SortButton(
                 Localization.searchOrderButtonMovieYear, "year");
+        yearSortButton.setPreferredSize(new Dimension(100, 20));
         yearSortButton.addActionListener(this);
         header.add(yearSortButton);
 
