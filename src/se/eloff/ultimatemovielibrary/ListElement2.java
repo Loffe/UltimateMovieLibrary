@@ -35,7 +35,7 @@ public class ListElement2 extends javax.swing.JPanel {
     private JLabel titleLabel;
     private JLabel yearLabel;
     private JToggleButton seenButton;
-    private JToggleButton starButton;
+    private JToggleButton wishButton;
     private JToggleButton favoriteButton;
     private Movie movie;
 
@@ -57,7 +57,7 @@ public class ListElement2 extends javax.swing.JPanel {
         titleLabel = new JLabel();
         yearLabel = new JLabel();
         seenButton = new JToggleButton();
-        starButton = new JToggleButton();
+        wishButton = new JToggleButton();
         favoriteButton = new JToggleButton();
         rating = new RatingButton();
 
@@ -65,8 +65,12 @@ public class ListElement2 extends javax.swing.JPanel {
 
         playButton.setIcon(Localization.moviePlayButtonIcon);
         seenButton.setIcon(Localization.movieSeenButtonIcon);
-        starButton.setIcon(Localization.movieStarButtonIcon);
+        wishButton.setIcon(Localization.movieStarButtonIcon);
         favoriteButton.setIcon(Localization.movieFavoriteButtonIcon);
+        
+        wishButton.setSelected(movie.isWish());
+        favoriteButton.setSelected(movie.isFavorite());
+        seenButton.setSelected(movie.isSeen());
 
         titleLabel.setFont(new java.awt.Font("Lucida Grande", 0, 24)); // NOI18N
         titleLabel.setText(movie.getName());
@@ -81,7 +85,7 @@ public class ListElement2 extends javax.swing.JPanel {
         yearLabel.setAlignmentY(0.0F);
 
         seenButton.setHorizontalTextPosition(SwingConstants.RIGHT);
-        starButton.setHorizontalTextPosition(SwingConstants.RIGHT);
+        wishButton.setHorizontalTextPosition(SwingConstants.RIGHT);
         favoriteButton.setHorizontalTextPosition(SwingConstants.RIGHT);
 
         javax.swing.GroupLayout layout = new GroupLayout(this);
@@ -108,7 +112,7 @@ public class ListElement2 extends javax.swing.JPanel {
                                         GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(
                                         LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(starButton,
+                                .addComponent(wishButton,
                                         GroupLayout.PREFERRED_SIZE, 52,
                                         GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(
@@ -167,7 +171,7 @@ public class ListElement2 extends javax.swing.JPanel {
                                                         52,
                                                         GroupLayout.PREFERRED_SIZE)
                                                 .addComponent(
-                                                        starButton,
+                                                        wishButton,
                                                         GroupLayout.PREFERRED_SIZE,
                                                         52,
                                                         GroupLayout.PREFERRED_SIZE)
@@ -191,7 +195,7 @@ public class ListElement2 extends javax.swing.JPanel {
             }
         });
 
-        starButton.addActionListener(new ActionListener() {
+        wishButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // TODO Auto-generated method stub
@@ -209,6 +213,45 @@ public class ListElement2 extends javax.swing.JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 movie.setRating(rating.getRating());
+                try {
+                    DatabaseManager.getInstance().getMovieDao().update(movie);
+                } catch (SQLException e1) {
+                    System.out
+                            .println("Failed to update movie with new rating");
+                }
+            }
+        });
+        
+        wishButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                movie.setWish(wishButton.isSelected()); 
+                try {
+                    DatabaseManager.getInstance().getMovieDao().update(movie);
+                } catch (SQLException e1) {
+                    System.out
+                            .println("Failed to update movie with new rating");
+                }
+            }
+        });
+        
+        favoriteButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                movie.setFavorite(favoriteButton.isSelected()); 
+                try {
+                    DatabaseManager.getInstance().getMovieDao().update(movie);
+                } catch (SQLException e1) {
+                    System.out
+                            .println("Failed to update movie with new rating");
+                }
+            }
+        });
+        
+        seenButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                movie.setSeen(seenButton.isSelected()); 
                 try {
                     DatabaseManager.getInstance().getMovieDao().update(movie);
                 } catch (SQLException e1) {

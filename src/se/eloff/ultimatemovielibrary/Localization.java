@@ -24,7 +24,7 @@ public final class Localization {
     public static final String addWatchFolderButtonText = "Bevaka en katalog ...";
     public static final String addWatchFolderButtonToolTip = "Lägg till en katalog att bevaka";
     public static final ImageIcon addWatchFolderButtonIcon = new ImageIcon(
-            "img/Folder-Add.png");
+            "img/Folder-Add-64.png");
 
     public static final String removeWatchFolderButtonText = null;
     public static final String removeWatchFolderButtonToolTip = "Sluta bevaka den här katalogen";
@@ -43,7 +43,7 @@ public final class Localization {
     // Recommended movies
     public static final String recommendRefreshButtonText = "";
     public static final ImageIcon recommendRefreshButtonIcon = new ImageIcon(
-    "img/Button-Refresh-icon.png");
+    "img/Button-Refresh-icon_50.png");
     public static final String recommendRefreshNoMatchText = "Inga filmer i databasen.";
     public static final String recommendRefreshProgressText = "Laddar filmer...";
     

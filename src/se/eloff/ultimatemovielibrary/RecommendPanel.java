@@ -44,11 +44,12 @@ public class RecommendPanel extends JPanel implements MovieSearchClient {
                         .addComponent(jScrollPanel, GroupLayout.DEFAULT_SIZE,
                                 1024, Short.MAX_VALUE)
                         .addGroup(
-                                GroupLayout.Alignment.TRAILING,
+                                GroupLayout.Alignment.CENTER,
                                 mainPanelLayout.createSequentialGroup()
-                                        .addContainerGap(53, Short.MAX_VALUE)
+                                        //.addContainerGap(53, Short.MAX_VALUE)
                                         .addComponent(refreshButton)
-                                        .addGap(54, 54, 54)));
+                                        //.addGap(54, 54, 54)));
+                                        ));
         mainPanelLayout.setVerticalGroup(mainPanelLayout.createParallelGroup(
                 GroupLayout.Alignment.LEADING)
                 .addGroup(
@@ -58,7 +59,7 @@ public class RecommendPanel extends JPanel implements MovieSearchClient {
                                 .addContainerGap()
                                 .addGroup(
                                         mainPanelLayout.createParallelGroup(
-                                                GroupLayout.Alignment.BASELINE)
+                                                GroupLayout.Alignment.CENTER)
                                                 .addComponent(refreshButton))
                                 .addPreferredGap(
                                         LayoutStyle.ComponentPlacement.RELATED)
