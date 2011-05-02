@@ -4,13 +4,14 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -19,7 +20,7 @@ import javax.swing.JScrollPane;
 /**
  * A panel to handle (add/remove) what folders to watch (for movies).
  */
-public class WatchFolderManagerPanel extends JPanel {
+public class WatchFolderManagerPanel extends JDialog {
 
     private static final long serialVersionUID = 5721254657654204228L;
 
@@ -28,8 +29,17 @@ public class WatchFolderManagerPanel extends JPanel {
 
     /**
      * Constructor. Create a new WatchFolderManagerPanel.
+     * 
+     * @param owner
+     *            the parent window
      */
-    public WatchFolderManagerPanel() {
+    public WatchFolderManagerPanel(Window owner) {
+        super(owner, Localization.manageWatchFolderHeading,
+                ModalityType.APPLICATION_MODAL);
+        setVisible(false);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        setSize(640, 480);
+        setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 
         // Create a panel for info and buttons at the top.
@@ -160,20 +170,6 @@ public class WatchFolderManagerPanel extends JPanel {
         // Remove the folder from the visual list.
         watchFoldersPanel.remove(watchFolder);
         validate();
-    }
-
-    /**
-     * Test the WatchFolderManager
-     * 
-     * @param args
-     */
-    public static void main(String[] args) {
-        WatchFolderManagerPanel panel = new WatchFolderManagerPanel();
-        JFrame frame = new JFrame();
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.add(panel);
-        frame.pack();
-        frame.setVisible(true);
     }
 
 }

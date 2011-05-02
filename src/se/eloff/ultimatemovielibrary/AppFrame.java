@@ -37,15 +37,15 @@ public class AppFrame extends JFrame implements ActionListener {
         // initializeFullScreen();
         this.setMinimumSize(new Dimension(640, 480));
         this.setExtendedState(this.getExtendedState() | JFrame.MAXIMIZED_BOTH);
+        
+        watchFolderManagerPanel = new WatchFolderManagerPanel(this);
 
         centerPanel = new JPanel();
         centerPanel.setLayout(new CardLayout());
 
-        watchFolderManagerPanel = new WatchFolderManagerPanel();
         searchPanel = new SearchPanel();
         recomendPanel = new RecommendPanel();
 
-        centerPanel.add(watchFolderManagerPanel, GuiPanel.WatchFolder.name());
         centerPanel.add(searchPanel, GuiPanel.Search.name());
         centerPanel.add(recomendPanel, GuiPanel.Recommend.name());
 
@@ -88,21 +88,23 @@ public class AppFrame extends JFrame implements ActionListener {
     private void initializeTopMenu() {
         // TODO: Break out to its own class?
         topMenu = new DefaultMenuBar();
-        topMenu.addActionListener(this);
         topMenu.setLayout(new FlowLayout(FlowLayout.RIGHT));
 
-        // TODO: Should this item pop a modal dialog instead
-        // as in the prototype?
         JButton watchFolderItem = new JButton(
                 Localization.menuManageWatchFolderText,
                 Localization.menuManageWatchFolderIcon);
-        watchFolderItem.setActionCommand(AppFrame.GuiPanel.WatchFolder
-                .toString());
+        watchFolderItem.addActionListener(new ActionListener() {
+            
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Pop the modal dialog
+                watchFolderManagerPanel.setVisible(true);
+            }
+        });
         topMenu.addButton(watchFolderItem);
 
         JButton exitItem = new JButton(Localization.menuExitText,
                 Localization.menuExitIcon);
-        exitItem.setActionCommand(AppFrame.GuiPanel.Profile.toString());
         exitItem.addActionListener(new ActionListener() {
 
             @Override
@@ -147,7 +149,7 @@ public class AppFrame extends JFrame implements ActionListener {
     }
 
     enum GuiPanel {
-        WatchFolder, Search, Recommend, Profile
+        Search, Recommend, Profile
     }
 
     @Override
