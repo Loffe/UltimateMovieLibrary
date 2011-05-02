@@ -51,12 +51,12 @@ public class SortButton extends JToggleButton {
             switch (state) {
             case Asc:
                 state = State.Desc;
-                setIcon(Localization.resultPanelArrowDown);
+                setIcon(Localization.resultPanelArrowUp);
                 break;
             case Desc:
             default:
                 state = State.Asc;
-                setIcon(Localization.resultPanelArrowUp);
+                setIcon(Localization.resultPanelArrowDown);
             }
             super.setSelected(true);
         }
