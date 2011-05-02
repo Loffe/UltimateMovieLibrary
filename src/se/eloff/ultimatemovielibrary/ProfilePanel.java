@@ -42,6 +42,7 @@ public class ProfilePanel extends JPanel implements MovieSearchClient,
         jScrollPanel = new JScrollPane();
         searchTextField = new JTextField();
         titleLabel = new JLabel(Localization.searchFieldLabelText);
+
         sortByTitle = new JButton(Localization.searchOrderButtonMovieTitle);
         sortByYear = new JButton(Localization.searchOrderButtonMovieYear);
         sortByRating = new JButton(Localization.searchOrderButtonMovieRating);
@@ -162,8 +163,8 @@ public class ProfilePanel extends JPanel implements MovieSearchClient,
         //resultPanel.removeAll();
         //resultPanel.add(new JLabel(Localization.searchInProgressText));
         //jScrollPanel.updateUI();
-        lastSearchId = MovieSearchProvider.searchByName(
-                searchTextField.getText(), this, orderColumn, orderAscending);
+        lastSearchId = MovieSearchProvider.searchByNameSeen(
+                searchTextField.getText(), this, orderColumn, orderAscending,true);
     }
 
     // input field actions
