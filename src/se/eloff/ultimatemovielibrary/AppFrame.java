@@ -22,6 +22,7 @@ public class AppFrame extends JFrame implements ActionListener {
     private static final long serialVersionUID = 5297734322373835993L;
     private WatchFolderManagerPanel watchFolderManagerPanel;
     private SearchPanel searchPanel;
+    private ProfilePanel profilePanel;
     private RecommendPanel recomendPanel;
     private DefaultMenuBar botMenu;
     private DefaultMenuBar topMenu;

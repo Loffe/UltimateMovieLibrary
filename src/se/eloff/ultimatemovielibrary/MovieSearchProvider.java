@@ -63,7 +63,7 @@ public class MovieSearchProvider {
 
                     // select any movie that begins with the name string and is
                     // disc 1
-                    queryBuilder.where().like("name", name + "%").and()
+                    queryBuilder.where().like("name","%"+ name + "%").and()
                             .eq("discnumber", 1);
                     queryBuilder.orderBy(orderByColumn, ascending);
 
