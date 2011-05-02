@@ -20,7 +20,7 @@ import javax.swing.JScrollPane;
 /**
  * A panel to handle (add/remove) what folders to watch (for movies).
  */
-public class WatchFolderManagerPanel extends JDialog {
+public class WatchFolderManagerDialog extends JDialog {
 
     private static final long serialVersionUID = 5721254657654204228L;
 
@@ -33,7 +33,7 @@ public class WatchFolderManagerPanel extends JDialog {
      * @param owner
      *            the parent window
      */
-    public WatchFolderManagerPanel(Window owner) {
+    public WatchFolderManagerDialog(Window owner) {
         super(owner, Localization.manageWatchFolderHeading,
                 ModalityType.APPLICATION_MODAL);
         setVisible(false);

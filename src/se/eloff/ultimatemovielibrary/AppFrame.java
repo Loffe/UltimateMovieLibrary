@@ -20,7 +20,7 @@ import javax.swing.JPanel;
 public class AppFrame extends JFrame implements ActionListener {
 
     private static final long serialVersionUID = 5297734322373835993L;
-    private WatchFolderManagerPanel watchFolderManagerPanel;
+    private WatchFolderManagerDialog watchFolderManagerPanel;
     private SearchPanel searchPanel;
     private RecommendPanel recomendPanel;
     private DefaultMenuBar botMenu;
@@ -38,7 +38,7 @@ public class AppFrame extends JFrame implements ActionListener {
         this.setMinimumSize(new Dimension(640, 480));
         this.setExtendedState(this.getExtendedState() | JFrame.MAXIMIZED_BOTH);
         
-        watchFolderManagerPanel = new WatchFolderManagerPanel(this);
+        watchFolderManagerPanel = new WatchFolderManagerDialog(this);
 
         centerPanel = new JPanel();
         centerPanel.setLayout(new CardLayout());
