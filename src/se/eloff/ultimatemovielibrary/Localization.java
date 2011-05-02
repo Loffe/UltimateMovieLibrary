@@ -56,6 +56,14 @@ public final class Localization {
     "img/Favorite-icon_50.png");
     public static final ImageIcon movieStarButtonIcon = new ImageIcon(
     "img/Button-Favorite-icon_50.png");
+    
+    public static final ImageIcon movieSeenButtonIconDisabled = new ImageIcon(
+    "img/eye_50_disabled.png");
+    public static final ImageIcon movieFavoriteButtonIconDisabled = new ImageIcon(
+    "img/Favorite-icon_50_disabled.png");
+    public static final ImageIcon movieStarButtonIconDisabled = new ImageIcon(
+    "img/Button-Favorite-icon_50_disabled.png");
+    
     public static final String MovieNoYearText = "Okänt";
 
     // Menu

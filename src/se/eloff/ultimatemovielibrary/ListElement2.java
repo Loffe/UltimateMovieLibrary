@@ -64,9 +64,21 @@ public class ListElement2 extends javax.swing.JPanel {
         rating.setRating(movie.getRating());
 
         playButton.setIcon(Localization.moviePlayButtonIcon);
-        seenButton.setIcon(Localization.movieSeenButtonIcon);
-        wishButton.setIcon(Localization.movieStarButtonIcon);
-        favoriteButton.setIcon(Localization.movieFavoriteButtonIcon);
+        
+        if (movie.isWish()){
+            wishButton.setIcon(Localization.movieStarButtonIcon);
+        }else
+            wishButton.setIcon(Localization.movieStarButtonIconDisabled);
+        
+        if (movie.isFavorite()){
+            favoriteButton.setIcon(Localization.movieFavoriteButtonIcon);
+        }else
+            favoriteButton.setIcon(Localization.movieFavoriteButtonIconDisabled);
+        
+        if (movie.isSeen()){
+            seenButton.setIcon(Localization.movieSeenButtonIcon);
+        }else
+            seenButton.setIcon(Localization.movieSeenButtonIconDisabled);
         
         wishButton.setSelected(movie.isWish());
         favoriteButton.setSelected(movie.isFavorite());
@@ -226,6 +238,12 @@ public class ListElement2 extends javax.swing.JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 movie.setWish(wishButton.isSelected()); 
+                if (movie.isWish()){
+                    wishButton.setIcon(Localization.movieStarButtonIcon);
+                }else
+                    wishButton.setIcon(Localization.movieStarButtonIconDisabled);
+                
+               
                 try {
                     DatabaseManager.getInstance().getMovieDao().update(movie);
                 } catch (SQLException e1) {
@@ -238,7 +256,13 @@ public class ListElement2 extends javax.swing.JPanel {
         favoriteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                movie.setFavorite(favoriteButton.isSelected()); 
+                movie.setFavorite(favoriteButton.isSelected());
+                if (movie.isFavorite()){
+                    favoriteButton.setIcon(Localization.movieFavoriteButtonIcon);
+                }else
+                    favoriteButton.setIcon(Localization.movieFavoriteButtonIconDisabled);
+                
+                 
                 try {
                     DatabaseManager.getInstance().getMovieDao().update(movie);
                 } catch (SQLException e1) {
@@ -251,7 +275,12 @@ public class ListElement2 extends javax.swing.JPanel {
         seenButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                movie.setSeen(seenButton.isSelected()); 
+                movie.setSeen(seenButton.isSelected());
+                if (movie.isSeen()){
+                    seenButton.setIcon(Localization.movieSeenButtonIcon);
+                }else
+                    seenButton.setIcon(Localization.movieSeenButtonIconDisabled);
+                 
                 try {
                     DatabaseManager.getInstance().getMovieDao().update(movie);
                 } catch (SQLException e1) {
