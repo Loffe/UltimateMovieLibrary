@@ -47,10 +47,12 @@ public class AppFrame extends JFrame implements ActionListener {
         watchFolderManagerPanel = new WatchFolderManagerPanel();
         searchPanel = new SearchPanel();
         recomendPanel = new RecommendPanel();
+        profilePanel = new ProfilePanel();
 
         centerPanel.add(watchFolderManagerPanel, GuiPanel.WatchFolder.name());
         centerPanel.add(searchPanel, GuiPanel.Search.name());
         centerPanel.add(recomendPanel, GuiPanel.Recommend.name());
+        centerPanel.add(profilePanel, GuiPanel.Profile.name());
 
         // Assemble menus
         initializeTopMenu();

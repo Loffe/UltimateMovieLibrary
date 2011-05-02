@@ -22,6 +22,15 @@ public class Movie implements Comparable<Movie> {
     
     @DatabaseField
     private int rating;
+    
+    @DatabaseField
+    private boolean seen;
+    
+    @DatabaseField
+    private boolean favorite;
+    
+    @DatabaseField
+    private boolean wish;
 
     public Movie() {
     }
@@ -80,6 +89,30 @@ public class Movie implements Comparable<Movie> {
 
     public String getFilepath() {
         return filepath;
+    }
+
+    public boolean isSeen() {
+        return seen;
+    }
+
+    public void setSeen(boolean seen) {
+        this.seen = seen;
+    }
+
+    public boolean isFavorite() {
+        return favorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        this.favorite = favorite;
+    }
+
+    public boolean isWish() {
+        return wish;
+    }
+
+    public void setWish(boolean wish) {
+        this.wish = wish;
     }
 
     @Override
