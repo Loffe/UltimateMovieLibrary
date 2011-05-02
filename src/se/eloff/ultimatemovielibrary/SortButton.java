@@ -6,18 +6,29 @@ public class SortButton extends JToggleButton {
 
     private static final long serialVersionUID = -904152409006570238L;
 
+    private String columnName;
+
     enum State {
         Asc, Desc, Unsorted
     }
 
-    public SortButton(String label) {
+    public SortButton(String label, String column) {
         super(label);
+        columnName = column;
         setBorderPainted(false);
         setModel(new SortOrderButtonModel());
     }
 
     public void setUnselected() {
         ((SortOrderButtonModel) getModel()).setUnselected();
+    }
+
+    public String getColumnName() {
+        return columnName;
+    }
+
+    public boolean isOrderAscending() {
+        return ((SortOrderButtonModel) getModel()).state == State.Asc;
     }
 
     class SortOrderButtonModel extends JToggleButton.ToggleButtonModel {
@@ -36,7 +47,6 @@ public class SortButton extends JToggleButton {
 
         @Override
         public void setSelected(boolean b) {
-            System.out.println("selected:" + b);
             switch (state) {
             case Asc:
                 state = State.Desc;

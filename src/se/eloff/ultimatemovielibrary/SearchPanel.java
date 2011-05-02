@@ -2,15 +2,11 @@ package se.eloff.ultimatemovielibrary;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.List;
 
-import javax.swing.BoxLayout;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle;
 import javax.swing.event.DocumentEvent;
@@ -46,8 +42,10 @@ public class SearchPanel extends JPanel implements DocumentListener {
                 // resultPanel.add(new
                 // JLabel(Localization.searchInProgressText));
                 // jScrollPanel.updateUI();
+                System.out.println(getOrderColumn());
                 lastSearchId = MovieSearchProvider.searchByName(searchTextField
-                        .getText(), resultPanel, orderColumn, orderAscending);
+                        .getText(), resultPanel, getOrderColumn(),
+                        isOrderAscending());
             }
         };
         searchTextField = new JTextField();

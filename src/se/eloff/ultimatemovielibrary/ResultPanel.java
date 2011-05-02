@@ -19,7 +19,9 @@ public abstract class ResultPanel extends JScrollPane implements
     private JPanel resultPanel;
     protected int lastSearchId;
 
-    SortButton[] sortButtons = new SortButton[3];
+    private SortButton[] sortButtons = new SortButton[3];
+    protected String orderColumn = "name";
+    private boolean orderAscending;
 
     public ResultPanel() {
         resultPanel = new JPanel();
@@ -34,13 +36,13 @@ public abstract class ResultPanel extends JScrollPane implements
         Box header = Box.createHorizontalBox();
 
         SortButton titleSortButton = new SortButton(
-                Localization.searchOrderButtonMovieTitle);
+                Localization.searchOrderButtonMovieTitle, "name");
         titleSortButton.setPreferredSize(new Dimension(200, 20));
         titleSortButton.addActionListener(this);
         header.add(titleSortButton);
 
         SortButton yearSortButton = new SortButton(
-                Localization.searchOrderButtonMovieYear);
+                Localization.searchOrderButtonMovieYear, "year");
         yearSortButton.addActionListener(this);
         header.add(yearSortButton);
 
@@ -51,7 +53,7 @@ public abstract class ResultPanel extends JScrollPane implements
         header.add(dummyLabel);
 
         SortButton ratingSortButton = new SortButton(
-                Localization.searchOrderButtonMovieRating);
+                Localization.searchOrderButtonMovieRating, "rating");
         ratingSortButton.setPreferredSize(new Dimension(300, 20));
         ratingSortButton.addActionListener(this);
         header.add(ratingSortButton);
@@ -86,6 +88,17 @@ public abstract class ResultPanel extends JScrollPane implements
                 button.setUnselected();
             }
         }
+        SortButton button = (SortButton) e.getSource();
+        orderColumn = button.getColumnName();
+        orderAscending = button.isOrderAscending();
+    }
+
+    String getOrderColumn() {
+        return orderColumn;
+    }
+
+    boolean isOrderAscending() {
+        return orderAscending;
     }
 
     public abstract void search();
