@@ -1,7 +1,9 @@
 package se.eloff.ultimatemovielibrary;
 
+import java.awt.Dimension;
 import java.util.List;
 
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -25,13 +27,26 @@ public abstract class ResultPanel extends JScrollPane implements
     }
 
     private JComponent createHeader() {
-        JPanel header = new JPanel();
-        header.setLayout(new BoxLayout(header, BoxLayout.LINE_AXIS));
-        header.add(new JLabel("Titel"));
-        header.add(new JLabel("|"));
-        header.add(new JLabel("Sedd"));
-        header.add(new JLabel("|"));
-        header.add(new JLabel("Betyg"));
+        Box header = Box.createHorizontalBox();
+
+        JLabel titleLabel = new JLabel(Localization.searchOrderButtonMovieTitle);
+        titleLabel.setPreferredSize(new Dimension(200, 20));
+        header.add(titleLabel);
+
+        JLabel yearLabel = new JLabel(Localization.searchOrderButtonMovieYear);
+        header.add(yearLabel);
+
+        header.add(Box.createHorizontalGlue());
+
+        JLabel dummyLabel = new JLabel();
+        dummyLabel.setPreferredSize(new Dimension(180, 20));
+        header.add(dummyLabel);
+
+        JLabel ratingLabel = new JLabel(
+                Localization.searchOrderButtonMovieRating);
+        ratingLabel.setPreferredSize(new Dimension(300, 20));
+        header.add(ratingLabel);
+
         return header;
     }
 
