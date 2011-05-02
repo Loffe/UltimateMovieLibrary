@@ -1,10 +1,6 @@
 package se.eloff.ultimatemovielibrary;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 import javax.swing.GroupLayout;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -19,13 +15,6 @@ public class SearchPanel extends JPanel implements DocumentListener {
     private ResultPanel resultPanel;
     private JLabel titleLabel;
     private JTextField searchTextField;
-    private JButton sortByTitle;
-    private JButton sortByYear;
-    private JButton sortByRating;
-
-    private int lastSearchId;
-    private String orderColumn = "name";
-    private boolean orderAscending = true;
 
     public SearchPanel() {
         initComponents();
@@ -49,29 +38,20 @@ public class SearchPanel extends JPanel implements DocumentListener {
         };
         searchTextField = new JTextField();
         titleLabel = new JLabel(Localization.searchFieldLabelText);
-        sortByTitle = new JButton(Localization.searchOrderButtonMovieTitle);
-        sortByYear = new JButton(Localization.searchOrderButtonMovieYear);
-        sortByRating = new JButton(Localization.searchOrderButtonMovieRating);
 
         resultPanel.setName("searchResults");
 
         GroupLayout mainPanelLayout = new GroupLayout(this);
         this.setLayout(mainPanelLayout);
-        mainPanelLayout
-                .setHorizontalGroup(mainPanelLayout.createParallelGroup(
-                        GroupLayout.Alignment.LEADING).addComponent(
-                        resultPanel, GroupLayout.DEFAULT_SIZE, 1024,
-                        Short.MAX_VALUE).addGroup(
-                        GroupLayout.Alignment.TRAILING,
-                        mainPanelLayout.createSequentialGroup()
-                                .addContainerGap(53, Short.MAX_VALUE)
-                                .addComponent(sortByTitle).addComponent(
-                                        sortByYear).addComponent(sortByRating)
-                                .addComponent(titleLabel).addGap(18, 18, 18)
-                                .addComponent(searchTextField,
-                                        GroupLayout.PREFERRED_SIZE, 255,
-                                        GroupLayout.PREFERRED_SIZE).addGap(54,
-                                        54, 54)));
+        mainPanelLayout.setHorizontalGroup(mainPanelLayout.createParallelGroup(
+                GroupLayout.Alignment.LEADING).addComponent(resultPanel,
+                GroupLayout.DEFAULT_SIZE, 1024, Short.MAX_VALUE).addGroup(
+                GroupLayout.Alignment.TRAILING,
+                mainPanelLayout.createSequentialGroup().addContainerGap(53,
+                        Short.MAX_VALUE).addComponent(titleLabel).addGap(18,
+                        18, 18).addComponent(searchTextField,
+                        GroupLayout.PREFERRED_SIZE, 255,
+                        GroupLayout.PREFERRED_SIZE).addGap(54, 54, 54)));
         mainPanelLayout
                 .setVerticalGroup(mainPanelLayout
                         .createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -85,12 +65,6 @@ public class SearchPanel extends JPanel implements DocumentListener {
                                                         .createParallelGroup(
                                                                 GroupLayout.Alignment.BASELINE)
                                                         .addComponent(
-                                                                sortByTitle)
-                                                        .addComponent(
-                                                                sortByYear)
-                                                        .addComponent(
-                                                                sortByRating)
-                                                        .addComponent(
                                                                 titleLabel)
                                                         .addComponent(
                                                                 searchTextField,
@@ -103,40 +77,8 @@ public class SearchPanel extends JPanel implements DocumentListener {
                                                 GroupLayout.DEFAULT_SIZE, 217,
                                                 Short.MAX_VALUE)));
 
-        // Action listeners for the sort buttons
-        sortByTitle.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent arg0) {
-                switchSort("name");
-            }
-        });
-
-        sortByYear.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent arg0) {
-                switchSort("year");
-            }
-        });
-
-        sortByRating.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent arg0) {
-                switchSort("rating");
-            }
-        });
-
         // add a listener to the input field
         searchTextField.getDocument().addDocumentListener(this);
-    }
-
-    private void switchSort(String column) {
-        if (orderColumn.equals(column)) {
-            orderAscending = !orderAscending;
-        } else {
-            orderAscending = true;
-            orderColumn = column;
-        }
-        resultPanel.search();
     }
 
     // input field actions
