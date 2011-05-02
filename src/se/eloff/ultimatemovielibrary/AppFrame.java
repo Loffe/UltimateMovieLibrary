@@ -22,19 +22,22 @@ public class AppFrame extends JFrame implements ActionListener {
     private static final long serialVersionUID = 5297734322373835993L;
     private WatchFolderManagerDialog watchFolderManagerPanel;
     private SearchPanel searchPanel;
+    private ProfilePanel profilePanel;
     private RecommendPanel recomendPanel;
     private DefaultMenuBar botMenu;
     private DefaultMenuBar topMenu;
     private JPanel centerPanel;
 
     public AppFrame() throws HeadlessException {
+        //scan the currently watch folders and look for new content
+        WatchFolderManager.updateLibrary();
         setVisible(false); // Hide until ready, to avoid window "flashing"
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle(Localization.title);
         setIconImage(Localization.icon);
 
         // TODO: decide on type of fullscreen
-        // initializeFullScreen();
+         initializeFullScreen();
         this.setMinimumSize(new Dimension(640, 480));
         this.setExtendedState(this.getExtendedState() | JFrame.MAXIMIZED_BOTH);
         
@@ -45,9 +48,11 @@ public class AppFrame extends JFrame implements ActionListener {
 
         searchPanel = new SearchPanel();
         recomendPanel = new RecommendPanel();
+        profilePanel = new ProfilePanel();
 
         centerPanel.add(searchPanel, GuiPanel.Search.name());
         centerPanel.add(recomendPanel, GuiPanel.Recommend.name());
+        centerPanel.add(profilePanel, GuiPanel.Profile.name());
 
         // Assemble menus
         initializeTopMenu();
