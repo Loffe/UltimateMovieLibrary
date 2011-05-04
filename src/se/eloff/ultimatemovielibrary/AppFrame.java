@@ -29,6 +29,7 @@ public class AppFrame extends JFrame implements ActionListener {
     private DefaultMenuBar botMenu;
     private DefaultMenuBar topMenu;
     private JPanel centerPanel;
+    private JPanel homePanel;
 
     public AppFrame() throws HeadlessException {
         // scan the currently watch folders and look for new content
@@ -94,10 +95,12 @@ public class AppFrame extends JFrame implements ActionListener {
         searchPanel = new SearchPanel();
         recomendPanel = new RecommendPanel();
         profilePanel = new ProfilePanel();
+        homePanel = new homePanel();
 
         centerPanel.add(searchPanel, GuiPanel.Search.name());
         centerPanel.add(recomendPanel, GuiPanel.Recommend.name());
         centerPanel.add(profilePanel, GuiPanel.Profile.name());
+        centerPanel.add(homePanel, GuiPanel.Home.name());
 
         // Assemble menus
         initializeTopMenu();
@@ -107,12 +110,17 @@ public class AppFrame extends JFrame implements ActionListener {
         getContentPane().add(centerPanel, BorderLayout.CENTER);
         getContentPane().add(botMenu, BorderLayout.PAGE_END);
 
-        setCurrentPanel(GuiPanel.Search);
+        setCurrentPanel(GuiPanel.Home);
         setVisible(true);
     }
 
     public void setCurrentPanel(GuiPanel panel) {
+        
         CardLayout layout = (CardLayout) centerPanel.getLayout();
+        
+        if(panel.name().equals(GuiPanel.Home.name())){
+            getContentPane().remove(botMenu);
+        }
         if (panel.name().equals(GuiPanel.Search.name())) {
             searchPanel.update();
         } else if (panel.name().equals(GuiPanel.Recommend.name())) {
@@ -209,7 +217,7 @@ public class AppFrame extends JFrame implements ActionListener {
     }
 
     enum GuiPanel {
-        Search, Recommend, Profile
+        Search, Recommend, Profile, Home
     }
 
     @Override
