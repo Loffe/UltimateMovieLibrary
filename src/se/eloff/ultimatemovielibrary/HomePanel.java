@@ -8,7 +8,9 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-public class homePanel extends JPanel{
+import se.eloff.ultimatemovielibrary.AppFrame.GuiPanel;
+
+public class HomePanel extends JPanel{
     
     
     private JButton searchItem = new JButton(Localization.menuSearchText);
@@ -21,8 +23,7 @@ public class homePanel extends JPanel{
     private final int gapsize = 100;
     
     
-    homePanel(){
-        
+    HomePanel(AppFrame parent){
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         
      
@@ -58,6 +59,15 @@ public class homePanel extends JPanel{
         this.add(Box.createRigidArea(new Dimension(0, gapsize)));
         this.add(profileItem);
         this.add(Box.createVerticalGlue());
+        
+        searchItem.addActionListener(parent);
+        searchItem.setActionCommand(GuiPanel.Search.toString());
+
+        recommendItem.setActionCommand(GuiPanel.Recommend.toString());
+        recommendItem.addActionListener(parent);
+
+        profileItem.addActionListener(parent);
+        profileItem.setActionCommand(GuiPanel.Profile.toString());
         
     }
 

@@ -100,7 +100,7 @@ public class AppFrame extends JFrame implements ActionListener {
         searchPanel = new SearchPanel();
         recomendPanel = new RecommendPanel();
         profilePanel = new ProfilePanel();
-        homePanel = new homePanel();
+        homePanel = new HomePanel(this);
 
         centerPanel.add(searchPanel, GuiPanel.Search.name());
         centerPanel.add(recomendPanel, GuiPanel.Recommend.name());
