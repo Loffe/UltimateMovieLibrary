@@ -15,8 +15,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class AppFrame extends JFrame implements ActionListener {
@@ -30,6 +32,9 @@ public class AppFrame extends JFrame implements ActionListener {
     private DefaultMenuBar topMenu;
     private JPanel centerPanel;
     private JPanel homePanel;
+    private JPanel topPanel = new JPanel();
+    private JPanel infoPanel;
+    private JLabel titleLabel;
 
     public AppFrame() throws HeadlessException {
         // scan the currently watch folders and look for new content
@@ -40,7 +45,7 @@ public class AppFrame extends JFrame implements ActionListener {
         setIconImage(Localization.icon);
 
         // TODO: decide on type of fullscreen
-        // initializeFullScreen();
+        initializeFullScreen();
         this.setMinimumSize(new Dimension(640, 480));
         this.setExtendedState(this.getExtendedState() | JFrame.MAXIMIZED_BOTH);
 
@@ -101,12 +106,22 @@ public class AppFrame extends JFrame implements ActionListener {
         centerPanel.add(recomendPanel, GuiPanel.Recommend.name());
         centerPanel.add(profilePanel, GuiPanel.Profile.name());
         centerPanel.add(homePanel, GuiPanel.Home.name());
+        
+        infoPanel = new JPanel();
+        titleLabel = new JLabel();
+        titleLabel.setFont(new java.awt.Font("Lucida Grande", 0, 24)); // NOI18N
+        infoPanel.add(new JLabel(new ImageIcon( Localization.icon )));
+
+        infoPanel.add(titleLabel);
 
         // Assemble menus
         initializeTopMenu();
         initializeBotMenu();
-
-        getContentPane().add(topMenu, BorderLayout.PAGE_START);
+        
+        topPanel.setLayout(new BorderLayout());
+        topPanel.add(infoPanel, BorderLayout.WEST);
+        topPanel.add(topMenu, BorderLayout.EAST);
+        getContentPane().add(topPanel, BorderLayout.PAGE_START);
         getContentPane().add(centerPanel, BorderLayout.CENTER);
         getContentPane().add(botMenu, BorderLayout.PAGE_END);
 
@@ -117,16 +132,26 @@ public class AppFrame extends JFrame implements ActionListener {
     public void setCurrentPanel(GuiPanel panel) {
         
         CardLayout layout = (CardLayout) centerPanel.getLayout();
-        
-        if(panel.name().equals(GuiPanel.Home.name())){
-            getContentPane().remove(botMenu);
-        }
-        if (panel.name().equals(GuiPanel.Search.name())) {
+        switch(panel) {
+        case Search:
+            titleLabel.setText(Localization.title + " > " + Localization.searchTitle);
             searchPanel.update();
-        } else if (panel.name().equals(GuiPanel.Recommend.name())) {
+            break;
+        case Recommend:
+            titleLabel.setText(Localization.title + " > " + Localization.recommendTitle);
             recomendPanel.update();
+            break;
+        case Profile:
+            titleLabel.setText(Localization.title + " > " + Localization.profileTitle);
+            break;
+        case Home:
+            getContentPane().remove(botMenu);
+        default:
+            
+            break;
         }
         layout.show(centerPanel, panel.name());
+        
     }
 
     public void updateCurrentPanel() {

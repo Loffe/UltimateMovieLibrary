@@ -33,37 +33,45 @@ public final class Localization {
     public static final String removeWatchFolderConfirmationText = "Vill du sluta bevaka katalogen?\n";
 
     // Search
+    public static final String searchTitle = "Sök";
     public static final String searchFieldLabelText = "Sök efter filmtitel:";
     public static final String searchNoMatchText = "Din sökning matchade inte någon film.";
     public static final String searchInProgressText = "Laddar filmer...";
     public static final String searchOrderButtonMovieTitle = "Filmtitel";
     public static final String searchOrderButtonMovieYear = "År";
     public static final String searchOrderButtonMovieRating = "Betyg";
-    
+    public static final ImageIcon searchToggleSeenButtonIcon = new ImageIcon(
+            "img/eye_50_crossed_disabled.png");
+    public static final ImageIcon searchToggleSeenButtonIconHide = new ImageIcon(
+            "img/eye_50_crossed.png");
+    public static final String toolTipsSearchSeen = "Visa endast ej sedda filmer (dölj sedda filmer)";
+    public static final String toolTipsSearchSeenDisable = "Visa alla filmer";
+
     // Recommended movies
+    public static final String recommendTitle = "Rekommendationer";
     public static final String recommendRefreshButtonText = "";
     public static final ImageIcon recommendRefreshButtonIcon = new ImageIcon(
-    "img/Button-Refresh-icon_50.png");
+            "img/Button-Refresh-icon_50.png");
     public static final String recommendRefreshNoMatchText = "Inga filmer i databasen.";
     public static final String recommendRefreshProgressText = "Laddar filmer...";
-    
-    //MovieElement
+
+    // MovieElement
     public static final ImageIcon moviePlayButtonIcon = new ImageIcon(
-    "img/Button-Play-icon_50.png");
+            "img/Button-Play-icon_50.png");
     public static final ImageIcon movieSeenButtonIcon = new ImageIcon(
-    "img/eye_50.png");
+            "img/eye_50.png");
     public static final ImageIcon movieFavoriteButtonIcon = new ImageIcon(
-    "img/Favorite-icon_50.png");
+            "img/Favorite-icon_50.png");
     public static final ImageIcon movieStarButtonIcon = new ImageIcon(
-    "img/Button-Favorite-icon_50.png");
-    
+            "img/Button-Favorite-icon_50.png");
+
     public static final ImageIcon movieSeenButtonIconDisabled = new ImageIcon(
-    "img/eye_50_disabled.png");
+            "img/eye_50_disabled.png");
     public static final ImageIcon movieFavoriteButtonIconDisabled = new ImageIcon(
-    "img/Favorite-icon_50_disabled.png");
+            "img/Favorite-icon_50_disabled.png");
     public static final ImageIcon movieStarButtonIconDisabled = new ImageIcon(
-    "img/Button-Favorite-icon_50_disabled.png");
-    
+            "img/Button-Favorite-icon_50_disabled.png");
+
     public static final String MovieNoYearText = "Okänt";
 
     // Menu
@@ -82,5 +90,15 @@ public final class Localization {
             "img/arrow-up.png");
     public static final ImageIcon resultPanelArrowDown = new ImageIcon(
             "img/arrow-down.png");
+    
+    public static final String profileTitle = "Profil";
+
+    public static final String toolTipsWishDisable = "Ta bort från önskelista";
+    public static final String toolTipsWish = "Lägg till i önskelista";
+    public static final String toolTipsFavoriteDisable = "Ta bort från favoriter";
+    public static final String toolTipsFavorite = "Lägg till i favoriter";
+    public static final String toolTipsSeenDisable = "Markera som ej sedd";
+    public static final String toolTipsSeen = "Markera som sedd";
+    public static final String toolTipsPlay = "Spela upp film";
 
 }

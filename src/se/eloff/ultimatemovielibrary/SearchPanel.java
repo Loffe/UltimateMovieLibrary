@@ -1,8 +1,16 @@
 package se.eloff.ultimatemovielibrary;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.SQLException;
+
+import javax.swing.Box;
 import javax.swing.GroupLayout;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.JToggleButton;
 import javax.swing.LayoutStyle;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -13,8 +21,10 @@ public class SearchPanel extends ViewPanel implements DocumentListener {
 
     private JLabel titleLabel;
     private JTextField searchTextField;
+    private JToggleButton seenToggleButton;
 
     public SearchPanel() {
+        setTitle(Localization.searchTitle);
         initComponents();
         resultPanel.search();
     }
@@ -29,70 +39,82 @@ public class SearchPanel extends ViewPanel implements DocumentListener {
                 // resultPanel.add(new
                 // JLabel(Localization.searchInProgressText));
                 // jScrollPanel.updateUI();
-                lastSearchId = MovieSearchProvider.searchByName(searchTextField
-                        .getText(), resultPanel, getOrderColumn(),
-                        isOrderAscending());
+                if (seenToggleButton.isSelected())
+                lastSearchId = MovieSearchProvider.searchByNameSeen(
+                        searchTextField.getText(), resultPanel,
+                        getOrderColumn(), isOrderAscending(),
+                        false);
+                else
+                    lastSearchId = MovieSearchProvider.searchByName(
+                            searchTextField.getText(), resultPanel,
+                            getOrderColumn(), isOrderAscending());
             }
         };
         searchTextField = new JTextField();
         titleLabel = new JLabel(Localization.searchFieldLabelText);
-
+        seenToggleButton = new JToggleButton();
+        seenToggleButton.setIcon(Localization.searchToggleSeenButtonIcon);
+        seenToggleButton.setSize(52, 52);
+        seenToggleButton.setPreferredSize(new Dimension(52,52));
+        seenToggleButton.setMinimumSize(new Dimension(52,52));
+        seenToggleButton.setMaximumSize(new Dimension(52,52));
         resultPanel.setName("searchResults");
 
-        GroupLayout mainPanelLayout = new GroupLayout(this);
-        this.setLayout(mainPanelLayout);
-        mainPanelLayout.setHorizontalGroup(mainPanelLayout.createParallelGroup(
-                GroupLayout.Alignment.LEADING).addComponent(resultPanel,
-                GroupLayout.DEFAULT_SIZE, 1024, Short.MAX_VALUE).addGroup(
-                GroupLayout.Alignment.TRAILING,
-                mainPanelLayout.createSequentialGroup().addContainerGap(53,
-                        Short.MAX_VALUE).addComponent(titleLabel).addGap(18,
-                        18, 18).addComponent(searchTextField,
-                        GroupLayout.PREFERRED_SIZE, 255,
-                        GroupLayout.PREFERRED_SIZE).addGap(54, 54, 54)));
-        mainPanelLayout
-                .setVerticalGroup(mainPanelLayout
-                        .createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addGroup(
-                                GroupLayout.Alignment.TRAILING,
-                                mainPanelLayout
-                                        .createSequentialGroup()
-                                        .addContainerGap()
-                                        .addGroup(
-                                                mainPanelLayout
-                                                        .createParallelGroup(
-                                                                GroupLayout.Alignment.BASELINE)
-                                                        .addComponent(
-                                                                titleLabel)
-                                                        .addComponent(
-                                                                searchTextField,
-                                                                GroupLayout.PREFERRED_SIZE,
-                                                                GroupLayout.DEFAULT_SIZE,
-                                                                GroupLayout.PREFERRED_SIZE))
-                                        .addPreferredGap(
-                                                LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(resultPanel,
-                                                GroupLayout.DEFAULT_SIZE, 217,
-                                                Short.MAX_VALUE)));
+        searchTextField = new JTextField();
+        searchTextField.setPreferredSize(new Dimension(200, 30));
+        searchTextField.setMaximumSize(new Dimension(400, 30));
+
+        titleLabel = new JLabel(Localization.searchFieldLabelText);
+
+        this.setLayout(new BorderLayout());
+
+        Box searchBox = Box.createHorizontalBox();
+        searchBox.add(Box.createRigidArea(new Dimension(20,20)));
+        searchBox.add(titleLabel);
+        searchBox.add(searchTextField);
+        searchBox.add(Box.createRigidArea(new Dimension(20,20)));
+        searchBox.add(seenToggleButton);
+        searchBox.add(Box.createHorizontalGlue());
+
+        Box centerBox = Box.createVerticalBox();
+        centerBox.add(searchBox);
+        centerBox.add(resultPanel);
+
+        this.add(centerBox, BorderLayout.CENTER);
 
         // add a listener to the input field
         searchTextField.getDocument().addDocumentListener(this);
+        
+        seenToggleButton.setToolTipText(Localization.toolTipsSearchSeen);
+        seenToggleButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (seenToggleButton.isSelected()) {
+                    seenToggleButton.setIcon(Localization.searchToggleSeenButtonIconHide);
+                    seenToggleButton.setToolTipText(Localization.toolTipsSearchSeen);
+                } else
+                    seenToggleButton.setIcon(Localization.searchToggleSeenButtonIcon);
+                    seenToggleButton.setToolTipText(Localization.toolTipsSearchSeenDisable);
+                    update();
+            }
+
+        });
     }
 
     // input field actions
     @Override
     public void changedUpdate(DocumentEvent arg0) {
-        resultPanel.search();
+        update();
     }
 
     @Override
     public void insertUpdate(DocumentEvent arg0) {
-        resultPanel.search();
+        update();
     }
 
     @Override
     public void removeUpdate(DocumentEvent arg0) {
-        resultPanel.search();
+        update();
     }
 
 }

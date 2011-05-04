@@ -16,6 +16,7 @@ public class RecommendPanel extends ViewPanel {
     private static final int NUMOFMOVIES = 3;
 
     public RecommendPanel() {
+        setTitle(Localization.recommendTitle);
         initComponents();
         resultPanel.search();
     }
