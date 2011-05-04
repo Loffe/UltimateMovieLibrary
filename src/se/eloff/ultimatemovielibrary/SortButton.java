@@ -12,11 +12,11 @@ public class SortButton extends JToggleButton {
         Asc, Desc, Unsorted
     }
 
-    public SortButton(String label, String column) {
+    public SortButton(String label, String column, State defaultOrder) {
         super(label);
         columnName = column;
         setBorderPainted(false);
-        setModel(new SortOrderButtonModel());
+        setModel(new SortOrderButtonModel(defaultOrder));
     }
 
     public void setUnselected() {
@@ -36,13 +36,16 @@ public class SortButton extends JToggleButton {
         private static final long serialVersionUID = 844969173203386981L;
 
         private State state;
+        private State defaultOrder;
 
-        public SortOrderButtonModel() {
+        public SortOrderButtonModel(State defaultOrder) {
+            this.defaultOrder = defaultOrder;
             state = State.Unsorted;
         }
 
         public void setUnselected() {
             super.setSelected(false);
+            state = State.Unsorted;
             setIcon(null);
         }
 
@@ -51,13 +54,20 @@ public class SortButton extends JToggleButton {
             switch (state) {
             case Asc:
                 state = State.Desc;
-                setIcon(Localization.resultPanelArrowUp);
                 break;
             case Desc:
-            default:
                 state = State.Asc;
-                setIcon(Localization.resultPanelArrowDown);
+                break;
+            case Unsorted:
+                state = defaultOrder;
+                break;
             }
+
+            if (state == State.Asc)
+                setIcon(Localization.resultPanelArrowDown);
+            else
+                setIcon(Localization.resultPanelArrowUp);
+
             super.setSelected(true);
         }
     }

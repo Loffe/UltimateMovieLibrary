@@ -2,17 +2,15 @@ package se.eloff.ultimatemovielibrary;
 
 import javax.swing.GroupLayout;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-public class SearchPanel extends JPanel implements DocumentListener {
+public class SearchPanel extends ViewPanel implements DocumentListener {
 
     private static final long serialVersionUID = 8595144249306891196L;
 
-    private ResultPanel resultPanel;
     private JLabel titleLabel;
     private JTextField searchTextField;
 
@@ -96,4 +94,5 @@ public class SearchPanel extends JPanel implements DocumentListener {
     public void removeUpdate(DocumentEvent arg0) {
         resultPanel.search();
     }
+
 }
