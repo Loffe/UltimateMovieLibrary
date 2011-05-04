@@ -105,7 +105,8 @@ public class SearchPanel extends ViewPanel implements DocumentListener {
 
         // add a listener to the input field
         searchTextField.getDocument().addDocumentListener(this);
-
+        
+        seenToggleButton.setToolTipText(Localization.toolTipsSearchSeen);
         seenToggleButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

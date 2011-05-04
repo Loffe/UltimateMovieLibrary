@@ -44,6 +44,8 @@ public final class Localization {
             "img/eye_50_crossed_disabled.png");
     public static final ImageIcon searchToggleSeenButtonIconHide = new ImageIcon(
             "img/eye_50_crossed.png");
+    public static final String toolTipsSearchSeen = "Visa endast ej sedda filmer (dölj sedda filmer)";
+    public static final String toolTipsSearchSeenDisable = "Visa alla filmer";
 
     // Recommended movies
     public static final String recommendTitle = "Rekommendationer";
@@ -97,5 +99,6 @@ public final class Localization {
     public static final String toolTipsFavorite = "Lägg till i favoriter";
     public static final String toolTipsSeenDisable = "Markera som ej sedd";
     public static final String toolTipsSeen = "Markera som sedd";
+    public static final String toolTipsPlay = "Spela upp film";
 
 }
