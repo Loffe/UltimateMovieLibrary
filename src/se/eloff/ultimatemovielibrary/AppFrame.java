@@ -15,6 +15,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -106,6 +107,8 @@ public class AppFrame extends JFrame implements ActionListener {
         infoPanel = new JPanel();
         titleLabel = new JLabel();
         titleLabel.setFont(new java.awt.Font("Lucida Grande", 0, 24)); // NOI18N
+        infoPanel.add(new JLabel(new ImageIcon( Localization.icon )));
+
         infoPanel.add(titleLabel);
 
         // Assemble menus
@@ -127,15 +130,15 @@ public class AppFrame extends JFrame implements ActionListener {
         CardLayout layout = (CardLayout) centerPanel.getLayout();
         switch(panel) {
         case Search:
-            titleLabel.setText(Localization.searchTitle);
+            titleLabel.setText(Localization.title + " > " + Localization.searchTitle);
             searchPanel.update();
             break;
         case Recommend:
-            titleLabel.setText(Localization.recommendTitle);
+            titleLabel.setText(Localization.title + " > " + Localization.recommendTitle);
             recomendPanel.update();
             break;
         case Profile:
-            titleLabel.setText(Localization.profileTitle);
+            titleLabel.setText(Localization.title + " > " + Localization.profileTitle);
             break;
         default:
             
