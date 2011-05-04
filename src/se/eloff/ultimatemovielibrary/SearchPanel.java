@@ -1,9 +1,12 @@
 package se.eloff.ultimatemovielibrary;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
+import javax.swing.Box;
 import javax.swing.GroupLayout;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -51,57 +54,31 @@ public class SearchPanel extends ViewPanel implements DocumentListener {
         titleLabel = new JLabel(Localization.searchFieldLabelText);
         seenToggleButton = new JToggleButton();
         seenToggleButton.setIcon(Localization.searchToggleSeenButtonIcon);
-
+        seenToggleButton.setSize(52, 52);
+        seenToggleButton.setPreferredSize(new Dimension(52,52));
+        seenToggleButton.setMinimumSize(new Dimension(52,52));
+        seenToggleButton.setMaximumSize(new Dimension(52,52));
         resultPanel.setName("searchResults");
 
-        GroupLayout mainPanelLayout = new GroupLayout(this);
-        this.setLayout(mainPanelLayout);
-        mainPanelLayout.setHorizontalGroup(mainPanelLayout
-                .createParallelGroup(GroupLayout.Alignment.LEADING)
-                .addComponent(resultPanel, GroupLayout.DEFAULT_SIZE, 1024,
-                        Short.MAX_VALUE)
-                .addGroup(
-                        GroupLayout.Alignment.TRAILING,
-                        mainPanelLayout
-                                .createSequentialGroup()
-                                .addContainerGap(53, Short.MAX_VALUE)
-                                .addComponent(seenToggleButton,GroupLayout.PREFERRED_SIZE,
-                                        52,
-                                        GroupLayout.PREFERRED_SIZE)
-                                .addComponent(titleLabel)
-                                .addGap(18, 18, 18)
-                                .addComponent(searchTextField,
-                                        GroupLayout.PREFERRED_SIZE, 255,
-                                        GroupLayout.PREFERRED_SIZE)
-                                .addGap(54, 54, 54)));
-        mainPanelLayout
-                .setVerticalGroup(mainPanelLayout
-                        .createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addGroup(
-                                GroupLayout.Alignment.TRAILING,
-                                mainPanelLayout
-                                        .createSequentialGroup()
-                                        .addContainerGap()
-                                        .addGroup(
-                                                mainPanelLayout
-                                                        .createParallelGroup(
-                                                                GroupLayout.Alignment.BASELINE)
-                                                        .addComponent(
-                                                                seenToggleButton,GroupLayout.PREFERRED_SIZE,
-                                                                52,
-                                                                GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(
-                                                                titleLabel)
-                                                        .addComponent(
-                                                                searchTextField,
-                                                                GroupLayout.PREFERRED_SIZE,
-                                                                GroupLayout.DEFAULT_SIZE,
-                                                                GroupLayout.PREFERRED_SIZE))
-                                        .addPreferredGap(
-                                                LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(resultPanel,
-                                                GroupLayout.DEFAULT_SIZE, 217,
-                                                Short.MAX_VALUE)));
+        searchTextField = new JTextField();
+        searchTextField.setPreferredSize(new Dimension(200, 30));
+        searchTextField.setMaximumSize(new Dimension(400, 30));
+
+        titleLabel = new JLabel(Localization.searchFieldLabelText);
+
+        this.setLayout(new BorderLayout());
+
+        Box searchBox = Box.createHorizontalBox();
+        searchBox.add(titleLabel);
+        searchBox.add(searchTextField);
+        searchBox.add(seenToggleButton);
+        searchBox.add(Box.createHorizontalGlue());
+
+        Box centerBox = Box.createVerticalBox();
+        centerBox.add(searchBox);
+        centerBox.add(resultPanel);
+
+        this.add(centerBox, BorderLayout.CENTER);
 
         // add a listener to the input field
         searchTextField.getDocument().addDocumentListener(this);
