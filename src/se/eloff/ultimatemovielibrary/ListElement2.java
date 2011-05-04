@@ -64,6 +64,7 @@ public class ListElement2 extends javax.swing.JPanel {
         rating.setRating(movie.getRating());
 
         playButton.setIcon(Localization.moviePlayButtonIcon);
+        playButton.setToolTipText(Localization.toolTipsPlay);
         
         if (movie.isWish()){
             wishButton.setIcon(Localization.movieStarButtonIcon);
