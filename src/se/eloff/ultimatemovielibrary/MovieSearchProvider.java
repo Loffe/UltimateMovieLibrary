@@ -140,7 +140,8 @@ public class MovieSearchProvider {
                     QueryBuilder<Movie, Integer> queryBuilder = dbMovie
                             .queryBuilder();
 
-                    queryBuilder.where().eq("discnumber", 1).and().eq("seen", false);
+                    queryBuilder.where().eq("discnumber", 1).and()
+                            .eq("seen", false);
                     queryBuilder.orderBy("rating", false);
                     queryBuilder.limit(numberOfMovies);
                     List<Movie> movies = dbMovie.query(queryBuilder.prepare());
@@ -167,7 +168,7 @@ public class MovieSearchProvider {
                      * number of movies, return all we got
                      * client.searchFinished(movies, assignedKey);
                      */
-                    
+
                     client.searchFinished(movies, assignedKey);
                 } catch (SQLException e) {
                     System.out.println("error searching for movies");

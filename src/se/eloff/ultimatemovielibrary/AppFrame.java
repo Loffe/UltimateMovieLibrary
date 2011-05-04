@@ -42,7 +42,7 @@ public class AppFrame extends JFrame implements ActionListener {
         setIconImage(Localization.icon);
 
         // TODO: decide on type of fullscreen
-        // initializeFullScreen();
+        initializeFullScreen();
         this.setMinimumSize(new Dimension(640, 480));
         this.setExtendedState(this.getExtendedState() | JFrame.MAXIMIZED_BOTH);
 
@@ -104,6 +104,7 @@ public class AppFrame extends JFrame implements ActionListener {
         
         infoPanel = new JPanel();
         titleLabel = new JLabel();
+        titleLabel.setFont(new java.awt.Font("Lucida Grande", 0, 24)); // NOI18N
         infoPanel.add(titleLabel);
 
         // Assemble menus
