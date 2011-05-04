@@ -4,9 +4,12 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 
 import javax.swing.Box;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JTextField;
+import javax.swing.ListModel;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
@@ -39,7 +42,12 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
             }
         };
 
-        JButton lists = new JButton("hej hej");
+        DefaultListModel listModel = new DefaultListModel();
+        listModel.addElement(Localization.profileFavoriteList);
+        listModel.addElement(Localization.profileWishList);
+        listModel.addElement(Localization.profileSeenList);
+        JList lists = new JList(listModel);
+        lists.setPreferredSize(new Dimension(200, 10));
 
         searchTextField = new JTextField();
         searchTextField.setPreferredSize(new Dimension(200, 30));
