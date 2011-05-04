@@ -30,6 +30,7 @@ public class AppFrame extends JFrame implements ActionListener {
     private DefaultMenuBar botMenu;
     private DefaultMenuBar topMenu;
     private JPanel centerPanel;
+    private JPanel topPanel = new JPanel();
     private JPanel infoPanel;
     private JLabel titleLabel;
 
@@ -109,8 +110,7 @@ public class AppFrame extends JFrame implements ActionListener {
         // Assemble menus
         initializeTopMenu();
         initializeBotMenu();
-
-        JPanel topPanel = new JPanel();
+        
         topPanel.setLayout(new BorderLayout());
         topPanel.add(infoPanel, BorderLayout.WEST);
         topPanel.add(topMenu, BorderLayout.EAST);
@@ -124,13 +124,24 @@ public class AppFrame extends JFrame implements ActionListener {
 
     public void setCurrentPanel(GuiPanel panel) {
         CardLayout layout = (CardLayout) centerPanel.getLayout();
-        if (panel.name().equals(GuiPanel.Search.name())) {
+        switch(panel) {
+        case Search:
+            titleLabel.setText(Localization.searchTitle);
             searchPanel.update();
-        } else if (panel.name().equals(GuiPanel.Recommend.name())) {
+            break;
+        case Recommend:
+            titleLabel.setText(Localization.recommendTitle);
             recomendPanel.update();
+            break;
+        case Profile:
+            titleLabel.setText(Localization.profileTitle);
+            break;
+        default:
+            
+            break;
         }
         layout.show(centerPanel, panel.name());
-        titleLabel.setText(panel.name());
+        
     }
 
     public void updateCurrentPanel() {
