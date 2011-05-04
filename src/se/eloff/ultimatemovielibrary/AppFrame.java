@@ -12,24 +12,29 @@ import java.awt.HeadlessException;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class AppFrame extends JFrame implements ActionListener {
 
     private static final long serialVersionUID = 5297734322373835993L;
     private WatchFolderManagerDialog watchFolderManagerPanel;
-    private SearchPanel searchPanel;
+    private ViewPanel searchPanel;
     private ProfilePanel profilePanel;
-    private RecommendPanel recomendPanel;
+    private ViewPanel recomendPanel;
     private DefaultMenuBar botMenu;
     private DefaultMenuBar topMenu;
     private JPanel centerPanel;
+    private JPanel infoPanel;
+    private JLabel titleLabel;
 
     public AppFrame() throws HeadlessException {
-        //scan the currently watch folders and look for new content
+        // scan the currently watch folders and look for new content
         WatchFolderManager.updateLibrary();
         setVisible(false); // Hide until ready, to avoid window "flashing"
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -37,11 +42,54 @@ public class AppFrame extends JFrame implements ActionListener {
         setIconImage(Localization.icon);
 
         // TODO: decide on type of fullscreen
-         initializeFullScreen();
+        // initializeFullScreen();
         this.setMinimumSize(new Dimension(640, 480));
         this.setExtendedState(this.getExtendedState() | JFrame.MAXIMIZED_BOTH);
-        
+
         watchFolderManagerPanel = new WatchFolderManagerDialog(this);
+        watchFolderManagerPanel.addWindowListener(new WindowListener() {
+
+            @Override
+            public void windowOpened(WindowEvent e) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void windowIconified(WindowEvent e) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void windowDeiconified(WindowEvent e) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void windowDeactivated(WindowEvent e) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void windowClosing(WindowEvent e) {
+                updateCurrentPanel();
+            }
+
+            @Override
+            public void windowClosed(WindowEvent e) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void windowActivated(WindowEvent e) {
+                // TODO Auto-generated method stub
+
+            }
+        });
 
         centerPanel = new JPanel();
         centerPanel.setLayout(new CardLayout());
@@ -53,12 +101,20 @@ public class AppFrame extends JFrame implements ActionListener {
         centerPanel.add(searchPanel, GuiPanel.Search.name());
         centerPanel.add(recomendPanel, GuiPanel.Recommend.name());
         centerPanel.add(profilePanel, GuiPanel.Profile.name());
+        
+        infoPanel = new JPanel();
+        titleLabel = new JLabel();
+        infoPanel.add(titleLabel);
 
         // Assemble menus
         initializeTopMenu();
         initializeBotMenu();
 
-        getContentPane().add(topMenu, BorderLayout.PAGE_START);
+        JPanel topPanel = new JPanel();
+        topPanel.setLayout(new BorderLayout());
+        topPanel.add(infoPanel, BorderLayout.WEST);
+        topPanel.add(topMenu, BorderLayout.EAST);
+        getContentPane().add(topPanel, BorderLayout.PAGE_START);
         getContentPane().add(centerPanel, BorderLayout.CENTER);
         getContentPane().add(botMenu, BorderLayout.PAGE_END);
 
@@ -68,7 +124,18 @@ public class AppFrame extends JFrame implements ActionListener {
 
     public void setCurrentPanel(GuiPanel panel) {
         CardLayout layout = (CardLayout) centerPanel.getLayout();
+        if (panel.name().equals(GuiPanel.Search.name())) {
+            searchPanel.update();
+        } else if (panel.name().equals(GuiPanel.Recommend.name())) {
+            recomendPanel.update();
+        }
         layout.show(centerPanel, panel.name());
+        titleLabel.setText(panel.name());
+    }
+
+    public void updateCurrentPanel() {
+        searchPanel.update();
+        recomendPanel.update();
     }
 
     private void initializeBotMenu() {
@@ -99,7 +166,7 @@ public class AppFrame extends JFrame implements ActionListener {
                 Localization.menuManageWatchFolderText,
                 Localization.menuManageWatchFolderIcon);
         watchFolderItem.addActionListener(new ActionListener() {
-            
+
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Pop the modal dialog
@@ -138,13 +205,13 @@ public class AppFrame extends JFrame implements ActionListener {
         }
 
         try {
-         //   if (gd.isFullScreenSupported()) {
-         //       gd.setFullScreenWindow(this);
-         //   } else {
-                // Can't run fullscreen, need to bodge around it (setSize to
-                // screen size, etc)
-                setSize(width, height);
-          //  }
+            // if (gd.isFullScreenSupported()) {
+            // gd.setFullScreenWindow(this);
+            // } else {
+            // Can't run fullscreen, need to bodge around it (setSize to
+            // screen size, etc)
+            setSize(width, height);
+            // }
             this.setVisible(true);
             // Your business logic here
         } finally {

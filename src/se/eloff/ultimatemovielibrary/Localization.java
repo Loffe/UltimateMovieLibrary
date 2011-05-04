@@ -33,14 +33,20 @@ public final class Localization {
     public static final String removeWatchFolderConfirmationText = "Vill du sluta bevaka katalogen?\n";
 
     // Search
+    public static final String searchTitle = "Sök";
     public static final String searchFieldLabelText = "Sök efter filmtitel:";
     public static final String searchNoMatchText = "Din sökning matchade inte någon film.";
     public static final String searchInProgressText = "Laddar filmer...";
     public static final String searchOrderButtonMovieTitle = "Filmtitel";
     public static final String searchOrderButtonMovieYear = "År";
     public static final String searchOrderButtonMovieRating = "Betyg";
+    public static final ImageIcon searchToggleSeenButtonIcon = new ImageIcon(
+    "img/eye_50_crossed_disabled.png");
+    public static final ImageIcon searchToggleSeenButtonIconHide = new ImageIcon(
+    "img/eye_50_crossed.png");
     
     // Recommended movies
+    public static final String recommendTitle = "Rekommendationer";
     public static final String recommendRefreshButtonText = "";
     public static final ImageIcon recommendRefreshButtonIcon = new ImageIcon(
     "img/Button-Refresh-icon_50.png");

@@ -5,18 +5,18 @@ import java.awt.event.ActionListener;
 
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
-import javax.swing.JPanel;
 import javax.swing.LayoutStyle;
 
-public class RecommendPanel extends JPanel {
+public class RecommendPanel extends ViewPanel {
 
     private static final long serialVersionUID = 4596307634677007370L;
-    private ResultPanel resultPanel;
+
     private JButton refreshButton;
 
     private static final int NUMOFMOVIES = 3;
 
     public RecommendPanel() {
+        setTitle(Localization.recommendTitle);
         initComponents();
         resultPanel.search();
     }
@@ -28,6 +28,7 @@ public class RecommendPanel extends JPanel {
             {
                 setColumnHeaderView(null);
             }
+
             @Override
             public void search() {
                 // TODO better search in progress function, maybe some rotating

@@ -1,5 +1,7 @@
 package se.eloff.ultimatemovielibrary;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,6 +19,7 @@ public abstract class ResultPanel extends JScrollPane implements
 
     private static final long serialVersionUID = -7751458552907067506L;
     private JPanel resultPanel;
+
     protected int lastSearchId;
 
     private SortButton[] sortButtons = new SortButton[3];
@@ -24,9 +27,14 @@ public abstract class ResultPanel extends JScrollPane implements
     private boolean orderAscending;
 
     public ResultPanel() {
+
         resultPanel = new JPanel();
         resultPanel.setLayout(new BoxLayout(resultPanel, BoxLayout.PAGE_AXIS));
-        setViewportView(resultPanel);
+
+        JPanel outerPanel = new JPanel(new BorderLayout());
+        outerPanel.add(resultPanel, BorderLayout.NORTH);
+
+        setViewportView(outerPanel);
 
         setColumnHeaderView(createHeader());
         getVerticalScrollBar().setUnitIncrement(20);
@@ -36,13 +44,13 @@ public abstract class ResultPanel extends JScrollPane implements
         Box header = Box.createHorizontalBox();
 
         SortButton titleSortButton = new SortButton(
-                Localization.searchOrderButtonMovieTitle, "name");
+                Localization.searchOrderButtonMovieTitle, "name", SortButton.State.Asc);
         titleSortButton.setPreferredSize(new Dimension(200, 20));
         titleSortButton.addActionListener(this);
         header.add(titleSortButton);
 
         SortButton yearSortButton = new SortButton(
-                Localization.searchOrderButtonMovieYear, "year");
+                Localization.searchOrderButtonMovieYear, "year", SortButton.State.Desc);
         yearSortButton.setPreferredSize(new Dimension(100, 20));
         yearSortButton.addActionListener(this);
         header.add(yearSortButton);
@@ -54,7 +62,7 @@ public abstract class ResultPanel extends JScrollPane implements
         header.add(dummyLabel);
 
         SortButton ratingSortButton = new SortButton(
-                Localization.searchOrderButtonMovieRating, "rating");
+                Localization.searchOrderButtonMovieRating, "rating", SortButton.State.Desc);
         ratingSortButton.setPreferredSize(new Dimension(300, 20));
         ratingSortButton.addActionListener(this);
         header.add(ratingSortButton);
