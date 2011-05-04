@@ -15,6 +15,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -30,6 +31,7 @@ public class AppFrame extends JFrame implements ActionListener {
     private DefaultMenuBar botMenu;
     private DefaultMenuBar topMenu;
     private JPanel centerPanel;
+    private JPanel homePanel;
     private JPanel topPanel = new JPanel();
     private JPanel infoPanel;
     private JLabel titleLabel;
@@ -98,14 +100,18 @@ public class AppFrame extends JFrame implements ActionListener {
         searchPanel = new SearchPanel();
         recomendPanel = new RecommendPanel();
         profilePanel = new ProfilePanel();
+        homePanel = new homePanel();
 
         centerPanel.add(searchPanel, GuiPanel.Search.name());
         centerPanel.add(recomendPanel, GuiPanel.Recommend.name());
         centerPanel.add(profilePanel, GuiPanel.Profile.name());
+        centerPanel.add(homePanel, GuiPanel.Home.name());
         
         infoPanel = new JPanel();
         titleLabel = new JLabel();
         titleLabel.setFont(new java.awt.Font("Lucida Grande", 0, 24)); // NOI18N
+        infoPanel.add(new JLabel(new ImageIcon( Localization.icon )));
+
         infoPanel.add(titleLabel);
 
         // Assemble menus
@@ -119,24 +125,27 @@ public class AppFrame extends JFrame implements ActionListener {
         getContentPane().add(centerPanel, BorderLayout.CENTER);
         getContentPane().add(botMenu, BorderLayout.PAGE_END);
 
-        setCurrentPanel(GuiPanel.Search);
+        setCurrentPanel(GuiPanel.Home);
         setVisible(true);
     }
 
     public void setCurrentPanel(GuiPanel panel) {
+        
         CardLayout layout = (CardLayout) centerPanel.getLayout();
         switch(panel) {
         case Search:
-            titleLabel.setText(Localization.searchTitle);
+            titleLabel.setText(Localization.title + " > " + Localization.searchTitle);
             searchPanel.update();
             break;
         case Recommend:
-            titleLabel.setText(Localization.recommendTitle);
+            titleLabel.setText(Localization.title + " > " + Localization.recommendTitle);
             recomendPanel.update();
             break;
         case Profile:
-            titleLabel.setText(Localization.profileTitle);
+            titleLabel.setText(Localization.title + " > " + Localization.profileTitle);
             break;
+        case Home:
+            getContentPane().remove(botMenu);
         default:
             
             break;
@@ -236,7 +245,7 @@ public class AppFrame extends JFrame implements ActionListener {
     }
 
     enum GuiPanel {
-        Search, Recommend, Profile
+        Search, Recommend, Profile, Home
     }
 
     @Override
