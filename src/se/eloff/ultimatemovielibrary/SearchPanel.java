@@ -69,8 +69,10 @@ public class SearchPanel extends ViewPanel implements DocumentListener {
         this.setLayout(new BorderLayout());
 
         Box searchBox = Box.createHorizontalBox();
+        searchBox.add(Box.createRigidArea(new Dimension(20,20)));
         searchBox.add(titleLabel);
         searchBox.add(searchTextField);
+        searchBox.add(Box.createRigidArea(new Dimension(20,20)));
         searchBox.add(seenToggleButton);
         searchBox.add(Box.createHorizontalGlue());
 
