@@ -50,8 +50,8 @@ public class SearchPanel extends ViewPanel implements DocumentListener {
         searchTextField = new JTextField();
         titleLabel = new JLabel(Localization.searchFieldLabelText);
         seenToggleButton = new JToggleButton();
-        seenToggleButton.setIcon(Localization.movieSeenButtonIcon);
-       // seenToggleButton.doClick();
+        seenToggleButton.setIcon(Localization.searchToggleSeenButtonIcon);
+
         resultPanel.setName("searchResults");
 
         GroupLayout mainPanelLayout = new GroupLayout(this);
@@ -110,10 +110,10 @@ public class SearchPanel extends ViewPanel implements DocumentListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (seenToggleButton.isSelected()) {
-                    seenToggleButton.setIcon(Localization.movieSeenButtonIconDisabled);
+                    seenToggleButton.setIcon(Localization.searchToggleSeenButtonIconHide);
                 } else
                     seenToggleButton
-                            .setIcon(Localization.movieSeenButtonIcon);
+                            .setIcon(Localization.searchToggleSeenButtonIcon);
                 update();
             }
 
