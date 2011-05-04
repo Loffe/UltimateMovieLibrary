@@ -39,6 +39,10 @@ public final class Localization {
     public static final String searchOrderButtonMovieTitle = "Filmtitel";
     public static final String searchOrderButtonMovieYear = "År";
     public static final String searchOrderButtonMovieRating = "Betyg";
+    public static final ImageIcon searchToggleSeenButtonIcon = new ImageIcon(
+    "img/eye_50_crossed_disabled.png");
+    public static final ImageIcon searchToggleSeenButtonIconHide = new ImageIcon(
+    "img/eye_50_crossed.png");
     
     // Recommended movies
     public static final String recommendRefreshButtonText = "";
