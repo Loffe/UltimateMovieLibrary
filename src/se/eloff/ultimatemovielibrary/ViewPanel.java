@@ -9,6 +9,8 @@ public abstract class ViewPanel extends JPanel {
     private static final long serialVersionUID = 7489639404248359628L;
 
     protected ResultPanel resultPanel;
+    
+    private String title;
 
     public ViewPanel() {
         super();
@@ -28,5 +30,13 @@ public abstract class ViewPanel extends JPanel {
 
     public void update() {
         resultPanel.search();
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getTitle() {
+        return title;
     }
 }

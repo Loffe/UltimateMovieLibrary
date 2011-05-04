@@ -17,6 +17,7 @@ import java.awt.event.WindowListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class AppFrame extends JFrame implements ActionListener {
@@ -29,6 +30,8 @@ public class AppFrame extends JFrame implements ActionListener {
     private DefaultMenuBar botMenu;
     private DefaultMenuBar topMenu;
     private JPanel centerPanel;
+    private JPanel infoPanel;
+    private JLabel titleLabel;
 
     public AppFrame() throws HeadlessException {
         // scan the currently watch folders and look for new content
@@ -98,12 +101,20 @@ public class AppFrame extends JFrame implements ActionListener {
         centerPanel.add(searchPanel, GuiPanel.Search.name());
         centerPanel.add(recomendPanel, GuiPanel.Recommend.name());
         centerPanel.add(profilePanel, GuiPanel.Profile.name());
+        
+        infoPanel = new JPanel();
+        titleLabel = new JLabel();
+        infoPanel.add(titleLabel);
 
         // Assemble menus
         initializeTopMenu();
         initializeBotMenu();
 
-        getContentPane().add(topMenu, BorderLayout.PAGE_START);
+        JPanel topPanel = new JPanel();
+        topPanel.setLayout(new BorderLayout());
+        topPanel.add(infoPanel, BorderLayout.WEST);
+        topPanel.add(topMenu, BorderLayout.EAST);
+        getContentPane().add(topPanel, BorderLayout.PAGE_START);
         getContentPane().add(centerPanel, BorderLayout.CENTER);
         getContentPane().add(botMenu, BorderLayout.PAGE_END);
 
@@ -119,6 +130,7 @@ public class AppFrame extends JFrame implements ActionListener {
             recomendPanel.update();
         }
         layout.show(centerPanel, panel.name());
+        titleLabel.setText(panel.name());
     }
 
     public void updateCurrentPanel() {

@@ -33,6 +33,7 @@ public final class Localization {
     public static final String removeWatchFolderConfirmationText = "Vill du sluta bevaka katalogen?\n";
 
     // Search
+    public static final String searchTitle = "Sök";
     public static final String searchFieldLabelText = "Sök efter filmtitel:";
     public static final String searchNoMatchText = "Din sökning matchade inte någon film.";
     public static final String searchInProgressText = "Laddar filmer...";
@@ -41,6 +42,7 @@ public final class Localization {
     public static final String searchOrderButtonMovieRating = "Betyg";
     
     // Recommended movies
+    public static final String recommendTitle = "Rekommendationer";
     public static final String recommendRefreshButtonText = "";
     public static final ImageIcon recommendRefreshButtonIcon = new ImageIcon(
     "img/Button-Refresh-icon_50.png");

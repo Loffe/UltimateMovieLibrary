@@ -15,6 +15,7 @@ public class SearchPanel extends ViewPanel implements DocumentListener {
     private JTextField searchTextField;
 
     public SearchPanel() {
+        setTitle(Localization.searchTitle);
         initComponents();
         resultPanel.search();
     }
