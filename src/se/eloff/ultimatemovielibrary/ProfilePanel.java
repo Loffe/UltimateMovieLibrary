@@ -5,11 +5,9 @@ import java.awt.Dimension;
 
 import javax.swing.Box;
 import javax.swing.DefaultListModel;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JTextField;
-import javax.swing.ListModel;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
@@ -21,6 +19,7 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
     private JTextField searchTextField;
 
     public ProfilePanel() {
+        setTitle(Localization.profileTitle);
         initComponents();
         resultPanel.search();
     }

@@ -90,8 +90,6 @@ public final class Localization {
             "img/arrow-up.png");
     public static final ImageIcon resultPanelArrowDown = new ImageIcon(
             "img/arrow-down.png");
-    
-    public static final String profileTitle = "Profil";
 
     public static final String toolTipsWishDisable = "Ta bort från önskelista";
     public static final String toolTipsWish = "Lägg till i önskelista";
@@ -100,15 +98,17 @@ public final class Localization {
     public static final String toolTipsSeenDisable = "Markera som ej sedd";
     public static final String toolTipsSeen = "Markera som sedd";
     public static final String toolTipsPlay = "Spela upp film";
-
-    // ProfilePanel
-    public static final String profileFavoriteList = "Favoriter";
-    public static final String profileSeenList = "Sedda filmer";
-    public static final String profileWishList = "Önskelista";
-    
     public static final String toolTipsAddWatchFolder = "Hantera bevakade kataloger";
     public static final String toolTipsExit = "Avsluta";
     public static final String toolTipsRefresh = "Nya rekommendationer";
     public static final String toolTipsRating = "Sätt betyg på film";
+
+    // ProfilePanel
+    public static final String profileTitle = "Profil";
+    public static final String profileFavoriteList = "Favoriter";
+    public static final String profileSeenList = "Sedda filmer";
+    public static final String profileWishList = "Önskelista";
+    
+    public static String homeTitle = "Välkommen!";
 
 }

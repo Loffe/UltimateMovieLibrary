@@ -106,18 +106,18 @@ public class AppFrame extends JFrame implements ActionListener {
         centerPanel.add(recomendPanel, GuiPanel.Recommend.name());
         centerPanel.add(profilePanel, GuiPanel.Profile.name());
         centerPanel.add(homePanel, GuiPanel.Home.name());
-        
+
         infoPanel = new JPanel();
         titleLabel = new JLabel();
         titleLabel.setFont(new java.awt.Font("Lucida Grande", 0, 24)); // NOI18N
-        infoPanel.add(new JLabel(new ImageIcon( Localization.icon )));
+        infoPanel.add(new JLabel(new ImageIcon(Localization.icon)));
 
         infoPanel.add(titleLabel);
 
         // Assemble menus
         initializeTopMenu();
         initializeBotMenu();
-        
+
         topPanel.setLayout(new BorderLayout());
         topPanel.add(infoPanel, BorderLayout.WEST);
         topPanel.add(topMenu, BorderLayout.EAST);
@@ -130,28 +130,30 @@ public class AppFrame extends JFrame implements ActionListener {
     }
 
     public void setCurrentPanel(GuiPanel panel) {
-        
+        botMenu.setVisible(true);
         CardLayout layout = (CardLayout) centerPanel.getLayout();
-        switch(panel) {
+        switch (panel) {
         case Search:
-            titleLabel.setText(Localization.title + " > " + Localization.searchTitle);
+            titleLabel.setText(Localization.title + " > "
+                    + Localization.searchTitle);
             searchPanel.update();
             break;
         case Recommend:
-            titleLabel.setText(Localization.title + " > " + Localization.recommendTitle);
+            titleLabel.setText(Localization.title + " > "
+                    + Localization.recommendTitle);
             recomendPanel.update();
             break;
         case Profile:
-            titleLabel.setText(Localization.title + " > " + Localization.profileTitle);
+            titleLabel.setText(Localization.title + " > "
+                    + Localization.profileTitle);
             break;
         case Home:
-            getContentPane().remove(botMenu);
-        default:
-            
+            titleLabel.setText(Localization.title + " > "
+                    + Localization.homeTitle);
+            botMenu.setVisible(false);
             break;
         }
         layout.show(centerPanel, panel.name());
-        
     }
 
     public void updateCurrentPanel() {
@@ -195,7 +197,7 @@ public class AppFrame extends JFrame implements ActionListener {
             }
         });
         topMenu.addButton(watchFolderItem);
-        
+
         watchFolderItem.setToolTipText(Localization.toolTipsAddWatchFolder);
 
         JButton exitItem = new JButton(Localization.menuExitText,
