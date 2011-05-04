@@ -101,4 +101,9 @@ public final class Localization {
     public static final String toolTipsSeen = "Markera som sedd";
     public static final String toolTipsPlay = "Spela upp film";
 
+    // ProfilePanel
+    public static final String profileFavoriteList = "Favoriter";
+    public static final String profileSeenList = "Sedda filmer";
+    public static final String profileWishList = "Önskelista";
+
 }
