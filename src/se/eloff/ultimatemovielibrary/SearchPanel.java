@@ -111,10 +111,11 @@ public class SearchPanel extends ViewPanel implements DocumentListener {
             public void actionPerformed(ActionEvent e) {
                 if (seenToggleButton.isSelected()) {
                     seenToggleButton.setIcon(Localization.searchToggleSeenButtonIconHide);
+                    seenToggleButton.setToolTipText(Localization.toolTipsSearchSeen);
                 } else
-                    seenToggleButton
-                            .setIcon(Localization.searchToggleSeenButtonIcon);
-                update();
+                    seenToggleButton.setIcon(Localization.searchToggleSeenButtonIcon);
+                    seenToggleButton.setToolTipText(Localization.toolTipsSearchSeenDisable);
+                    update();
             }
 
         });
