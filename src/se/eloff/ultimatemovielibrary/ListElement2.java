@@ -67,18 +67,27 @@ public class ListElement2 extends javax.swing.JPanel {
         
         if (movie.isWish()){
             wishButton.setIcon(Localization.movieStarButtonIcon);
-        }else
+            wishButton.setToolTipText(Localization.toolTipsWishDisable);
+        }else{
             wishButton.setIcon(Localization.movieStarButtonIconDisabled);
+            wishButton.setToolTipText(Localization.toolTipsWish);
+        }
         
         if (movie.isFavorite()){
             favoriteButton.setIcon(Localization.movieFavoriteButtonIcon);
-        }else
+            favoriteButton.setToolTipText(Localization.toolTipsFavoriteDisable);
+        }else{
             favoriteButton.setIcon(Localization.movieFavoriteButtonIconDisabled);
+            favoriteButton.setToolTipText(Localization.toolTipsFavorite);
+        }
         
         if (movie.isSeen()){
             seenButton.setIcon(Localization.movieSeenButtonIcon);
-        }else
+            seenButton.setToolTipText(Localization.toolTipsSeenDisable);
+        }else{
             seenButton.setIcon(Localization.movieSeenButtonIconDisabled);
+            seenButton.setToolTipText(Localization.toolTipsSeen);
+        }
         
         wishButton.setSelected(movie.isWish());
         favoriteButton.setSelected(movie.isFavorite());
@@ -240,8 +249,11 @@ public class ListElement2 extends javax.swing.JPanel {
                 movie.setWish(wishButton.isSelected()); 
                 if (movie.isWish()){
                     wishButton.setIcon(Localization.movieStarButtonIcon);
-                }else
+                    wishButton.setToolTipText(Localization.toolTipsWishDisable);
+                }else{
                     wishButton.setIcon(Localization.movieStarButtonIconDisabled);
+                    wishButton.setToolTipText(Localization.toolTipsWish);
+                }
                 
                
                 try {
@@ -259,8 +271,11 @@ public class ListElement2 extends javax.swing.JPanel {
                 movie.setFavorite(favoriteButton.isSelected());
                 if (movie.isFavorite()){
                     favoriteButton.setIcon(Localization.movieFavoriteButtonIcon);
-                }else
+                    favoriteButton.setToolTipText(Localization.toolTipsFavoriteDisable);
+                }else{
                     favoriteButton.setIcon(Localization.movieFavoriteButtonIconDisabled);
+                    favoriteButton.setToolTipText(Localization.toolTipsFavorite);
+                }
                 
                  
                 try {
@@ -278,8 +293,11 @@ public class ListElement2 extends javax.swing.JPanel {
                 movie.setSeen(seenButton.isSelected());
                 if (movie.isSeen()){
                     seenButton.setIcon(Localization.movieSeenButtonIcon);
-                }else
+                    seenButton.setToolTipText(Localization.toolTipsSeenDisable);
+                }else{
                     seenButton.setIcon(Localization.movieSeenButtonIconDisabled);
+                    seenButton.setToolTipText(Localization.toolTipsSeen);
+                }
                  
                 try {
                     DatabaseManager.getInstance().getMovieDao().update(movie);
