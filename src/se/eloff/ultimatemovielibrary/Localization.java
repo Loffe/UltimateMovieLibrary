@@ -105,5 +105,10 @@ public final class Localization {
     public static final String profileFavoriteList = "Favoriter";
     public static final String profileSeenList = "Sedda filmer";
     public static final String profileWishList = "Önskelista";
+    
+    public static final String toolTipsAddWatchFolder = "Hantera bevakade kataloger";
+    public static final String toolTipsExit = "Avsluta";
+    public static final String toolTipsRefresh = "Nya rekommendationer";
+    public static final String toolTipsRating = "Sätt betyg på film";
 
 }
