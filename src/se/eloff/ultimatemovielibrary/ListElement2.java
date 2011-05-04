@@ -62,6 +62,7 @@ public class ListElement2 extends javax.swing.JPanel {
         rating = new RatingButton();
 
         rating.setRating(movie.getRating());
+        rating.setToolTipText(Localization.toolTipsRating);
 
         playButton.setIcon(Localization.moviePlayButtonIcon);
         playButton.setToolTipText(Localization.toolTipsPlay);
