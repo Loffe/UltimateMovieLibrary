@@ -186,9 +186,12 @@ public class AppFrame extends JFrame implements ActionListener {
             }
         });
         topMenu.addButton(watchFolderItem);
+        
+        watchFolderItem.setToolTipText(Localization.toolTipsAddWatchFolder);
 
         JButton exitItem = new JButton(Localization.menuExitText,
                 Localization.menuExitIcon);
+        exitItem.setToolTipText(Localization.toolTipsExit);
         exitItem.addActionListener(new ActionListener() {
 
             @Override

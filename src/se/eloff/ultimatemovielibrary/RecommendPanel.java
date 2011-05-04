@@ -24,6 +24,7 @@ public class RecommendPanel extends ViewPanel {
     private void initComponents() {
         refreshButton = new JButton(Localization.recommendRefreshButtonText,
                 Localization.recommendRefreshButtonIcon);
+        refreshButton.setToolTipText(Localization.toolTipsRefresh);
         resultPanel = new ResultPanel() {
             {
                 setColumnHeaderView(null);
