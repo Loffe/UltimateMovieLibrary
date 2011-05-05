@@ -14,6 +14,8 @@ public class DatabaseManager {
 
     private JdbcConnectionSource source;
     private Dao<Movie, Integer> movieManager;
+    private Dao<List, Integer> listManager;
+    private Dao<MovieList, Integer> movieListManager;
     private Dao<WatchFolder, Integer> watchFolderManager;
 
     private DatabaseManager() {
@@ -28,7 +30,7 @@ public class DatabaseManager {
             source = new JdbcConnectionSource(url);
             getMovieDao();
             getWatchFolderDao();
-            
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -43,6 +45,28 @@ public class DatabaseManager {
         }
 
         return movieManager;
+    }
+
+    public Dao<List, Integer> getListDao() throws SQLException {
+        if (listManager == null) {
+            listManager = DaoManager.createDao(source, List.class);
+            if (!listManager.isTableExists()) {
+                TableUtils.createTable(source, List.class);
+            }
+        }
+
+        return listManager;
+    }
+
+    public Dao<MovieList, Integer> getMovieListDao() throws SQLException {
+        if (movieListManager == null) {
+            movieListManager = DaoManager.createDao(source, MovieList.class);
+            if (!movieListManager.isTableExists()) {
+                TableUtils.createTable(source, MovieList.class);
+            }
+        }
+
+        return movieListManager;
     }
 
     public Dao<WatchFolder, Integer> getWatchFolderDao() throws SQLException {
