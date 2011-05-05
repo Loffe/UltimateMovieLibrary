@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.Box;
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
@@ -18,7 +19,7 @@ public class SearchPanel extends ViewPanel implements DocumentListener {
 
     private JLabel titleLabel;
     private JTextField searchTextField;
-    private JToggleButton seenToggleButton;
+    private JCheckBox hideSeenMoviesCheckBox;
 
     public SearchPanel() {
         setTitle(Localization.searchTitle);
@@ -36,7 +37,7 @@ public class SearchPanel extends ViewPanel implements DocumentListener {
                 // resultPanel.add(new
                 // JLabel(Localization.searchInProgressText));
                 // jScrollPanel.updateUI();
-                if (seenToggleButton.isSelected())
+                if (hideSeenMoviesCheckBox.isSelected())
                     lastSearchId = MovieSearchProvider.searchByNameSeen(
                             searchTextField.getText(), resultPanel,
                             getOrderColumn(), isOrderAscending(), false);
@@ -48,12 +49,8 @@ public class SearchPanel extends ViewPanel implements DocumentListener {
         };
         searchTextField = new JTextField();
         titleLabel = new JLabel(Localization.searchFieldLabelText);
-        seenToggleButton = new JToggleButton();
-        seenToggleButton.setIcon(Localization.searchToggleSeenButtonIcon);
-        seenToggleButton.setSize(52, 52);
-        seenToggleButton.setPreferredSize(new Dimension(52, 52));
-        seenToggleButton.setMinimumSize(new Dimension(52, 52));
-        seenToggleButton.setMaximumSize(new Dimension(52, 52));
+        hideSeenMoviesCheckBox = new JCheckBox(
+                Localization.searchHideSeenMoviesText);
         resultPanel.setName("searchResults");
 
         searchTextField = new JTextField();
@@ -69,7 +66,7 @@ public class SearchPanel extends ViewPanel implements DocumentListener {
         searchBox.add(titleLabel);
         searchBox.add(searchTextField);
         searchBox.add(Box.createRigidArea(new Dimension(20, 20)));
-        searchBox.add(seenToggleButton);
+        searchBox.add(hideSeenMoviesCheckBox);
         searchBox.add(Box.createHorizontalGlue());
 
         Box centerBox = Box.createVerticalBox();
@@ -81,20 +78,19 @@ public class SearchPanel extends ViewPanel implements DocumentListener {
         // add a listener to the input field
         searchTextField.getDocument().addDocumentListener(this);
 
-        seenToggleButton.setToolTipText(Localization.toolTipsSearchSeen);
-        seenToggleButton.addActionListener(new ActionListener() {
+        hideSeenMoviesCheckBox.setToolTipText(Localization.toolTipsSearchSeen);
+        hideSeenMoviesCheckBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (seenToggleButton.isSelected()) {
-                    seenToggleButton
-                            .setIcon(Localization.searchToggleSeenButtonIconHide);
-                    seenToggleButton
+               /* if (hideSeenMoviesCheckBox.isSelected()) {
+
+                    hideSeenMoviesCheckBox
                             .setToolTipText(Localization.toolTipsSearchSeen);
                 } else
-                    seenToggleButton
-                            .setIcon(Localization.searchToggleSeenButtonIcon);
-                seenToggleButton
-                        .setToolTipText(Localization.toolTipsSearchSeenDisable);
+
+                    hideSeenMoviesCheckBox
+                            .setToolTipText(Localization.toolTipsSearchSeenDisable);
+                            */
                 update();
             }
 
