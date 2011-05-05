@@ -35,6 +35,7 @@ public final class Localization {
     // Search
     public static final String searchTitle = "Sök";
     public static final String searchFieldLabelText = "Sök efter filmtitel:";
+    public static final String searchHideSeenMoviesText = "Dölj sedda filmer";
     public static final String searchNoMatchText = "Din sökning matchade inte någon film.";
     public static final String searchInProgressText = "Laddar filmer...";
     public static final String searchOrderButtonMovieTitle = "Filmtitel";
@@ -46,6 +47,7 @@ public final class Localization {
             "img/eye_50_crossed.png");
     public static final String toolTipsSearchSeen = "Visa endast ej sedda filmer (dölj sedda filmer)";
     public static final String toolTipsSearchSeenDisable = "Visa alla filmer";
+
 
     // Recommended movies
     public static final String recommendTitle = "Rekommendationer";
