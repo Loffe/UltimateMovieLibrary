@@ -2,6 +2,7 @@ package se.eloff.ultimatemovielibrary;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.sql.SQLException;
 
 import javax.swing.Box;
 import javax.swing.DefaultListModel;
@@ -45,6 +46,13 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
         listModel.addElement(Localization.profileFavoriteList);
         listModel.addElement(Localization.profileWishList);
         listModel.addElement(Localization.profileSeenList);
+        try {
+            java.util.List<List> my_lists = DatabaseManager.getInstance().getListDao().queryForAll();
+            for (List list : my_lists)
+                listModel.addElement(list);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         JList lists = new JList(listModel);
         lists.setPreferredSize(new Dimension(200, 10));
 
