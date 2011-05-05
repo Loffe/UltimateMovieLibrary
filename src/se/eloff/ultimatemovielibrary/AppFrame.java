@@ -35,6 +35,7 @@ public class AppFrame extends JFrame implements ActionListener {
     private JPanel topPanel = new JPanel();
     private JPanel infoPanel;
     private JLabel titleLabel;
+    private JLabel breadCrumbLabel;
 
     public AppFrame() throws HeadlessException {
         // scan the currently watch folders and look for new content
@@ -108,11 +109,15 @@ public class AppFrame extends JFrame implements ActionListener {
         centerPanel.add(homePanel, GuiPanel.Home.name());
 
         infoPanel = new JPanel();
-        titleLabel = new JLabel();
+        titleLabel = new JLabel(Localization.title + " > ");
         titleLabel.setFont(new java.awt.Font("Lucida Grande", 0, 24)); // NOI18N
+        
+        breadCrumbLabel = new JLabel();
+        breadCrumbLabel.setFont(new java.awt.Font("Lucida Grande", 0, 24)); // NOI18N
+        
         infoPanel.add(new JLabel(new ImageIcon(Localization.icon)));
-
         infoPanel.add(titleLabel);
+        infoPanel.add(breadCrumbLabel);
 
         // Assemble menus
         initializeTopMenu();
@@ -134,22 +139,18 @@ public class AppFrame extends JFrame implements ActionListener {
         CardLayout layout = (CardLayout) centerPanel.getLayout();
         switch (panel) {
         case Search:
-            titleLabel.setText(Localization.title + " > "
-                    + Localization.searchTitle);
+            breadCrumbLabel.setText(Localization.searchTitle);
             searchPanel.update();
             break;
         case Recommend:
-            titleLabel.setText(Localization.title + " > "
-                    + Localization.recommendTitle);
+            breadCrumbLabel.setText(Localization.recommendTitle);
             recomendPanel.update();
             break;
         case Profile:
-            titleLabel.setText(Localization.title + " > "
-                    + Localization.profileTitle);
+            breadCrumbLabel.setText(Localization.profileTitle);
             break;
         case Home:
-            titleLabel.setText(Localization.title + " > "
-                    + Localization.homeTitle);
+            breadCrumbLabel.setText(Localization.homeTitle);
             botMenu.setVisible(false);
             break;
         }
