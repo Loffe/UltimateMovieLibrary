@@ -8,6 +8,7 @@ import java.util.Random;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
+import com.j256.ormlite.stmt.Where;
 
 public class MovieSearchProvider {
 
@@ -85,6 +86,17 @@ public class MovieSearchProvider {
             final boolean useSeen, final boolean seen, final boolean useWish,
             final boolean wish, final boolean useFavorite,
             final boolean favorite) {
+        searchByNameAsync(name, assignedKey, client, orderByColumn, ascending,
+                useSeen, seen, useWish, wish, useFavorite, favorite, null);
+    }
+
+    static private void searchByNameAsync(final String name,
+            final int assignedKey, final MovieSearchClient client,
+            final String orderByColumn, final boolean ascending,
+            final boolean useSeen, final boolean seen, final boolean useWish,
+            final boolean wish, final boolean useFavorite,
+            final boolean favorite,
+            final se.eloff.ultimatemovielibrary.List list) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -94,24 +106,34 @@ public class MovieSearchProvider {
                     QueryBuilder<Movie, Integer> queryBuilder = dbMovie
                             .queryBuilder();
 
+                    Where<Movie, Integer> where = queryBuilder.where();
+                    if (list != null) {
+                        System.out.println("list:" + list.getId());
+                        Dao<MovieList, Integer> movieListDao = DatabaseManager
+                                .getInstance().getMovieListDao();
+                        QueryBuilder<MovieList, Integer> movieListQb = movieListDao
+                                .queryBuilder();
+                        movieListQb.selectColumns("movie_id").where().eq(
+                                "list_id", list.getId());
+
+                        where.in("id", movieListQb).and();
+                    }
+
                     // select any movie that begins with the name string and is
                     // disc 1
                     if (useSeen) {
-                        queryBuilder.where().like("name", "%" + name + "%")
-                                .and().eq("seen", seen).and()
-                                .eq("discnumber", 1);
+                        where.like("name", "%" + name + "%").and().eq("seen",
+                                seen).and().eq("discnumber", 1);
 
                     } else if (useFavorite) {
-                        queryBuilder.where().like("name", "%" + name + "%")
-                                .and().eq("favorite", favorite).and()
-                                .eq("discnumber", 1);
+                        where.like("name", "%" + name + "%").and().eq(
+                                "favorite", favorite).and().eq("discnumber", 1);
                     } else if (useWish) {
-                        queryBuilder.where().like("name", "%" + name + "%")
-                                .and().eq("wish", wish).and()
-                                .eq("discnumber", 1);
+                        where.like("name", "%" + name + "%").and().eq("wish",
+                                wish).and().eq("discnumber", 1);
                     } else {
-                        queryBuilder.where().like("name", "%" + name + "%")
-                                .and().eq("discnumber", 1);
+                        where.like("name", "%" + name + "%").and().eq(
+                                "discnumber", 1);
                     }
 
                     queryBuilder.orderBy(orderByColumn, ascending);
@@ -143,8 +165,8 @@ public class MovieSearchProvider {
                     while (randomMovies.size() < numberOfMovies && rating > -1) {
                         QueryBuilder<Movie, Integer> queryBuilder = dbMovie
                                 .queryBuilder();
-                        queryBuilder.where().eq("discnumber", 1).and()
-                                .eq("seen", false).and().eq("rating", rating);
+                        queryBuilder.where().eq("discnumber", 1).and().eq(
+                                "seen", false).and().eq("rating", rating);
 
                         List<Movie> movies = dbMovie.query(queryBuilder
                                 .prepare());
@@ -175,5 +197,15 @@ public class MovieSearchProvider {
                 }
             }
         }).start();
+    }
+
+    public static int searchByList(String name, MovieSearchClient client,
+            String orderByColumn, boolean ascending,
+            se.eloff.ultimatemovielibrary.List list) {
+        int assignedKey = key;
+        key++;
+        searchByNameAsync(name, assignedKey, client, orderByColumn, ascending,
+                false, false, false, false, false, false, list);
+        return assignedKey;
     }
 }

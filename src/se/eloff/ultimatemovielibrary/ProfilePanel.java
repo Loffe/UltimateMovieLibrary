@@ -9,8 +9,11 @@ import javax.swing.DefaultListModel;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 public class ProfilePanel extends ViewPanel implements DocumentListener {
 
@@ -18,6 +21,8 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
 
     private JLabel titleLabel;
     private JTextField searchTextField;
+
+    private JList lists;
 
     public ProfilePanel() {
         setTitle(Localization.profileTitle);
@@ -36,9 +41,20 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
                 // resultPanel.add(new
                 // JLabel(Localization.searchInProgressText));
                 // jScrollPanel.updateUI();
-                lastSearchId = MovieSearchProvider.searchByNameSeen(
-                        searchTextField.getText(), resultPanel,
-                        getOrderColumn(), isOrderAscending(), true);
+
+                // lastSearchId = MovieSearchProvider.searchByNameSeen(
+                // searchTextField.getText(), resultPanel,
+                // getOrderColumn(), isOrderAscending(), true);
+
+                try {
+                    List selectedList = (List) lists.getSelectedValue();
+                    lastSearchId = MovieSearchProvider.searchByList(
+                            searchTextField.getText(), resultPanel,
+                            getOrderColumn(), isOrderAscending(), selectedList);
+                } catch (ClassCastException e) {
+                    e.printStackTrace();
+                }
+
             }
         };
 
@@ -47,14 +63,23 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
         listModel.addElement(Localization.profileWishList);
         listModel.addElement(Localization.profileSeenList);
         try {
-            java.util.List<List> my_lists = DatabaseManager.getInstance().getListDao().queryForAll();
+            java.util.List<List> my_lists = DatabaseManager.getInstance()
+                    .getListDao().queryForAll();
             for (List list : my_lists)
                 listModel.addElement(list);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        JList lists = new JList(listModel);
+        lists = new JList(listModel);
         lists.setPreferredSize(new Dimension(200, 10));
+        lists.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        lists.addListSelectionListener(new ListSelectionListener() {
+
+            @Override
+            public void valueChanged(ListSelectionEvent event) {
+                resultPanel.search();
+            }
+        });
 
         searchTextField = new JTextField();
         searchTextField.setPreferredSize(new Dimension(200, 30));
