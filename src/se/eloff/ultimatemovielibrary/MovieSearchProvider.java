@@ -108,7 +108,6 @@ public class MovieSearchProvider {
 
                     Where<Movie, Integer> where = queryBuilder.where();
                     if (list != null) {
-                        System.out.println("list:" + list.getId());
                         Dao<MovieList, Integer> movieListDao = DatabaseManager
                                 .getInstance().getMovieListDao();
                         QueryBuilder<MovieList, Integer> movieListQb = movieListDao
