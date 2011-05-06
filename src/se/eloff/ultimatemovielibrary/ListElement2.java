@@ -104,7 +104,7 @@ public class ListElement2 extends javax.swing.JPanel {
         if (movie.getYear() != 0)
             yearLabel.setText(Integer.toString(movie.getYear()));
         else
-            yearLabel.setText(Localization.MovieNoYearText);
+            yearLabel.setText(Localization.movieNoYearText);
         yearLabel.setAlignmentY(0.0F);
 
         seenButton.setHorizontalTextPosition(SwingConstants.RIGHT);

@@ -48,7 +48,6 @@ public final class Localization {
     public static final String toolTipsSearchSeen = "Visa endast ej sedda filmer (dölj sedda filmer)";
     public static final String toolTipsSearchSeenDisable = "Visa alla filmer";
 
-
     // Recommended movies
     public static final String recommendTitle = "Rekommendationer";
     public static final String recommendRefreshButtonText = "";
@@ -74,9 +73,11 @@ public final class Localization {
     public static final ImageIcon movieStarButtonIconDisabled = new ImageIcon(
             "img/Button-Favorite-icon_50_disabled.png");
 
-    public static final String MovieNoYearText = "Okänt";
+    public static final String movieNoYearText = "Okänt";
 
     // Menu
+    public static final int menuHeight = 100;
+    public static final int menuFontSize = 20;
     public static final String menuSearchText = "Sök";
     public static final String menuProfileText = "Profil";
     public static final String menuRecommendText = "Rekommendationer";
@@ -110,7 +111,7 @@ public final class Localization {
     public static final String profileFavoriteList = "Favoriter";
     public static final String profileSeenList = "Sedda filmer";
     public static final String profileWishList = "Önskelista";
-    
+
     public static String homeTitle = "Välkommen!";
 
 }
