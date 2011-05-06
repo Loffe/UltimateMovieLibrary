@@ -7,7 +7,6 @@ import java.awt.DisplayMode;
 import java.awt.FlowLayout;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
-import java.awt.GridLayout;
 import java.awt.HeadlessException;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -121,7 +120,8 @@ public class AppFrame extends JFrame implements ActionListener {
 
         // Assemble menus
         initializeTopMenu();
-        initializeBotMenu();
+        botMenu = new BotMenuBar();
+        botMenu.addActionListener(this);
 
         topPanel.setLayout(new BorderLayout());
         topPanel.add(infoPanel, BorderLayout.WEST);
@@ -160,25 +160,6 @@ public class AppFrame extends JFrame implements ActionListener {
     public void updateCurrentPanel() {
         searchPanel.update();
         recomendPanel.update();
-    }
-
-    private void initializeBotMenu() {
-        // TODO: Break out to its own class?
-        botMenu = new DefaultMenuBar();
-        botMenu.addActionListener(this);
-        botMenu.setLayout(new GridLayout(1, 3));
-
-        JButton searchItem = new JButton(Localization.menuSearchText);
-        searchItem.setActionCommand(GuiPanel.Search.toString());
-        botMenu.addButton(searchItem);
-
-        JButton recommendItem = new JButton(Localization.menuRecommendText);
-        recommendItem.setActionCommand(GuiPanel.Recommend.toString());
-        botMenu.addButton(recommendItem);
-
-        JButton profileItem = new JButton(Localization.menuProfileText);
-        profileItem.setActionCommand(GuiPanel.Profile.toString());
-        botMenu.addButton(profileItem);
     }
 
     private void initializeTopMenu() {
