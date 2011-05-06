@@ -47,12 +47,15 @@ public abstract class ResultPanel extends JScrollPane implements
                 Localization.searchOrderButtonMovieTitle, "name", SortButton.State.Asc);
         titleSortButton.setPreferredSize(new Dimension(200, 20));
         titleSortButton.addActionListener(this);
+        titleSortButton.setToolTipText(Localization.searchOrderButtonMovieTitleToolTip);
+
         header.add(titleSortButton);
 
         SortButton yearSortButton = new SortButton(
                 Localization.searchOrderButtonMovieYear, "year", SortButton.State.Desc);
         yearSortButton.setPreferredSize(new Dimension(100, 20));
         yearSortButton.addActionListener(this);
+        yearSortButton.setToolTipText(Localization.searchOrderButtonMovieYearToolTip);
         header.add(yearSortButton);
 
         header.add(Box.createHorizontalGlue());
@@ -65,6 +68,7 @@ public abstract class ResultPanel extends JScrollPane implements
                 Localization.searchOrderButtonMovieRating, "rating", SortButton.State.Desc);
         ratingSortButton.setPreferredSize(new Dimension(300, 20));
         ratingSortButton.addActionListener(this);
+        ratingSortButton.setToolTipText(Localization.searchOrderButtonMovieRatingToolTip);
         header.add(ratingSortButton);
 
         sortButtons[0] = titleSortButton;

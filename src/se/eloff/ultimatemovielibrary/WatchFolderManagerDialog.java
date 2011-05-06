@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -48,6 +49,7 @@ public class WatchFolderManagerDialog extends JDialog {
 
         // Add a heading
         JLabel heading = new JLabel(Localization.manageWatchFolderHeading);
+        heading.setFont(new Font(heading.getFont().getFontName(), heading.getFont().getStyle(), 20));
         topPanel.add(heading, BorderLayout.NORTH);
 
         // Add a description
