@@ -38,9 +38,14 @@ public final class Localization {
     public static final String searchHideSeenMoviesText = "Dölj sedda filmer";
     public static final String searchNoMatchText = "Din sökning matchade inte någon film.";
     public static final String searchInProgressText = "Laddar filmer...";
+    
     public static final String searchOrderButtonMovieTitle = "Filmtitel";
+    public static final String searchOrderButtonMovieTitleToolTip = "Sortera filmer efter titel";
     public static final String searchOrderButtonMovieYear = "År";
+    public static final String searchOrderButtonMovieYearToolTip = "Sortera filmer efter år";
     public static final String searchOrderButtonMovieRating = "Betyg";
+    public static final String searchOrderButtonMovieRatingToolTip = "Sortera filmer efter betyg";
+
     public static final ImageIcon searchToggleSeenButtonIcon = new ImageIcon(
             "img/eye_50_crossed_disabled.png");
     public static final ImageIcon searchToggleSeenButtonIconHide = new ImageIcon(
