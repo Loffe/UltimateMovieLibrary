@@ -12,13 +12,16 @@ public final class Localization {
 
     // App
     public static final String title = "Ultimate Movie Library";
+    public static final int titleFontSize = 24;
     public static final Image icon = new ImageIcon("img/video_16.png")
             .getImage();
+    public static final int breadCrumbFontSize = 24;
 
     // Watch Folder Manager
     public static final ImageIcon watchFolderIcon = new ImageIcon(
             "img/folder_32.png");
     public static final String manageWatchFolderHeading = "Hantera bevakade mappar";
+    public static final int manageWatchFolderHeadingFontSize = 20;
     public static final String manageWatchFolderDescription = "Här kan du välja att lägga till eller ta bort bevakade kataloger.";
 
     public static final String addWatchFolderButtonText = "Bevaka en katalog ...";
@@ -38,7 +41,7 @@ public final class Localization {
     public static final String searchHideSeenMoviesText = "Dölj sedda filmer";
     public static final String searchNoMatchText = "Din sökning matchade inte någon film.";
     public static final String searchInProgressText = "Laddar filmer...";
-    
+
     public static final String searchOrderButtonMovieTitle = "Filmtitel";
     public static final String searchOrderButtonMovieTitleToolTip = "Sortera filmer efter titel";
     public static final String searchOrderButtonMovieYear = "År";
@@ -80,6 +83,9 @@ public final class Localization {
 
     public static final String movieNoYearText = "Okänt";
 
+    public static final int movieTitleFontSize = 24;
+    public static final int movieYearFontSize = 16;
+
     // Menu
     public static final int menuHeight = 100;
     public static final int menuFontSize = 20;
@@ -117,6 +123,8 @@ public final class Localization {
     public static final String profileSeenList = "Sedda filmer";
     public static final String profileWishList = "Önskelista";
 
+    // HomePanel
     public static String homeTitle = "Välkommen!";
+    public static final int homePanelFontSize = 40;
 
 }

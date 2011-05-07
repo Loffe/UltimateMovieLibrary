@@ -1,17 +1,15 @@
 package se.eloff.ultimatemovielibrary;
 
+import java.awt.Font;
 import java.sql.SQLException;
 
-import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.JButton;
 import javax.swing.GroupLayout;
-import javax.swing.JPanel;
+import javax.swing.JComponent;
 import javax.swing.LayoutStyle;
 
-import com.j256.ormlite.dao.Dao;
-
 public class ListElement extends JComponent {
+
+    private static final long serialVersionUID = -9058161082404108486L;
 
     private Movie movie;
 
@@ -55,11 +53,13 @@ public class ListElement extends JComponent {
             }
         });
 
-        TitleLabel.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        TitleLabel.setFont(new Font(TitleLabel.getFont().getName(), TitleLabel
+                .getFont().getStyle(), Localization.movieTitleFontSize));
         TitleLabel.setText(movie.getName());
         TitleLabel.setAlignmentY(0.0F);
 
-        YearLabel.setFont(new java.awt.Font("Lucida Grande", 0, 16)); // NOI18N
+        YearLabel.setFont(new Font(YearLabel.getFont().getName(), YearLabel
+                .getFont().getStyle(), Localization.movieYearFontSize));
         YearLabel.setText(Integer.toString(movie.getYear()));
         YearLabel.setAlignmentY(0.0F);
 

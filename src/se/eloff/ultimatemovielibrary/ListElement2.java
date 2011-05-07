@@ -11,6 +11,7 @@
 
 package se.eloff.ultimatemovielibrary;
 
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
@@ -66,41 +67,44 @@ public class ListElement2 extends javax.swing.JPanel {
 
         playButton.setIcon(Localization.moviePlayButtonIcon);
         playButton.setToolTipText(Localization.toolTipsPlay);
-        
-        if (movie.isWish()){
+
+        if (movie.isWish()) {
             wishButton.setIcon(Localization.movieStarButtonIcon);
             wishButton.setToolTipText(Localization.toolTipsWishDisable);
-        }else{
+        } else {
             wishButton.setIcon(Localization.movieStarButtonIconDisabled);
             wishButton.setToolTipText(Localization.toolTipsWish);
         }
-        
-        if (movie.isFavorite()){
+
+        if (movie.isFavorite()) {
             favoriteButton.setIcon(Localization.movieFavoriteButtonIcon);
             favoriteButton.setToolTipText(Localization.toolTipsFavoriteDisable);
-        }else{
-            favoriteButton.setIcon(Localization.movieFavoriteButtonIconDisabled);
+        } else {
+            favoriteButton
+                    .setIcon(Localization.movieFavoriteButtonIconDisabled);
             favoriteButton.setToolTipText(Localization.toolTipsFavorite);
         }
-        
-        if (movie.isSeen()){
+
+        if (movie.isSeen()) {
             seenButton.setIcon(Localization.movieSeenButtonIcon);
             seenButton.setToolTipText(Localization.toolTipsSeenDisable);
-        }else{
+        } else {
             seenButton.setIcon(Localization.movieSeenButtonIconDisabled);
             seenButton.setToolTipText(Localization.toolTipsSeen);
         }
-        
+
         wishButton.setSelected(movie.isWish());
         favoriteButton.setSelected(movie.isFavorite());
         seenButton.setSelected(movie.isSeen());
 
-        titleLabel.setFont(new java.awt.Font("Lucida Grande", 0, 24)); // NOI18N
+        titleLabel.setFont(new Font(titleLabel.getFont().getName(), titleLabel
+                .getFont().getStyle(), Localization.movieTitleFontSize));
         titleLabel.setText(movie.getName());
         titleLabel.setAlignmentY(0.0F);
         titleLabel.setText(movie.getName());
 
-        yearLabel.setFont(new java.awt.Font("Lucida Grande", 0, 16)); // NOI18N
+        yearLabel.setFont(new Font(yearLabel.getFont().getName(), yearLabel
+                .getFont().getStyle(), Localization.movieYearFontSize));
         if (movie.getYear() != 0)
             yearLabel.setText(Integer.toString(movie.getYear()));
         else
@@ -244,20 +248,20 @@ public class ListElement2 extends javax.swing.JPanel {
                 }
             }
         });
-        
+
         wishButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                movie.setWish(wishButton.isSelected()); 
-                if (movie.isWish()){
+                movie.setWish(wishButton.isSelected());
+                if (movie.isWish()) {
                     wishButton.setIcon(Localization.movieStarButtonIcon);
                     wishButton.setToolTipText(Localization.toolTipsWishDisable);
-                }else{
-                    wishButton.setIcon(Localization.movieStarButtonIconDisabled);
+                } else {
+                    wishButton
+                            .setIcon(Localization.movieStarButtonIconDisabled);
                     wishButton.setToolTipText(Localization.toolTipsWish);
                 }
-                
-               
+
                 try {
                     DatabaseManager.getInstance().getMovieDao().update(movie);
                 } catch (SQLException e1) {
@@ -266,20 +270,23 @@ public class ListElement2 extends javax.swing.JPanel {
                 }
             }
         });
-        
+
         favoriteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 movie.setFavorite(favoriteButton.isSelected());
-                if (movie.isFavorite()){
-                    favoriteButton.setIcon(Localization.movieFavoriteButtonIcon);
-                    favoriteButton.setToolTipText(Localization.toolTipsFavoriteDisable);
-                }else{
-                    favoriteButton.setIcon(Localization.movieFavoriteButtonIconDisabled);
-                    favoriteButton.setToolTipText(Localization.toolTipsFavorite);
+                if (movie.isFavorite()) {
+                    favoriteButton
+                            .setIcon(Localization.movieFavoriteButtonIcon);
+                    favoriteButton
+                            .setToolTipText(Localization.toolTipsFavoriteDisable);
+                } else {
+                    favoriteButton
+                            .setIcon(Localization.movieFavoriteButtonIconDisabled);
+                    favoriteButton
+                            .setToolTipText(Localization.toolTipsFavorite);
                 }
-                
-                 
+
                 try {
                     DatabaseManager.getInstance().getMovieDao().update(movie);
                 } catch (SQLException e1) {
@@ -288,19 +295,20 @@ public class ListElement2 extends javax.swing.JPanel {
                 }
             }
         });
-        
+
         seenButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 movie.setSeen(seenButton.isSelected());
-                if (movie.isSeen()){
+                if (movie.isSeen()) {
                     seenButton.setIcon(Localization.movieSeenButtonIcon);
                     seenButton.setToolTipText(Localization.toolTipsSeenDisable);
-                }else{
-                    seenButton.setIcon(Localization.movieSeenButtonIconDisabled);
+                } else {
+                    seenButton
+                            .setIcon(Localization.movieSeenButtonIconDisabled);
                     seenButton.setToolTipText(Localization.toolTipsSeen);
                 }
-                 
+
                 try {
                     DatabaseManager.getInstance().getMovieDao().update(movie);
                 } catch (SQLException e1) {

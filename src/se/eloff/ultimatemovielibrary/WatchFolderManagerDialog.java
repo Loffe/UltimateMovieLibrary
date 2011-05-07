@@ -49,7 +49,9 @@ public class WatchFolderManagerDialog extends JDialog {
 
         // Add a heading
         JLabel heading = new JLabel(Localization.manageWatchFolderHeading);
-        heading.setFont(new Font(heading.getFont().getFontName(), heading.getFont().getStyle(), 20));
+        heading.setFont(new Font(heading.getFont().getFontName(), heading
+                .getFont().getStyle(),
+                Localization.manageWatchFolderHeadingFontSize));
         topPanel.add(heading, BorderLayout.NORTH);
 
         // Add a description

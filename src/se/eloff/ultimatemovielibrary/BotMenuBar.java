@@ -39,7 +39,7 @@ public class BotMenuBar extends DefaultMenuBar {
                 Localization.menuRecommendText);
         recommendItem.setActionCommand(GuiPanel.Recommend.toString());
         recommendItem.setFont(new Font(recommendItem.getFont().getName(),
-                recommendItem.getFont().getStyle(), 20));
+                recommendItem.getFont().getStyle(), Localization.menuFontSize));
         addButton(recommendItem);
         toggleButtons.add(recommendItem);
 
@@ -47,17 +47,21 @@ public class BotMenuBar extends DefaultMenuBar {
                 Localization.menuProfileText);
         profileItem.setActionCommand(GuiPanel.Profile.toString());
         profileItem.setFont(new Font(profileItem.getFont().getName(),
-                profileItem.getFont().getStyle(), 20));
+                profileItem.getFont().getStyle(), Localization.menuFontSize));
         addButton(profileItem);
         toggleButtons.add(profileItem);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        // Send the action command to the parent through DefaultMenuBar.
         super.actionPerformed(e);
         Object source = e.getSource();
+        // Ignore if not a ToggleButton
         if (!source.getClass().equals(JToggleButton.class))
             return;
+        // Go through all ToggleButtons and enable the clicked one, disable
+        // the others.
         for (JToggleButton b : toggleButtons) {
             if (source == b) {
                 b.setSelected(true);

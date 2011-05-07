@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Random;
 
 import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.Where;
 
@@ -175,7 +174,6 @@ public class MovieSearchProvider {
                         if (movies.size() > numberOfMovies
                                 - randomMovies.size()) {
                             Random randomGenerator = new Random();
-                            Movie movie;
                             while (movies.size() > numberOfMovies
                                     - randomMovies.size()) {
                                 movies.remove(randomGenerator.nextInt(movies

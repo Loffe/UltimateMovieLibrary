@@ -9,6 +9,9 @@ import javax.swing.JButton;
 
 import se.eloff.ultimatemovielibrary.AppFrame.GuiPanel;
 
+/**
+ * The home (welcome) screen of the App.
+ */
 public class HomePanel extends ViewPanel {
 
     private static final long serialVersionUID = -1330911467882141312L;
@@ -21,6 +24,12 @@ public class HomePanel extends ViewPanel {
 
     private final int gapsize = 100;
 
+    /**
+     * Constructor. Creates a new HomePanel (welcome screen).
+     * 
+     * @param parent
+     *            the AppFrame parent.
+     */
     public HomePanel(AppFrame parent) {
         setTitle(Localization.searchTitle);
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
@@ -41,9 +50,9 @@ public class HomePanel extends ViewPanel {
         recommendItem.setMaximumSize(new Dimension(xsize, ysize));
         profileItem.setMaximumSize(new Dimension(xsize, ysize));
 
+        // Set font
         Font f = new Font(searchItem.getFont().getName(), searchItem.getFont()
-                .getStyle(), 40);
-
+                .getStyle(), Localization.homePanelFontSize);
         searchItem.setFont(f);
         recommendItem.setFont(f);
         profileItem.setFont(f);
@@ -65,7 +74,6 @@ public class HomePanel extends ViewPanel {
 
         profileItem.addActionListener(parent);
         profileItem.setActionCommand(GuiPanel.Profile.toString());
-
     }
 
 }

@@ -5,6 +5,7 @@ import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.DisplayMode;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.HeadlessException;
@@ -109,11 +110,14 @@ public class AppFrame extends JFrame implements ActionListener {
 
         infoPanel = new JPanel();
         titleLabel = new JLabel(Localization.title + " > ");
-        titleLabel.setFont(new java.awt.Font("Lucida Grande", 0, 24)); // NOI18N
-        
+        titleLabel.setFont(new Font(titleLabel.getFont().getName(), titleLabel
+                .getFont().getStyle(), Localization.titleFontSize));
+
         breadCrumbLabel = new JLabel();
-        breadCrumbLabel.setFont(new java.awt.Font("Lucida Grande", 0, 24)); // NOI18N
-        
+        breadCrumbLabel.setFont(new Font(breadCrumbLabel.getFont().getName(),
+                breadCrumbLabel.getFont().getStyle(),
+                Localization.breadCrumbFontSize));
+
         infoPanel.add(new JLabel(new ImageIcon(Localization.icon)));
         infoPanel.add(titleLabel);
         infoPanel.add(breadCrumbLabel);
