@@ -78,14 +78,14 @@ public abstract class ResultPanel extends JScrollPane implements
     }
 
     @Override
-    public void searchFinished(List<Movie> movies, int searchKey) {
+    public void searchFinished(List<LocalMovie> movies, int searchKey) {
         if (lastSearchId == searchKey) {
             resultPanel.removeAll();
             if (movies.isEmpty()) {
                 resultPanel.add(new JLabel(Localization.searchNoMatchText));
                 repaint();
             } else {
-                for (Movie movie : movies) {
+                for (LocalMovie movie : movies) {
                     resultPanel.add(new ListElement2(movie));
                 }
             }

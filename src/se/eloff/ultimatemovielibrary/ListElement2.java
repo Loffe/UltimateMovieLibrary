@@ -38,10 +38,10 @@ public class ListElement2 extends javax.swing.JPanel {
     private JToggleButton seenButton;
     private JToggleButton wishButton;
     private JToggleButton favoriteButton;
-    private Movie movie;
+    private LocalMovie movie;
 
     /** Creates new form ListItem2 */
-    public ListElement2(Movie movie) {
+    public ListElement2(LocalMovie movie) {
         this.movie = movie;
         initComponents();
     }

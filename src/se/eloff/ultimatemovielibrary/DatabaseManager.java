@@ -13,7 +13,8 @@ public class DatabaseManager {
     private static DatabaseManager instance = null;
 
     private JdbcConnectionSource source;
-    private Dao<Movie, Integer> movieManager;
+    private Dao<LocalMovie, Integer> movieManager;
+    private Dao<MovieInfo, Integer> movieInfoManager;
     private Dao<Playlist, Integer> listManager;
     private Dao<MovieList, Integer> movieListManager;
     private Dao<WatchFolder, Integer> watchFolderManager;
@@ -36,15 +37,26 @@ public class DatabaseManager {
         }
     }
 
-    public Dao<Movie, Integer> getMovieDao() throws SQLException {
+    public Dao<LocalMovie, Integer> getMovieDao() throws SQLException {
         if (movieManager == null) {
-            movieManager = DaoManager.createDao(source, Movie.class);
+            movieManager = DaoManager.createDao(source, LocalMovie.class);
             if (!movieManager.isTableExists()) {
-                TableUtils.createTable(source, Movie.class);
+                TableUtils.createTable(source, LocalMovie.class);
             }
         }
 
         return movieManager;
+    }
+    
+    public Dao<MovieInfo, Integer> getMovieInfoDao() throws SQLException {
+        if (movieInfoManager == null) {
+            movieInfoManager = DaoManager.createDao(source, MovieInfo.class);
+            if (!movieInfoManager.isTableExists()) {
+                TableUtils.createTable(source, MovieInfo.class);
+            }
+        }
+
+        return movieInfoManager;
     }
 
     public Dao<Playlist, Integer> getListDao() throws SQLException {

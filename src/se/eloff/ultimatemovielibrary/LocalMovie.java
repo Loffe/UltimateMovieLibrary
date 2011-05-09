@@ -4,7 +4,7 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable(tableName = "movies")
-public class Movie implements Comparable<Movie> {
+public class LocalMovie implements Comparable<LocalMovie> {
     @DatabaseField(generatedId = true)
     private int id;
 
@@ -31,11 +31,23 @@ public class Movie implements Comparable<Movie> {
     
     @DatabaseField
     private boolean wish;
+    
+    //TODO: replace with a info object later
+    @DatabaseField(foreign= true, canBeNull = true, columnName = "info_id")
+    private MovieInfo info_id = null;
+    
+    public MovieInfo getInfo_id() {
+        return info_id;
+    }
 
-    public Movie() {
+    public void setInfo_id(MovieInfo info) {
+        this.info_id = info;
+    }
+
+    public LocalMovie() {
     }
     
-    public Movie(String name, int year, String filepath) {
+    public LocalMovie(String name, int year, String filepath) {
         this(name, year, filepath, 1, 0);
     }
 
@@ -47,7 +59,7 @@ public class Movie implements Comparable<Movie> {
         this.rating = rating;
     }
 
-    public Movie(String name, int year, String filepath, int discnumber, int rating) {
+    public LocalMovie(String name, int year, String filepath, int discnumber, int rating) {
         this.name = name;
         this.year = year;
         this.discnumber = discnumber;
@@ -116,7 +128,7 @@ public class Movie implements Comparable<Movie> {
     }
 
     @Override
-    public int compareTo(Movie arg0) {
+    public int compareTo(LocalMovie arg0) {
         return this.getName().toLowerCase().compareTo(
                 arg0.getName().toLowerCase());
     }

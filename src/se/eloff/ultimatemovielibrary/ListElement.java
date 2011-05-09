@@ -11,10 +11,10 @@ public class ListElement extends JComponent {
 
     private static final long serialVersionUID = -9058161082404108486L;
 
-    private Movie movie;
+    private LocalMovie movie;
 
     /** Creates new form TheGui */
-    public ListElement(Movie movie) {
+    public ListElement(LocalMovie movie) {
         this.movie = movie;
         initComponents();
     }

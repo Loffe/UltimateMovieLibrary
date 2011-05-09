@@ -44,13 +44,13 @@ public class Playlist {
         return id;
     }
 
-    public ArrayList<Movie> getMovies() throws SQLException {
-        ArrayList<Movie> list = new ArrayList<Movie>();
-        Dao<Movie, Integer> movieDao = DatabaseManager.getInstance()
+    public ArrayList<LocalMovie> getMovies() throws SQLException {
+        ArrayList<LocalMovie> list = new ArrayList<LocalMovie>();
+        Dao<LocalMovie, Integer> movieDao = DatabaseManager.getInstance()
                 .getMovieDao();
 
         for (MovieList ml : movie_list) {
-            Movie m = ml.getMovie();
+            LocalMovie m = ml.getMovie();
             movieDao.refresh(m);
             list.add(m);
         }
@@ -62,32 +62,32 @@ public class Playlist {
                 .getListDao();
         Dao<MovieList, Integer> movieListDao = DatabaseManager.getInstance()
                 .getMovieListDao();
-        Dao<Movie, Integer> movieDao = DatabaseManager.getInstance()
+        Dao<LocalMovie, Integer> movieDao = DatabaseManager.getInstance()
                 .getMovieDao();
 
         Playlist myFavs = listDao.queryForId(1);
-        for (Movie m : myFavs.getMovies()) {
+        for (LocalMovie m : myFavs.getMovies()) {
             System.out.println(m.getName());
         }
 
         String sql = "select name, year, filepath, discnumber, rating from movies_lists ml"
                 + " left join movies m on ml.movie_id = m.id"
                 + " order by ml.position asc";
-        RawRowMapper<Movie> rowMapper = new RawRowMapper<Movie>() {
+        RawRowMapper<LocalMovie> rowMapper = new RawRowMapper<LocalMovie>() {
 
             @Override
-            public Movie mapRow(String[] columnNames, String[] resultColumns)
+            public LocalMovie mapRow(String[] columnNames, String[] resultColumns)
                     throws SQLException {
-                return new Movie(resultColumns[0], Integer
+                return new LocalMovie(resultColumns[0], Integer
                         .parseInt(resultColumns[1]), resultColumns[2], Integer
                         .parseInt(resultColumns[3]), Integer
                         .parseInt(resultColumns[4]));
             }
         };
-        GenericRawResults<Movie> res = movieDao.queryRaw(sql, rowMapper);
+        GenericRawResults<LocalMovie> res = movieDao.queryRaw(sql, rowMapper);
 
         System.out.println("RawResults");
-        for (Movie m : res) {
+        for (LocalMovie m : res) {
             System.out.println(m.getName());
         }
 

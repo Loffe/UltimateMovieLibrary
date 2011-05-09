@@ -100,7 +100,7 @@ public class MovieSearchProvider {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                Dao<Movie, Integer> movieDao;
+                Dao<LocalMovie, Integer> movieDao;
                 try {
                     movieDao = DatabaseManager.getInstance().getMovieDao();
 
@@ -111,7 +111,12 @@ public class MovieSearchProvider {
                         order_clause += ascending ? " ASC" : " DESC";
                     }
 
-                    String list_id = String.valueOf(list.getId());
+                    String list_id;
+                    if (list != null) {
+                        list_id = String.valueOf(list.getId());
+                    } else {
+                        list_id = "list_id";
+                    }
 
                     String sql = "select m.id, name, year, filepath, discnumber, rating, seen"
                             + " from movies_lists ml"
@@ -119,12 +124,12 @@ public class MovieSearchProvider {
                             + " where discnumber = 1"
                             + " and list_id = "
                             + list_id + " order by " + order_clause;
-                    RawRowMapper<Movie> rowMapper = new RawRowMapper<Movie>() {
+                    RawRowMapper<LocalMovie> rowMapper = new RawRowMapper<LocalMovie>() {
                         @Override
-                        public Movie mapRow(String[] columnNames,
+                        public LocalMovie mapRow(String[] columnNames,
                                 String[] resultColumns) throws SQLException {
-                            Movie m = new Movie(resultColumns[1], Integer
-                                    .parseInt(resultColumns[2]),
+                            LocalMovie m = new LocalMovie(resultColumns[1],
+                                    Integer.parseInt(resultColumns[2]),
                                     resultColumns[3], Integer
                                             .parseInt(resultColumns[4]),
                                     Integer.parseInt(resultColumns[5]));
@@ -134,10 +139,10 @@ public class MovieSearchProvider {
                             return m;
                         }
                     };
-                    GenericRawResults<Movie> res = movieDao.queryRaw(sql,
+                    GenericRawResults<LocalMovie> res = movieDao.queryRaw(sql,
                             rowMapper);
 
-                    List<Movie> movies = res.getResults();
+                    List<LocalMovie> movies = res.getResults();
                     client.searchFinished(movies, assignedKey);
                 } catch (SQLException e) {
                     System.out.println("error searching for movies");
@@ -153,21 +158,21 @@ public class MovieSearchProvider {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                Dao<Movie, Integer> dbMovie;
+                Dao<LocalMovie, Integer> dbMovie;
                 try {
                     // TODO nicer random function, maybe get random objects from
                     // the database in the first place... how?
                     dbMovie = DatabaseManager.getInstance().getMovieDao();
-                    ArrayList<Movie> randomMovies = new ArrayList<Movie>();
+                    ArrayList<LocalMovie> randomMovies = new ArrayList<LocalMovie>();
                     int rating = 5;
                     // get movies until we have as many we need
                     while (randomMovies.size() < numberOfMovies && rating > -1) {
-                        QueryBuilder<Movie, Integer> queryBuilder = dbMovie
+                        QueryBuilder<LocalMovie, Integer> queryBuilder = dbMovie
                                 .queryBuilder();
                         queryBuilder.where().eq("discnumber", 1).and().eq(
                                 "seen", false).and().eq("rating", rating);
 
-                        List<Movie> movies = dbMovie.query(queryBuilder
+                        List<LocalMovie> movies = dbMovie.query(queryBuilder
                                 .prepare());
 
                         // there are more movies with this rating than we need,

@@ -9,7 +9,7 @@ public class MovieList {
     private int id;
 
     @DatabaseField(canBeNull = false, foreign = true)
-    private Movie movie;
+    private LocalMovie movie;
 
     @DatabaseField(canBeNull = false, foreign = true, uniqueIndex = true, uniqueIndexName = "playlist")
     private Playlist list;
@@ -20,12 +20,12 @@ public class MovieList {
     public MovieList() {
     }
 
-    public MovieList(Movie movie, Playlist list) {
+    public MovieList(LocalMovie movie, Playlist list) {
         this.movie = movie;
         this.list = list;
     }
 
-    public Movie getMovie() {
+    public LocalMovie getMovie() {
         return movie;
     }
 
