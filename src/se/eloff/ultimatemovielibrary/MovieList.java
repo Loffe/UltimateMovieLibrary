@@ -15,7 +15,7 @@ public class MovieList {
     private Playlist list;
 
     @DatabaseField(canBeNull = false, uniqueIndex = true, uniqueIndexName = "playlist")
-    private int order;
+    private int position;
 
     public MovieList() {
     }
@@ -33,11 +33,11 @@ public class MovieList {
         return list;
     }
 
-    public int getOrder() {
-        return order;
+    public int getPosition() {
+        return position;
     }
 
-    public void setOrder(int order) {
-        this.order = order;
+    public void setPosition(int position) {
+        this.position = position;
     }
 }

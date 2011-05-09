@@ -3,8 +3,13 @@ package se.eloff.ultimatemovielibrary;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import javax.swing.tree.RowMapper;
+import javax.swing.tree.TreePath;
+
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.ForeignCollection;
+import com.j256.ormlite.dao.GenericRawResults;
+import com.j256.ormlite.dao.RawRowMapper;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
@@ -53,14 +58,36 @@ public class Playlist {
     }
 
     public static void main(String[] args) throws SQLException {
-        Dao<Playlist, Integer> listDao = DatabaseManager.getInstance().getListDao();
+        Dao<Playlist, Integer> listDao = DatabaseManager.getInstance()
+                .getListDao();
         Dao<MovieList, Integer> movieListDao = DatabaseManager.getInstance()
                 .getMovieListDao();
         Dao<Movie, Integer> movieDao = DatabaseManager.getInstance()
                 .getMovieDao();
 
-        Playlist myFavs = listDao.queryForId(2);
+        Playlist myFavs = listDao.queryForId(1);
         for (Movie m : myFavs.getMovies()) {
+            System.out.println(m.getName());
+        }
+
+        String sql = "select name, year, filepath, discnumber, rating from movies_lists ml"
+                + " left join movies m on ml.movie_id = m.id"
+                + " order by ml.position asc";
+        RawRowMapper<Movie> rowMapper = new RawRowMapper<Movie>() {
+
+            @Override
+            public Movie mapRow(String[] columnNames, String[] resultColumns)
+                    throws SQLException {
+                return new Movie(resultColumns[0], Integer
+                        .parseInt(resultColumns[1]), resultColumns[2], Integer
+                        .parseInt(resultColumns[3]), Integer
+                        .parseInt(resultColumns[4]));
+            }
+        };
+        GenericRawResults<Movie> res = movieDao.queryRaw(sql, rowMapper);
+
+        System.out.println("RawResults");
+        for (Movie m : res) {
             System.out.println(m.getName());
         }
 

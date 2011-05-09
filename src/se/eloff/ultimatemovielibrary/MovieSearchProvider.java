@@ -6,8 +6,9 @@ import java.util.List;
 import java.util.Random;
 
 import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.dao.GenericRawResults;
+import com.j256.ormlite.dao.RawRowMapper;
 import com.j256.ormlite.stmt.QueryBuilder;
-import com.j256.ormlite.stmt.Where;
 
 public class MovieSearchProvider {
 
@@ -99,44 +100,44 @@ public class MovieSearchProvider {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                Dao<Movie, Integer> dbMovie;
+                Dao<Movie, Integer> movieDao;
                 try {
-                    dbMovie = DatabaseManager.getInstance().getMovieDao();
-                    QueryBuilder<Movie, Integer> queryBuilder = dbMovie
-                            .queryBuilder();
+                    movieDao = DatabaseManager.getInstance().getMovieDao();
 
-                    Where<Movie, Integer> where = queryBuilder.where();
-                    if (list != null) {
-                        Dao<MovieList, Integer> movieListDao = DatabaseManager
-                                .getInstance().getMovieListDao();
-                        QueryBuilder<MovieList, Integer> movieListQb = movieListDao
-                                .queryBuilder();
-                        movieListQb.selectColumns("movie_id").where().eq(
-                                "list_id", list.getId());
+                    String order_clause = "ml.position asc";
 
-                        where.in("id", movieListQb).and();
+                    if (orderByColumn != null) {
+                        order_clause = orderByColumn;
                     }
+                    order_clause += ascending ? " ASC" : " DESC";
 
-                    // select any movie that begins with the name string and is
-                    // disc 1
-                    if (useSeen) {
-                        where.like("name", "%" + name + "%").and().eq("seen",
-                                seen).and().eq("discnumber", 1);
+                    String list_id = String.valueOf(list.getId());
 
-                    } else if (useFavorite) {
-                        where.like("name", "%" + name + "%").and().eq(
-                                "favorite", favorite).and().eq("discnumber", 1);
-                    } else if (useWish) {
-                        where.like("name", "%" + name + "%").and().eq("wish",
-                                wish).and().eq("discnumber", 1);
-                    } else {
-                        where.like("name", "%" + name + "%").and().eq(
-                                "discnumber", 1);
-                    }
+                    String sql = "select m.id, name, year, filepath, discnumber, rating, seen"
+                            + " from movies_lists ml"
+                            + " left join movies m on ml.movie_id = m.id"
+                            + " where discnumber = 1"
+                            + " and list_id = "
+                            + list_id + " order by " + order_clause;
+                    RawRowMapper<Movie> rowMapper = new RawRowMapper<Movie>() {
+                        @Override
+                        public Movie mapRow(String[] columnNames,
+                                String[] resultColumns) throws SQLException {
+                            Movie m = new Movie(resultColumns[1], Integer
+                                    .parseInt(resultColumns[2]),
+                                    resultColumns[3], Integer
+                                            .parseInt(resultColumns[4]),
+                                    Integer.parseInt(resultColumns[5]));
+                            boolean seen = resultColumns[6].equals("1");
+                            m.setId(Integer.parseInt(resultColumns[0]));
+                            m.setSeen(seen);
+                            return m;
+                        }
+                    };
+                    GenericRawResults<Movie> res = movieDao.queryRaw(sql,
+                            rowMapper);
 
-                    queryBuilder.orderBy(orderByColumn, ascending);
-
-                    List<Movie> movies = dbMovie.query(queryBuilder.prepare());
+                    List<Movie> movies = res.getResults();
                     client.searchFinished(movies, assignedKey);
                 } catch (SQLException e) {
                     System.out.println("error searching for movies");
