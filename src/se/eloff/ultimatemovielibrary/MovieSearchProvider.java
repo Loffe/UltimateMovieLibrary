@@ -108,8 +108,8 @@ public class MovieSearchProvider {
 
                     if (orderByColumn != null) {
                         order_clause = orderByColumn;
+                        order_clause += ascending ? " ASC" : " DESC";
                     }
-                    order_clause += ascending ? " ASC" : " DESC";
 
                     String list_id = String.valueOf(list.getId());
 
