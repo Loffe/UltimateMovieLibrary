@@ -12,12 +12,12 @@ public class MovieList {
     private Movie movie;
 
     @DatabaseField(canBeNull = false, foreign = true)
-    private List list;
+    private Playlist list;
 
     public MovieList() {
     }
 
-    public MovieList(Movie movie, List list) {
+    public MovieList(Movie movie, Playlist list) {
         this.movie = movie;
         this.list = list;
     }
@@ -26,7 +26,7 @@ public class MovieList {
         return movie;
     }
 
-    public List getList() {
+    public Playlist getList() {
         return list;
     }
 }
