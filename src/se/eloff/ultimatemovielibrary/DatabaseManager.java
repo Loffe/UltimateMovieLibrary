@@ -64,6 +64,17 @@ public class DatabaseManager {
             listManager = DaoManager.createDao(source, Playlist.class);
             if (!listManager.isTableExists()) {
                 TableUtils.createTable(source, Playlist.class);
+                
+                // TODO DEBUG remove when there is a way to create playlists
+                try {
+                    listManager.create(new Playlist("Bra filmer"));
+                    listManager.create(new Playlist("Fredagsmys"));
+                    listManager.create(new Playlist("Thejfilmer"));
+                } catch (SQLException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }
+                // /////////////////////////////////////////////////////////
             }
         }
 

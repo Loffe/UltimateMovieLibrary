@@ -82,6 +82,8 @@ public final class Localization {
             "img/Button-Favorite-icon_50_disabled.png");
 
     public static final String movieNoYearText = "Okänt";
+    
+    public static final String movieAddToNewPlaylistText = "Lägg till i ny spellista";
 
     public static final int movieTitleFontSize = 24;
     public static final int movieYearFontSize = 16;

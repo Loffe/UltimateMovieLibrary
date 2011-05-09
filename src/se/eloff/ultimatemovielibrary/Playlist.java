@@ -3,9 +3,6 @@ package se.eloff.ultimatemovielibrary;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import javax.swing.tree.RowMapper;
-import javax.swing.tree.TreePath;
-
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.dao.GenericRawResults;

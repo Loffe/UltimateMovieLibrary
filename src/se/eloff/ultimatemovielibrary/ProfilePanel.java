@@ -2,11 +2,8 @@ package se.eloff.ultimatemovielibrary;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
-import java.awt.datatransfer.UnsupportedFlavorException;
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -89,24 +86,29 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
                 resultPanel.search();
             }
         });
-        
+
         lists.setDragEnabled(true);
         lists.setDropMode(DropMode.INSERT);
         lists.setTransferHandler(new TransferHandler() {
-            public boolean canImport(TransferHandler.TransferSupport support){
+            public boolean canImport(TransferHandler.TransferSupport support) {
                 return true;
             }
-            public boolean importData(TransferHandler.TransferSupport support){
-                JList tmp = (JList)support.getComponent();
-                JList.DropLocation dl = (JList.DropLocation) support.getDropLocation();
+
+            public boolean importData(TransferHandler.TransferSupport support) {
+                JList tmp = (JList) support.getComponent();
+                JList.DropLocation dl = (JList.DropLocation) support
+                        .getDropLocation();
                 int index = dl.getIndex();
-                listModel.add(index, listModel.getElementAt(tmp.getSelectedIndex()));
+                listModel.add(index,
+                        listModel.getElementAt(tmp.getSelectedIndex()));
                 listModel.remove(tmp.getSelectedIndex());
                 return true;
             }
+
             protected Transferable createTransferable(JComponent c) {
                 return new StringSelection("Whaaat?");
             }
+
             public int getSourceActions(JComponent c) {
                 return MOVE;
             }

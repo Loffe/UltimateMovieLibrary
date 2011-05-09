@@ -40,6 +40,7 @@ public class AppFrame extends JFrame implements ActionListener {
     public AppFrame() throws HeadlessException {
         // scan the currently watch folders and look for new content
         WatchFolderManager.updateLibrary();
+
         setVisible(false); // Hide until ready, to avoid window "flashing"
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle(Localization.title);
