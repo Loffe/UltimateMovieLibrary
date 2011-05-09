@@ -3,6 +3,8 @@ package se.eloff.ultimatemovielibrary;
 import java.sql.SQLException;
 import java.util.List;
 
+import com.google.api.translate.Language;
+import com.google.api.translate.Translate;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.Where;
@@ -74,6 +76,23 @@ public class MovieInfoDownloader {
 
     private void fetchMovieInfo(LocalMovie movie) {
         // TODO: download the info
+        
+        // TODO: modify translation, just testing atm...
+        // This is just to help Google identify how their translation tools are used
+        Translate.setHttpReferrer("https://github.com/Loffe/UltimateMovieLibrary");
+
+        String plot = "In the end of the movie, the main actor goes rambo!";
+        String translatedText = plot + " (translation failed...)";
+        try {
+            translatedText = Translate.execute(plot,
+                    Language.ENGLISH, Language.SWEDISH);
+        } catch (Exception e) {
+            System.out.println("The translation failed...");
+            e.printStackTrace();
+        }
+
+        System.out.println(translatedText);
+
         MovieInfo info = new MovieInfo("bk", "director", "cover", "plot",
                 "genres", 5);
 
