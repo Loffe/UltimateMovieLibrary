@@ -14,7 +14,9 @@ public class Main {
     public static void main(String[] args) throws SQLException,
             ClassNotFoundException {
         try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
+            // UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            
         } catch (Exception e) {
             e.printStackTrace();
         }
