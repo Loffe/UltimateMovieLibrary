@@ -122,8 +122,9 @@ public class MovieSearchProvider {
                             + " from movies_lists ml"
                             + " left join movies m on ml.movie_id = m.id"
                             + " where discnumber = 1"
-                            + " and list_id = "
-                            + list_id + " order by " + order_clause;
+                            + " and list_id = " + list_id
+                            + " and name like '%" + name + "%'"
+                            + " order by " + order_clause;
                     RawRowMapper<LocalMovie> rowMapper = new RawRowMapper<LocalMovie>() {
                         @Override
                         public LocalMovie mapRow(String[] columnNames,
