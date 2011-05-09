@@ -33,9 +33,17 @@ public class LocalMovie implements Comparable<LocalMovie> {
     private boolean wish;
     
     //TODO: replace with a info object later
-    @DatabaseField
-    private boolean info;
+    @DatabaseField(foreign= true, canBeNull = true, columnName = "info_id")
+    private MovieInfo info_id = null;
     
+    public MovieInfo getInfo_id() {
+        return info_id;
+    }
+
+    public void setInfo_id(MovieInfo info) {
+        this.info_id = info;
+    }
+
     public LocalMovie() {
     }
     

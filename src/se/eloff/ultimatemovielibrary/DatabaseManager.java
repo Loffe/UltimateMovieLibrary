@@ -14,6 +14,7 @@ public class DatabaseManager {
 
     private JdbcConnectionSource source;
     private Dao<LocalMovie, Integer> movieManager;
+    private Dao<MovieInfo, Integer> movieInfoManager;
     private Dao<Playlist, Integer> listManager;
     private Dao<MovieList, Integer> movieListManager;
     private Dao<WatchFolder, Integer> watchFolderManager;
@@ -45,6 +46,17 @@ public class DatabaseManager {
         }
 
         return movieManager;
+    }
+    
+    public Dao<MovieInfo, Integer> getMovieInfoDao() throws SQLException {
+        if (movieInfoManager == null) {
+            movieInfoManager = DaoManager.createDao(source, MovieInfo.class);
+            if (!movieInfoManager.isTableExists()) {
+                TableUtils.createTable(source, MovieInfo.class);
+            }
+        }
+
+        return movieInfoManager;
     }
 
     public Dao<Playlist, Integer> getListDao() throws SQLException {

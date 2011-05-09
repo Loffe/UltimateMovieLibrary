@@ -27,7 +27,7 @@ public class MovieInfoDownloader {
         if (!updateInProgress) {
             updateInProgress = true;
             updateLibraryInfoAsync();
-        }else
+        } else
             doNewScan = true;
     }
 
@@ -37,7 +37,8 @@ public class MovieInfoDownloader {
             @Override
             public void run() {
                 try {
-                    System.out.println("starting new thread for updateLibraryInfoAsync");
+                    System.out
+                            .println("starting new thread for updateLibraryInfoAsync");
                     Dao<LocalMovie, Integer> dbMovie = DatabaseManager
                             .getInstance().getMovieDao();
                     QueryBuilder<LocalMovie, Integer> queryBuilder = dbMovie
@@ -45,7 +46,7 @@ public class MovieInfoDownloader {
 
                     // fetch all movies without info
                     Where<LocalMovie, Integer> where = queryBuilder.where();
-                    where.eq("info", false).and().eq("discnumber", 1);
+                    where.isNull("info_id").and().eq("discnumber", 1);
 
                     List<LocalMovie> movies = dbMovie.query(queryBuilder
                             .prepare());
@@ -57,21 +58,43 @@ public class MovieInfoDownloader {
                 } catch (SQLException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
-                }if (doNewScan){
-                    doNewScan =false;
+                }
+                if (doNewScan) {
+                    doNewScan = false;
                     updateLibraryInfoAsync();
                 }
                 updateInProgress = false;
-                
+
                 System.out.println("Done updateLibraryInfoAsync");
-                
+
             }
 
         }).start();
     }
 
     private void fetchMovieInfo(LocalMovie movie) {
-        // TODO: download the info, put it in the db
+        // TODO: download the info
+        MovieInfo info = new MovieInfo("bk", "director", "cover", "plot",
+                "genres", 5);
+
+        try {
+            System.out.println("saving movie with info");
+            Dao<MovieInfo, Integer> dbInfo = DatabaseManager.getInstance()
+                    .getMovieInfoDao();
+
+            dbInfo.create(info);
+
+            Dao<LocalMovie, Integer> dbMovie = DatabaseManager.getInstance()
+                    .getMovieDao();
+
+            movie.setInfo_id(info);
+            dbMovie.update(movie);
+
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
     }
 
 }
