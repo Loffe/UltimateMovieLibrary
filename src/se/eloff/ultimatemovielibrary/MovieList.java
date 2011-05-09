@@ -11,8 +11,11 @@ public class MovieList {
     @DatabaseField(canBeNull = false, foreign = true)
     private Movie movie;
 
-    @DatabaseField(canBeNull = false, foreign = true)
+    @DatabaseField(canBeNull = false, foreign = true, uniqueIndex = true, uniqueIndexName = "playlist")
     private Playlist list;
+
+    @DatabaseField(canBeNull = false, uniqueIndex = true, uniqueIndexName = "playlist")
+    private int order;
 
     public MovieList() {
     }
@@ -28,5 +31,13 @@ public class MovieList {
 
     public Playlist getList() {
         return list;
+    }
+
+    public int getOrder() {
+        return order;
+    }
+
+    public void setOrder(int order) {
+        this.order = order;
     }
 }
