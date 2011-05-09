@@ -104,6 +104,9 @@ public class MovieSearchProvider {
                 try {
                     movieDao = DatabaseManager.getInstance().getMovieDao();
 
+                    // Force creation of movies_lists table
+                    DatabaseManager.getInstance().getMovieListDao();
+
                     String order_clause = "ml.position asc";
 
                     if (orderByColumn != null) {
