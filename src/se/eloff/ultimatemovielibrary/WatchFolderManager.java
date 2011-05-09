@@ -70,7 +70,7 @@ public class WatchFolderManager {
         stopScan(folder);
 
         Dao<WatchFolder, Integer> dbWatchFolder;
-        Dao<Movie, Integer> dbMovie;
+        Dao<LocalMovie, Integer> dbMovie;
         try {
             // remove the watchFolder
             dbWatchFolder = DatabaseManager.getInstance().getWatchFolderDao();
@@ -82,9 +82,9 @@ public class WatchFolderManager {
             // should be watched are removed. Maybe solve with a new scan on all
             // enabled watchfolders after the deletion is done.
             dbMovie = DatabaseManager.getInstance().getMovieDao();
-            QueryBuilder<Movie, Integer> queryBuilder = dbMovie.queryBuilder();
+            QueryBuilder<LocalMovie, Integer> queryBuilder = dbMovie.queryBuilder();
             queryBuilder.where().like("filepath", folder.getFolderPath() + "%");
-            PreparedQuery<Movie> preparedQuery = queryBuilder.prepare();
+            PreparedQuery<LocalMovie> preparedQuery = queryBuilder.prepare();
             dbMovie.delete(dbMovie.query(preparedQuery));
             return true;
 
@@ -131,6 +131,7 @@ public class WatchFolderManager {
 
                 try {
                     scanner.ScanFolder(new File(folder.getFolderPath()));
+                    MovieInfoDownloader.getInstance().updateLibraryInfo();
                 } catch (Exception e) {
                     System.out.println("Failed to convert path to File type");
                 }

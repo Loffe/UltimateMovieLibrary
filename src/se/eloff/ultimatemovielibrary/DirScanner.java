@@ -49,10 +49,10 @@ public class DirScanner {
             if (!StopScanning && file.isDirectory() && notOnIgnoreList(file)) {
                 ScanFolder(file);
             } else if (!StopScanning && hasValidExtension(file)) {
-                Movie movie = movieFromPath(file);
+                LocalMovie movie = movieFromPath(file);
                 if (!StopScanning && movie != null) {
                     // movies.add(movie);
-                    Dao<Movie, Integer> db;
+                    Dao<LocalMovie, Integer> db;
                     try {
                         db = DatabaseManager.getInstance().getMovieDao();
                         db.create(movie);
@@ -142,7 +142,7 @@ public class DirScanner {
      * @param file
      * @return
      */
-    private Movie movieFromPath(File file) {
+    private LocalMovie movieFromPath(File file) {
 
         String path = file.toString();
         // System.out.println("Movie path: " + file.toString());
@@ -200,7 +200,7 @@ public class DirScanner {
         newMovieName = newMovieName.trim();
         if (newMovieName.isEmpty())
             return null;
-        return new Movie(newMovieName, year, path,
+        return new LocalMovie(newMovieName, year, path,
                 discNumberFromFileName(movieName), 0);
     }
 }

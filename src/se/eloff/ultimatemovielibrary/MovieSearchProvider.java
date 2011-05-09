@@ -99,13 +99,13 @@ public class MovieSearchProvider {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                Dao<Movie, Integer> dbMovie;
+                Dao<LocalMovie, Integer> dbMovie;
                 try {
                     dbMovie = DatabaseManager.getInstance().getMovieDao();
-                    QueryBuilder<Movie, Integer> queryBuilder = dbMovie
+                    QueryBuilder<LocalMovie, Integer> queryBuilder = dbMovie
                             .queryBuilder();
 
-                    Where<Movie, Integer> where = queryBuilder.where();
+                    Where<LocalMovie, Integer> where = queryBuilder.where();
                     if (list != null) {
                         Dao<MovieList, Integer> movieListDao = DatabaseManager
                                 .getInstance().getMovieListDao();
@@ -136,7 +136,7 @@ public class MovieSearchProvider {
 
                     queryBuilder.orderBy(orderByColumn, ascending);
 
-                    List<Movie> movies = dbMovie.query(queryBuilder.prepare());
+                    List<LocalMovie> movies = dbMovie.query(queryBuilder.prepare());
                     client.searchFinished(movies, assignedKey);
                 } catch (SQLException e) {
                     System.out.println("error searching for movies");
@@ -152,21 +152,21 @@ public class MovieSearchProvider {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                Dao<Movie, Integer> dbMovie;
+                Dao<LocalMovie, Integer> dbMovie;
                 try {
                     // TODO nicer random function, maybe get random objects from
                     // the database in the first place... how?
                     dbMovie = DatabaseManager.getInstance().getMovieDao();
-                    ArrayList<Movie> randomMovies = new ArrayList<Movie>();
+                    ArrayList<LocalMovie> randomMovies = new ArrayList<LocalMovie>();
                     int rating = 5;
                     // get movies until we have as many we need
                     while (randomMovies.size() < numberOfMovies && rating > -1) {
-                        QueryBuilder<Movie, Integer> queryBuilder = dbMovie
+                        QueryBuilder<LocalMovie, Integer> queryBuilder = dbMovie
                                 .queryBuilder();
                         queryBuilder.where().eq("discnumber", 1).and().eq(
                                 "seen", false).and().eq("rating", rating);
 
-                        List<Movie> movies = dbMovie.query(queryBuilder
+                        List<LocalMovie> movies = dbMovie.query(queryBuilder
                                 .prepare());
 
                         // there are more movies with this rating than we need,

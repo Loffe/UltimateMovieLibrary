@@ -39,13 +39,13 @@ public class List {
         return id;
     }
 
-    public ArrayList<Movie> getMovies() throws SQLException {
-        ArrayList<Movie> list = new ArrayList<Movie>();
-        Dao<Movie, Integer> movieDao = DatabaseManager.getInstance()
+    public ArrayList<LocalMovie> getMovies() throws SQLException {
+        ArrayList<LocalMovie> list = new ArrayList<LocalMovie>();
+        Dao<LocalMovie, Integer> movieDao = DatabaseManager.getInstance()
                 .getMovieDao();
 
         for (MovieList ml : movie_list) {
-            Movie m = ml.getMovie();
+            LocalMovie m = ml.getMovie();
             movieDao.refresh(m);
             list.add(m);
         }
@@ -56,11 +56,11 @@ public class List {
         Dao<List, Integer> listDao = DatabaseManager.getInstance().getListDao();
         Dao<MovieList, Integer> movieListDao = DatabaseManager.getInstance()
                 .getMovieListDao();
-        Dao<Movie, Integer> movieDao = DatabaseManager.getInstance()
+        Dao<LocalMovie, Integer> movieDao = DatabaseManager.getInstance()
                 .getMovieDao();
 
         List myFavs = listDao.queryForId(2);
-        for (Movie m : myFavs.getMovies()) {
+        for (LocalMovie m : myFavs.getMovies()) {
             System.out.println(m.getName());
         }
 

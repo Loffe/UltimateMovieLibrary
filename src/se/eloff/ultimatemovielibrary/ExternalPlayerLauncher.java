@@ -35,7 +35,7 @@ public class ExternalPlayerLauncher {
      * 
      * @param movie
      */
-    public void playMovie(Movie movie) {
+    public void playMovie(LocalMovie movie) {
         // TODO: if it is a multidisc movie, load up all additional discs
         Desktop dt = Desktop.getDesktop();
         try {
