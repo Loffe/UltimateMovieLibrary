@@ -10,7 +10,7 @@ import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable(tableName = "lists")
-public class List {
+public class Playlist {
     @DatabaseField(generatedId = true)
     private int id;
 
@@ -20,10 +20,10 @@ public class List {
     @ForeignCollectionField(eager = true)
     ForeignCollection<MovieList> movie_list;
 
-    public List() {
+    public Playlist() {
     }
 
-    public List(String name) {
+    public Playlist(String name) {
         this.name = name;
     }
 
@@ -53,13 +53,13 @@ public class List {
     }
 
     public static void main(String[] args) throws SQLException {
-        Dao<List, Integer> listDao = DatabaseManager.getInstance().getListDao();
+        Dao<Playlist, Integer> listDao = DatabaseManager.getInstance().getListDao();
         Dao<MovieList, Integer> movieListDao = DatabaseManager.getInstance()
                 .getMovieListDao();
         Dao<LocalMovie, Integer> movieDao = DatabaseManager.getInstance()
                 .getMovieDao();
 
-        List myFavs = listDao.queryForId(2);
+        Playlist myFavs = listDao.queryForId(2);
         for (LocalMovie m : myFavs.getMovies()) {
             System.out.println(m.getName());
         }

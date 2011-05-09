@@ -3,6 +3,7 @@ package se.eloff.ultimatemovielibrary;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.sql.SQLException;
+import java.util.List;
 
 import javax.swing.Box;
 import javax.swing.DefaultListModel;
@@ -47,7 +48,7 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
                 // getOrderColumn(), isOrderAscending(), true);
 
                 try {
-                    List selectedList = (List) lists.getSelectedValue();
+                    Playlist selectedList = (Playlist) lists.getSelectedValue();
                     lastSearchId = MovieSearchProvider.searchByList(
                             searchTextField.getText(), resultPanel,
                             getOrderColumn(), isOrderAscending(), selectedList);
@@ -63,9 +64,9 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
         listModel.addElement(Localization.profileWishList);
         listModel.addElement(Localization.profileSeenList);
         try {
-            java.util.List<List> my_lists = DatabaseManager.getInstance()
+            List<Playlist> my_lists = DatabaseManager.getInstance()
                     .getListDao().queryForAll();
-            for (List list : my_lists)
+            for (Playlist list : my_lists)
                 listModel.addElement(list);
         } catch (SQLException e) {
             e.printStackTrace();

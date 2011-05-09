@@ -95,7 +95,7 @@ public class MovieSearchProvider {
             final boolean useSeen, final boolean seen, final boolean useWish,
             final boolean wish, final boolean useFavorite,
             final boolean favorite,
-            final se.eloff.ultimatemovielibrary.List list) {
+            final se.eloff.ultimatemovielibrary.Playlist list) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -198,7 +198,7 @@ public class MovieSearchProvider {
 
     public static int searchByList(String name, MovieSearchClient client,
             String orderByColumn, boolean ascending,
-            se.eloff.ultimatemovielibrary.List list) {
+            se.eloff.ultimatemovielibrary.Playlist list) {
         int assignedKey = key;
         key++;
         searchByNameAsync(name, assignedKey, client, orderByColumn, ascending,
