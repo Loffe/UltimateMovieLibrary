@@ -141,5 +141,6 @@ public final class Localization {
     public static final int playlistAllMoviesTextSize = 22;
     
     public static final String translationFailedText = "Översättningen misslyckades! Engelsk version: ";
+    public static final Icon ratingRemoveRating = new ImageIcon("img/rating-remove-vote.png");
 
 }
