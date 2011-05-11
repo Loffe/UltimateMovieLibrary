@@ -120,6 +120,12 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
         lists.setDropMode(DropMode.INSERT);
         lists.setTransferHandler(new TransferHandler() {
             public boolean canImport(TransferHandler.TransferSupport support) {
+                JList tmp = (JList) support.getComponent();
+                JList.DropLocation dl = (JList.DropLocation) support
+                        .getDropLocation();
+                int index = dl.getIndex();
+                if (index < Playlist.fixedPlaylists.length || tmp.getSelectedIndex() < Playlist.fixedPlaylists.length)
+                    return false;
                 return true;
             }
 
@@ -128,8 +134,7 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
                 JList.DropLocation dl = (JList.DropLocation) support
                         .getDropLocation();
                 int index = dl.getIndex();
-                if (index < 3 || tmp.getSelectedIndex() < 4)
-                    return false;
+
                 listModel.add(index, listModel.getElementAt(tmp
                         .getSelectedIndex()));
 

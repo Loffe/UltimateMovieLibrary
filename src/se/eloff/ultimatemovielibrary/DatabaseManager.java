@@ -104,10 +104,9 @@ public class DatabaseManager {
 
                 // TODO DEBUG remove when there is a way to create playlists
                 try {
-                    listManager.create(new Playlist(Localization.profileAllMoviesList));
-                    listManager.create(new Playlist(Localization.profileFavoriteList));
-                    listManager.create(new Playlist(Localization.profileWishList));
-                    listManager.create(new Playlist(Localization.profileSeenList));
+                    for (String name : Playlist.fixedPlaylists) {
+                        listManager.create(new Playlist(name));
+                    }
 
                     listManager.create(new Playlist("Bra filmer"));
                     listManager.create(new Playlist("Fredagsmys"));
