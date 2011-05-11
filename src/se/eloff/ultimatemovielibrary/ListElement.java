@@ -132,11 +132,9 @@ public class ListElement extends javax.swing.JPanel {
                                     } else {
                                         DeleteBuilder<MovieList, Integer> deleteBuilder = movieListDb
                                                 .deleteBuilder();
-                                        deleteBuilder
-                                                .where()
-                                                .eq("movie_id", movie.getId())
-                                                .and()
-                                                .eq("list_id", playlist.getId());
+                                        deleteBuilder.where().eq("movie_id",
+                                                movie.getId()).and().eq(
+                                                "list_id", playlist.getId());
 
                                         movieListDb.delete(deleteBuilder
                                                 .prepare());
@@ -166,21 +164,17 @@ public class ListElement extends javax.swing.JPanel {
                         // TODO Create a new playlist and add this movie
                         // somehow
                         try {
-                            Dao<Playlist, Integer> listsDb = DatabaseManager
-                                    .getInstance().getListDao();
+
                             Dao<MovieList, Integer> movieListDb = DatabaseManager
                                     .getInstance().getMovieListDao();
 
-                            Playlist playlist = new Playlist(
-                                    JOptionPane
-                                            .showInputDialog(
-                                                    null,
-                                                    Localization.playlistCreateNewMessage,
-                                                    Localization.playlistCreateNewHeading,
-                                                    1));
+                            String playlistname = JOptionPane.showInputDialog(
+                                    null,
+                                    Localization.playlistCreateNewMessage,
+                                    Localization.playlistCreateNewHeading, 1);
 
-                            listsDb.create(playlist);
-                            listsDb.refresh(playlist);
+                            Playlist playlist = DatabaseManager.getInstance().createPlaylist(playlistname);
+
                             movieListDb.create(new MovieList(movie, playlist));
                             // TODO update the profilePanel listview with the
                             // new playlist!
@@ -255,105 +249,118 @@ public class ListElement extends javax.swing.JPanel {
 
         javax.swing.GroupLayout layout = new GroupLayout(this);
         this.setLayout(layout);
-        layout.setHorizontalGroup(layout
-                .createParallelGroup(GroupLayout.Alignment.LEADING)
-                .addGroup(
-                        layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(playButton,
-                                        GroupLayout.PREFERRED_SIZE, 52,
-                                        GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(
-                                        LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(
-                                        layout.createParallelGroup(
-                                                GroupLayout.Alignment.LEADING)
-                                                .addComponent(yearLabel)
-                                                .addComponent(titleLabel, 50,
-                                                        50, Short.MAX_VALUE))
-                                .addGap(57, 57, 57)
-                                .addComponent(playlistButton,
-                                        GroupLayout.PREFERRED_SIZE, 52,
-                                        GroupLayout.PREFERRED_SIZE)
-                                .addComponent(seenButton,
-                                        GroupLayout.PREFERRED_SIZE, 52,
-                                        GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(
-                                        LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(wishButton,
-                                        GroupLayout.PREFERRED_SIZE, 52,
-                                        GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(
-                                        LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(favoriteButton,
-                                        GroupLayout.PREFERRED_SIZE, 52,
-                                        GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(
-                                        LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(rating,
-                                        GroupLayout.PREFERRED_SIZE, 300,
-                                        GroupLayout.PREFERRED_SIZE)));
-        layout.setVerticalGroup(layout
-                .createParallelGroup(GroupLayout.Alignment.LEADING)
-                .addGroup(
-                        layout.createSequentialGroup()
-
-                                .addGroup(
-                                        layout.createParallelGroup(
-                                                GroupLayout.Alignment.TRAILING)
-                                                .addComponent(
-                                                        playButton,
-                                                        GroupLayout.PREFERRED_SIZE,
-                                                        52,
-                                                        GroupLayout.PREFERRED_SIZE)
-                                                .addGroup(
-                                                        GroupLayout.Alignment.LEADING,
-                                                        layout.createParallelGroup(
+        layout
+                .setHorizontalGroup(layout
+                        .createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addGroup(
+                                layout
+                                        .createSequentialGroup()
+                                        .addContainerGap()
+                                        .addComponent(playButton,
+                                                GroupLayout.PREFERRED_SIZE, 52,
+                                                GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(
+                                                LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(
+                                                layout
+                                                        .createParallelGroup(
                                                                 GroupLayout.Alignment.LEADING)
-                                                                .addGroup(
-                                                                        GroupLayout.Alignment.TRAILING,
-                                                                        layout.createSequentialGroup()
-                                                                                .addGap(10,
-                                                                                        10,
-                                                                                        10)
-                                                                                .addComponent(
-                                                                                        titleLabel)
+                                                        .addComponent(yearLabel)
+                                                        .addComponent(
+                                                                titleLabel, 50,
+                                                                50,
+                                                                Short.MAX_VALUE))
+                                        .addGap(57, 57, 57)
+                                        .addComponent(playlistButton,
+                                                GroupLayout.PREFERRED_SIZE, 52,
+                                                GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(seenButton,
+                                                GroupLayout.PREFERRED_SIZE, 52,
+                                                GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(
+                                                LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(wishButton,
+                                                GroupLayout.PREFERRED_SIZE, 52,
+                                                GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(
+                                                LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(favoriteButton,
+                                                GroupLayout.PREFERRED_SIZE, 52,
+                                                GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(
+                                                LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(rating,
+                                                GroupLayout.PREFERRED_SIZE,
+                                                300, GroupLayout.PREFERRED_SIZE)));
+        layout
+                .setVerticalGroup(layout
+                        .createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addGroup(
+                                layout
+                                        .createSequentialGroup()
 
-                                                                                .addComponent(
-                                                                                        yearLabel))
+                                        .addGroup(
+                                                layout
+                                                        .createParallelGroup(
+                                                                GroupLayout.Alignment.TRAILING)
+                                                        .addComponent(
+                                                                playButton,
+                                                                GroupLayout.PREFERRED_SIZE,
+                                                                52,
+                                                                GroupLayout.PREFERRED_SIZE)
+                                                        .addGroup(
+                                                                GroupLayout.Alignment.LEADING,
+                                                                layout
+                                                                        .createParallelGroup(
+                                                                                GroupLayout.Alignment.LEADING)
+                                                                        .addGroup(
+                                                                                GroupLayout.Alignment.TRAILING,
+                                                                                layout
+                                                                                        .createSequentialGroup()
+                                                                                        .addGap(
+                                                                                                10,
+                                                                                                10,
+                                                                                                10)
+                                                                                        .addComponent(
+                                                                                                titleLabel)
 
-                                                                .addComponent(
-                                                                        rating,
-                                                                        GroupLayout.PREFERRED_SIZE,
-                                                                        70,
-                                                                        GroupLayout.PREFERRED_SIZE))))
-                .addGroup(
-                        layout.createSequentialGroup()
-                                .addGap(20, 20, 20)
-                                .addGroup(
-                                        layout.createParallelGroup(
-                                                GroupLayout.Alignment.LEADING)
-                                                .addComponent(
-                                                        playlistButton,
-                                                        GroupLayout.PREFERRED_SIZE,
-                                                        52,
-                                                        GroupLayout.PREFERRED_SIZE)
-                                                .addComponent(
-                                                        seenButton,
-                                                        GroupLayout.PREFERRED_SIZE,
-                                                        52,
-                                                        GroupLayout.PREFERRED_SIZE)
-                                                .addComponent(
-                                                        wishButton,
-                                                        GroupLayout.PREFERRED_SIZE,
-                                                        52,
-                                                        GroupLayout.PREFERRED_SIZE)
-                                                .addComponent(
-                                                        favoriteButton,
-                                                        GroupLayout.PREFERRED_SIZE,
-                                                        52,
-                                                        GroupLayout.PREFERRED_SIZE))
-                                .addContainerGap(10, Short.MAX_VALUE)));
+                                                                                        .addComponent(
+                                                                                                yearLabel))
+
+                                                                        .addComponent(
+                                                                                rating,
+                                                                                GroupLayout.PREFERRED_SIZE,
+                                                                                70,
+                                                                                GroupLayout.PREFERRED_SIZE))))
+                        .addGroup(
+                                layout
+                                        .createSequentialGroup()
+                                        .addGap(20, 20, 20)
+                                        .addGroup(
+                                                layout
+                                                        .createParallelGroup(
+                                                                GroupLayout.Alignment.LEADING)
+                                                        .addComponent(
+                                                                playlistButton,
+                                                                GroupLayout.PREFERRED_SIZE,
+                                                                52,
+                                                                GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(
+                                                                seenButton,
+                                                                GroupLayout.PREFERRED_SIZE,
+                                                                52,
+                                                                GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(
+                                                                wishButton,
+                                                                GroupLayout.PREFERRED_SIZE,
+                                                                52,
+                                                                GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(
+                                                                favoriteButton,
+                                                                GroupLayout.PREFERRED_SIZE,
+                                                                52,
+                                                                GroupLayout.PREFERRED_SIZE))
+                                        .addContainerGap(10, Short.MAX_VALUE)));
         playButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
