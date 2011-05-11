@@ -13,6 +13,11 @@ import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable(tableName = "lists")
 public class Playlist {
+    protected static final String[] fixedPlaylists = {
+            Localization.profileAllMoviesList,
+            Localization.profileFavoriteList, Localization.profileWishList,
+            Localization.profileSeenList};
+
     @DatabaseField(generatedId = true)
     private int id;
 
@@ -36,7 +41,7 @@ public class Playlist {
     public String toString() {
         return name;
     }
-    
+
     public void setName(String name) {
         this.name = name;
     }
@@ -77,8 +82,8 @@ public class Playlist {
         RawRowMapper<LocalMovie> rowMapper = new RawRowMapper<LocalMovie>() {
 
             @Override
-            public LocalMovie mapRow(String[] columnNames, String[] resultColumns)
-                    throws SQLException {
+            public LocalMovie mapRow(String[] columnNames,
+                    String[] resultColumns) throws SQLException {
                 return new LocalMovie(resultColumns[0], Integer
                         .parseInt(resultColumns[1]), resultColumns[2], Integer
                         .parseInt(resultColumns[3]), Integer
@@ -94,7 +99,7 @@ public class Playlist {
 
         /*
          * Movie movie = movieDao.queryForId(15);
-         *
+         * 
          * MovieList ml = new MovieList(movie, myFavs); movieListDao.create(ml);
          */
     }

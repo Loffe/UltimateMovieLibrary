@@ -122,6 +122,7 @@ public final class Localization {
 
     // ProfilePanel
     public static final String profileTitle = "Profil";
+    public static final String profileAllMoviesList = "Alla filmer";
     public static final String profileFavoriteList = "Favoriter";
     public static final String profileSeenList = "Sedda filmer";
     public static final String profileWishList = "Önskelista";

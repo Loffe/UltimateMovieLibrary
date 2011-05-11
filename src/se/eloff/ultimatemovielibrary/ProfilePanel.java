@@ -18,6 +18,8 @@ import javax.swing.ListSelectionModel;
 import javax.swing.TransferHandler;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.event.ListDataEvent;
+import javax.swing.event.ListDataListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -29,6 +31,27 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
     private JTextField searchTextField;
 
     private JList lists;
+
+    private ListDataListener playlistListener = new ListDataListener() {
+        @Override
+        public void intervalRemoved(ListDataEvent e) {
+        }
+
+        @Override
+        public void intervalAdded(ListDataEvent e) {
+        }
+
+        @Override
+        public void contentsChanged(ListDataEvent e) {
+            try {
+                refreshPlaylists(listModel);
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
+        }
+    };
+
+    private DefaultListModel listModel;
 
     public ProfilePanel() {
         setTitle(Localization.profileTitle);
@@ -54,9 +77,17 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
 
                 try {
                     Playlist selectedList = (Playlist) lists.getSelectedValue();
-                    lastSearchId = MovieSearchProvider.searchByList(
-                            searchTextField.getText(), resultPanel,
-                            getOrderColumn(), isOrderAscending(), selectedList);
+                    // If its the "all movies" list...
+                    if (selectedList != null && selectedList.getId() == 1) {
+                        lastSearchId = MovieSearchProvider.searchByName(
+                                searchTextField.getText(), resultPanel,
+                                getOrderColumn(), isOrderAscending());
+                    } else {
+                        lastSearchId = MovieSearchProvider.searchByList(
+                                searchTextField.getText(), resultPanel,
+                                getOrderColumn(), isOrderAscending(),
+                                selectedList);
+                    }
                 } catch (ClassCastException e) {
                     e.printStackTrace();
                 }
@@ -64,12 +95,12 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
             }
         };
 
-        final DefaultListModel listModel = new DefaultListModel();
+        listModel = new DefaultListModel();
         try {
-            List<Playlist> my_lists = DatabaseManager.getInstance()
-                    .getListDao().queryForAll();
-            for (Playlist list : my_lists)
-                listModel.addElement(list);
+            refreshPlaylists(listModel);
+
+            DatabaseManager.getInstance().addPlaylistChangeListener(
+                    playlistListener);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -85,22 +116,28 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
             }
         });
 
-        
         lists.setDragEnabled(true);
         lists.setDropMode(DropMode.INSERT);
         lists.setTransferHandler(new TransferHandler() {
             public boolean canImport(TransferHandler.TransferSupport support) {
+                JList tmp = (JList) support.getComponent();
+                JList.DropLocation dl = (JList.DropLocation) support
+                        .getDropLocation();
+                int index = dl.getIndex();
+                if (index < Playlist.fixedPlaylists.length || tmp.getSelectedIndex() < Playlist.fixedPlaylists.length)
+                    return false;
                 return true;
             }
+
             public boolean importData(TransferHandler.TransferSupport support) {
                 JList tmp = (JList) support.getComponent();
                 JList.DropLocation dl = (JList.DropLocation) support
                         .getDropLocation();
                 int index = dl.getIndex();
-                if(index<3 || tmp.getSelectedIndex() <3)
-                    return false;
-                listModel.add(index,
-                        listModel.getElementAt(tmp.getSelectedIndex()));
+
+                listModel.add(index, listModel.getElementAt(tmp
+                        .getSelectedIndex()));
+
                 listModel.remove(tmp.getSelectedIndex());
                 return true;
             }
@@ -137,6 +174,14 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
 
         // add a listener to the input field
         searchTextField.getDocument().addDocumentListener(this);
+    }
+
+    private void refreshPlaylists(final DefaultListModel listModel)
+            throws SQLException {
+        List<Playlist> my_lists = DatabaseManager.getInstance().getListDao()
+                .queryForAll();
+        for (Playlist list : my_lists)
+            listModel.addElement(list);
     }
 
     // input field actions

@@ -1,6 +1,10 @@
 package se.eloff.ultimatemovielibrary;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+
+import javax.swing.event.ListDataEvent;
+import javax.swing.event.ListDataListener;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
@@ -18,6 +22,22 @@ public class DatabaseManager {
     private Dao<Playlist, Integer> listManager;
     private Dao<MovieList, Integer> movieListManager;
     private Dao<WatchFolder, Integer> watchFolderManager;
+
+    private ArrayList<ListDataListener> listeners = new ArrayList<ListDataListener>();
+
+    public void addPlaylistChangeListener(ListDataListener listener) {
+        listeners.add(listener);
+    }
+
+    public void removePlaylistChangeListener(ListDataListener listener) {
+        listeners.remove(listener);
+    }
+
+    protected void firePlaylistAddedEvent(ListDataEvent e) {
+        for (ListDataListener l : listeners) {
+            l.contentsChanged(e);
+        }
+    }
 
     private DatabaseManager() {
         System.setProperty(LocalLog.LOCAL_LOG_LEVEL_PROPERTY, "ERROR");
@@ -37,6 +57,23 @@ public class DatabaseManager {
         }
     }
 
+    public Playlist createPlaylist(String name) {
+        try {
+            Dao<Playlist, Integer> listsDao = DatabaseManager.getInstance()
+                    .getListDao();
+            Playlist playlist = new Playlist(name);
+            listsDao.create(playlist);
+            listsDao.refresh(playlist);
+            firePlaylistAddedEvent(new ListDataEvent(playlist,
+                    ListDataEvent.CONTENTS_CHANGED, 0, 0));
+            return playlist;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+
+    }
+
     public Dao<LocalMovie, Integer> getMovieDao() throws SQLException {
         if (movieManager == null) {
             movieManager = DaoManager.createDao(source, LocalMovie.class);
@@ -47,7 +84,7 @@ public class DatabaseManager {
 
         return movieManager;
     }
-    
+
     public Dao<MovieInfo, Integer> getMovieInfoDao() throws SQLException {
         if (movieInfoManager == null) {
             movieInfoManager = DaoManager.createDao(source, MovieInfo.class);
@@ -64,12 +101,13 @@ public class DatabaseManager {
             listManager = DaoManager.createDao(source, Playlist.class);
             if (!listManager.isTableExists()) {
                 TableUtils.createTable(source, Playlist.class);
-                
+
                 // TODO DEBUG remove when there is a way to create playlists
                 try {
-                    listManager.create(new Playlist(Localization.profileFavoriteList));
-                    listManager.create(new Playlist(Localization.profileWishList));
-                    listManager.create(new Playlist(Localization.profileSeenList));
+                    for (String name : Playlist.fixedPlaylists) {
+                        listManager.create(new Playlist(name));
+                    }
+
                     listManager.create(new Playlist("Bra filmer"));
                     listManager.create(new Playlist("Fredagsmys"));
                     listManager.create(new Playlist("Thejfilmer"));
