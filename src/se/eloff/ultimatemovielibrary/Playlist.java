@@ -2,6 +2,7 @@ package se.eloff.ultimatemovielibrary;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.ForeignCollection;
@@ -9,14 +10,21 @@ import com.j256.ormlite.dao.GenericRawResults;
 import com.j256.ormlite.dao.RawRowMapper;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
+import com.j256.ormlite.stmt.DeleteBuilder;
+import com.j256.ormlite.stmt.PreparedQuery;
+import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.table.DatabaseTable;
 
+/**
+ * @author eriel743
+ * 
+ */
 @DatabaseTable(tableName = "lists")
 public class Playlist {
     protected static final String[] fixedPlaylists = {
             Localization.profileAllMoviesList,
             Localization.profileFavoriteList, Localization.profileWishList,
-            Localization.profileSeenList};
+            Localization.profileSeenList };
 
     @DatabaseField(generatedId = true)
     private int id;
@@ -48,6 +56,55 @@ public class Playlist {
 
     public int getId() {
         return id;
+    }
+
+    /**
+     * Add a movie to the playlist
+     * 
+     * @param movie
+     * @return
+     * @throws SQLException
+     */
+    public MovieList add(LocalMovie movie) throws SQLException {
+        DatabaseManager db = DatabaseManager.getInstance();
+        Dao<MovieList, Integer> movieListDao = db.getMovieListDao();
+        MovieList movieList = new MovieList(movie, this);
+        movieListDao.create(movieList);
+
+        // get the last position and add 1
+        QueryBuilder<MovieList, Integer> lastPositionQuery = movieListDao
+                .queryBuilder();
+        lastPositionQuery.where().eq("list_id", this.id);
+        lastPositionQuery.distinct();
+        lastPositionQuery.orderBy("position", false);
+
+        List<MovieList> lastPos = movieListDao.query(lastPositionQuery
+                .prepare());
+        int newPos = 0;
+        if (!lastPos.isEmpty()) {
+            newPos = lastPos.get(0).getPosition() + 1;
+        }
+        movieList.setPosition(newPos);
+
+        return movieList;
+    }
+
+    /**
+     * Remove a movie from the playlist
+     * 
+     * @param movie
+     * @throws SQLException
+     */
+    public void remove(LocalMovie movie) throws SQLException {
+        DatabaseManager db = DatabaseManager.getInstance();
+        Dao<MovieList, Integer> movieListDao = db.getMovieListDao();
+
+        DeleteBuilder<MovieList, Integer> deleteBuilder = movieListDao
+                .deleteBuilder();
+        deleteBuilder.where().eq("movie_id", movie.getId()).and().eq("list_id",
+                this.id);
+
+        movieListDao.delete(deleteBuilder.prepare());
     }
 
     public ArrayList<LocalMovie> getMovies() throws SQLException {

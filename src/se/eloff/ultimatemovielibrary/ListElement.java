@@ -108,36 +108,9 @@ public class ListElement extends javax.swing.JPanel {
                                             .getMovieListDao();
                                     // add it to the list, put it last
                                     if (listItem.isSelected()) {
-                                        MovieList mList = new MovieList(movie,
-                                                playlist);
-                                        // get the last position and add 1
-                                        QueryBuilder<MovieList, Integer> lastPositionQuery = movieListDb
-                                                .queryBuilder();
-                                        lastPositionQuery.where().eq("list_id",
-                                                playlist.getId());
-                                        lastPositionQuery.distinct();
-                                        lastPositionQuery.orderBy("position",
-                                                false);
-
-                                        List<MovieList> lastPos = movieListDb
-                                                .query(lastPositionQuery
-                                                        .prepare());
-                                        int newPos = 0;
-                                        if (!lastPos.isEmpty()) {
-                                            newPos = lastPos.get(0)
-                                                    .getPosition() + 1;
-                                        }
-                                        mList.setPosition(newPos);
-                                        movieListDb.create(mList);
+                                        playlist.add(movie);
                                     } else {
-                                        DeleteBuilder<MovieList, Integer> deleteBuilder = movieListDb
-                                                .deleteBuilder();
-                                        deleteBuilder.where().eq("movie_id",
-                                                movie.getId()).and().eq(
-                                                "list_id", playlist.getId());
-
-                                        movieListDb.delete(deleteBuilder
-                                                .prepare());
+                                        playlist.remove(movie);
                                     }
 
                                 } catch (SQLException e1) {
