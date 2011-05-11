@@ -126,8 +126,12 @@ public final class Localization {
     public static final String profileWishList = "Önskelista";
 
     // HomePanel
-    public static String homeTitle = "Välkommen!";
+    public static final String homeTitle = "Välkommen!";
     public static final int homePanelFontSize = 40;
+
+    // Playlists
+    public static final String playlistCreateNewMessage = "Namn på ny playlist";
+    public static final String playlistCreateNewHeading = "Ny playlist";
 
     public static final String translationFailedText = "Översättningen misslyckades! Engelsk version: ";
 
