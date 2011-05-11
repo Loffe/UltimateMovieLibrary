@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
-import net.sf.jtmdb.Auth;
 import net.sf.jtmdb.GeneralSettings;
 import net.sf.jtmdb.Movie;
 
@@ -22,7 +21,14 @@ public class MovieInfoDownloader {
     private static boolean doNewScan = false;
 
     public MovieInfoDownloader() {
+        // Set the API Key in order
+        GeneralSettings.setApiKey(TMDBAPIKey.APIKey);
 
+        // Prepare to translate plot. Google requires a HttpReferrer.
+        // Google wants to identify how their translation tools are used
+        // FRA, 1984 etc. Warning! WARNING! lol
+        Translate
+                .setHttpReferrer("https://github.com/Loffe/UltimateMovieLibrary");
     }
 
     public static MovieInfoDownloader getInstance() {
@@ -81,64 +87,61 @@ public class MovieInfoDownloader {
         }).start();
     }
 
-    private void fetchMovieInfo(LocalMovie movie) {
-        // TODO: download the info
-        System.out.println("Fetching info for "+movie.getName());
-        List<Movie> movies = null;
+    /**
+     * Fetch TMDB Movie info for the specified LocalMovie.
+     * 
+     * @param localMovie
+     *            the movie to get info for.
+     */
+    private void fetchMovieInfo(LocalMovie localMovie) {
+        // TODO: Download the info, but first set the API Key in constructor.
+        System.out.println("Fetching info for " + localMovie.getName());
+        List<Movie> reducedMovies = null;
         try {
-            String token = Auth.getToken();
-            GeneralSettings.setApiKey(TMDBAPIKey.APIKey);
-            movies = Movie.search(movie.getName());
-            System.out.println(movies);
-        } catch (IOException e1) {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
-        } catch (JSONException e1) {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
-        }
+            // Search for the Movie
+            reducedMovies = Movie.search(localMovie.getName());
+            if (reducedMovies != null) {
+                // Use the first movie from the search hits
+                Movie movie = reducedMovies.get(0);
+                System.out.println("Got reduced info for movie with ID="
+                        + movie.getID());
+                // Get the complete info of the movie (currently only has
+                // reduced info like ID, Name etc)
+                System.out.println("Fetching all info for " + movie.getName());
+                movie = Movie.getInfo(movie.getID());
 
-        if (movies != null) {
-            for (Movie m : movies) {
-                System.out.println(m.getName());
+                // Translate the overview (plot?!)
+                String plot = movie.getOverview();
+                String translatedPlot = Localization.translationFailedText
+                        + " " + plot;
+                try {
+                    translatedPlot = Translate.execute(plot, Language.ENGLISH,
+                            Language.SWEDISH);
+                } catch (Exception e) {
+                    // Translation failed.
+                    System.out.println("Plot translation failed!");
+                }
+
+                // Save the info
+                Dao<MovieInfo, Integer> dbInfo = DatabaseManager.getInstance()
+                        .getMovieInfoDao();
+
+                MovieInfo info = new MovieInfo("bk", "director", "cover",
+                        translatedPlot, "genres", 5);
+
+                dbInfo.create(info);
+
+                Dao<LocalMovie, Integer> dbMovie = DatabaseManager
+                        .getInstance().getMovieDao();
+
+                localMovie.setInfo_id(info);
+                dbMovie.update(localMovie);
             }
-        }
-        
-        
-        // TODO: modify translation, just testing atm...
-        // This is just to help Google identify how their translation tools are used
-        Translate.setHttpReferrer("https://github.com/Loffe/UltimateMovieLibrary");
-
-        String plot = "In the end of the movie, the main actor goes rambo!";
-        String translatedText = plot + " (translation failed...)";
-        try {
-            translatedText = Translate.execute(plot,
-                    Language.ENGLISH, Language.SWEDISH);
-        } catch (Exception e) {
-            System.out.println("The translation failed...");
+        } catch (IOException e) {
             e.printStackTrace();
-        }
-
-        System.out.println(translatedText);
-
-        MovieInfo info = new MovieInfo("bk", "director", "cover", "plot",
-                "genres", 5);
-
-        try {
-            System.out.println("saving movie with info");
-            Dao<MovieInfo, Integer> dbInfo = DatabaseManager.getInstance()
-                    .getMovieInfoDao();
-
-            dbInfo.create(info);
-
-            Dao<LocalMovie, Integer> dbMovie = DatabaseManager.getInstance()
-                    .getMovieDao();
-
-            movie.setInfo_id(info);
-            dbMovie.update(movie);
-
+        } catch (JSONException e) {
+            e.printStackTrace();
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 

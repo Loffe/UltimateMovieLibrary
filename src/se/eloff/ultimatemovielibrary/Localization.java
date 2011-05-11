@@ -82,7 +82,7 @@ public final class Localization {
             "img/Button-Favorite-icon_50_disabled.png");
 
     public static final String movieNoYearText = "Okänt";
-    
+
     public static final String movieAddToNewPlaylistText = "Lägg till i ny spellista";
 
     public static final int movieTitleFontSize = 24;
@@ -126,10 +126,13 @@ public final class Localization {
     public static final String profileWishList = "Önskelista";
 
     // HomePanel
-    public static String homeTitle = "Välkommen!";
+    public static final String homeTitle = "Välkommen!";
     public static final int homePanelFontSize = 40;
-    
-    //Playlists
-    public static String playlistCreateNewMessage = "Namn på ny playlist";
-    public static String playlistCreateNewHeading = "Ny playlist";
+
+    // Playlists
+    public static final String playlistCreateNewMessage = "Namn på ny playlist";
+    public static final String playlistCreateNewHeading = "Ny playlist";
+
+    public static final String translationFailedText = "Översättningen misslyckades! Engelsk version: ";
+
 }
