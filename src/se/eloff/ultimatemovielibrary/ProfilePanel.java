@@ -65,9 +65,6 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
         };
 
         final DefaultListModel listModel = new DefaultListModel();
-        listModel.addElement(Localization.profileFavoriteList);
-        listModel.addElement(Localization.profileWishList);
-        listModel.addElement(Localization.profileSeenList);
         try {
             List<Playlist> my_lists = DatabaseManager.getInstance()
                     .getListDao().queryForAll();
@@ -77,6 +74,7 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
             e.printStackTrace();
         }
         lists = new JList(listModel);
+        lists.setCellRenderer(new PlaylistCellRenderer());
         lists.setPreferredSize(new Dimension(200, 10));
         lists.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         lists.addListSelectionListener(new ListSelectionListener() {
@@ -87,13 +85,13 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
             }
         });
 
+        
         lists.setDragEnabled(true);
         lists.setDropMode(DropMode.INSERT);
         lists.setTransferHandler(new TransferHandler() {
             public boolean canImport(TransferHandler.TransferSupport support) {
                 return true;
             }
-
             public boolean importData(TransferHandler.TransferSupport support) {
                 JList tmp = (JList) support.getComponent();
                 JList.DropLocation dl = (JList.DropLocation) support

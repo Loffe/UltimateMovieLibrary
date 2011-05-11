@@ -2,6 +2,7 @@ package se.eloff.ultimatemovielibrary;
 
 import java.awt.Image;
 
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
 /**
@@ -132,7 +133,10 @@ public final class Localization {
     // Playlists
     public static final String playlistCreateNewMessage = "Namn på ny playlist";
     public static final String playlistCreateNewHeading = "Ny playlist";
-
+    public static final Icon listsWishIcon = new ImageIcon("img/Button-Favorite-icon_16.png");
+    public static final Icon listsFavoriteIcon = new ImageIcon("img/Favorite-icon-16.png");
+    public static final Icon listsSeenIcon = new ImageIcon("img/eye_16.png");
+    
     public static final String translationFailedText = "Översättningen misslyckades! Engelsk version: ";
 
 }

@@ -180,6 +180,7 @@ public class ListElement2 extends javax.swing.JPanel {
                             listsDb.create(playlist);
                             listsDb.refresh(playlist);
                             movieListDb.create(new MovieList(movie, playlist));
+                            //TODO update the profilePanel listview with the new playlist!
 
                         } catch (SQLException e1) {
                             // TODO Auto-generated catch block
