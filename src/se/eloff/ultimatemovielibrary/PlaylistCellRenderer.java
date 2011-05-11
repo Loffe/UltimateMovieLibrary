@@ -27,8 +27,12 @@ public class PlaylistCellRenderer extends JLabel implements ListCellRenderer {
         else
         {
             setIcon(new ImageIcon());
-            //setBackground(isSelected ? Color.lightGray : Color.lightGray);
         }
+        if (isSelected){
+            setOpaque(true);
+            setBackground(Color.red);
+        }else
+            setOpaque(false);
         setText(value.toString());
         return this;
     }
