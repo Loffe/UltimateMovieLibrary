@@ -114,28 +114,43 @@ public class MovieSearchProvider {
                         order_clause += ascending ? " ASC" : " DESC";
                     }
 
+                    // Sorry Elof, guess you have to fix it again, but this
+                    // returns correct result for all movies as well even if they
+                    // are in no list
+                    String sql;
                     String list_id;
                     if (list != null) {
                         list_id = String.valueOf(list.getId());
+
+                        sql = "select m.id, name, year, filepath, discnumber, rating, seen"
+                                + " from movies_lists ml"
+                                + " left join movies m on ml.movie_id = m.id"
+                                + " where discnumber = 1"
+                                + " and list_id = "
+                                + list_id
+                                + " and name like '%"
+                                + name
+                                + "%'"
+                                + " order by " + order_clause;
                     } else {
-                        list_id = "list_id";
+
+                        sql = "select id, name, year, filepath, discnumber, rating, seen"
+                                + " from movies"
+                                + " where discnumber = 1"
+                                + " and name like '%"
+                                + name
+                                + "%'"
+                                + " order by " + order_clause;
                     }
 
-                    String sql = "select m.id, name, year, filepath, discnumber, rating, seen"
-                            + " from movies_lists ml"
-                            + " left join movies m on ml.movie_id = m.id"
-                            + " where discnumber = 1"
-                            + " and list_id = " + list_id
-                            + " and name like '%" + name + "%'"
-                            + " order by " + order_clause;
                     RawRowMapper<LocalMovie> rowMapper = new RawRowMapper<LocalMovie>() {
                         @Override
                         public LocalMovie mapRow(String[] columnNames,
                                 String[] resultColumns) throws SQLException {
                             LocalMovie m = new LocalMovie(resultColumns[1],
                                     Integer.parseInt(resultColumns[2]),
-                                    resultColumns[3], Integer
-                                            .parseInt(resultColumns[4]),
+                                    resultColumns[3],
+                                    Integer.parseInt(resultColumns[4]),
                                     Integer.parseInt(resultColumns[5]));
                             boolean seen = resultColumns[6].equals("1");
                             m.setId(Integer.parseInt(resultColumns[0]));
@@ -173,8 +188,8 @@ public class MovieSearchProvider {
                     while (randomMovies.size() < numberOfMovies && rating > -1) {
                         QueryBuilder<LocalMovie, Integer> queryBuilder = dbMovie
                                 .queryBuilder();
-                        queryBuilder.where().eq("discnumber", 1).and().eq(
-                                "seen", false).and().eq("rating", rating);
+                        queryBuilder.where().eq("discnumber", 1).and()
+                                .eq("seen", false).and().eq("rating", rating);
 
                         List<LocalMovie> movies = dbMovie.query(queryBuilder
                                 .prepare());

@@ -8,7 +8,6 @@ import javax.swing.JButton;
 
 import se.eloff.ultimatemovielibrary.AppFrame.GuiPanel;
 
-
 /**
  * The home (welcome) screen of the App.
  */
