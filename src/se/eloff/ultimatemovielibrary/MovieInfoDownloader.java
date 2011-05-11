@@ -95,12 +95,12 @@ public class MovieInfoDownloader {
      */
     private void fetchMovieInfo(LocalMovie localMovie) {
         // TODO: Download the info, but first set the API Key in constructor.
-        System.out.println("Fetching info for " + localMovie.getName());
+        System.out.println("Trying to fetch info for " + localMovie.getName());
         List<Movie> reducedMovies = null;
         try {
             // Search for the Movie
             reducedMovies = Movie.search(localMovie.getName());
-            if (reducedMovies != null) {
+            if (reducedMovies != null && reducedMovies.size() > 0) {
                 // Use the first movie from the search hits
                 Movie movie = reducedMovies.get(0);
                 System.out.println("Got reduced info for movie with ID="
@@ -136,6 +136,8 @@ public class MovieInfoDownloader {
 
                 localMovie.setInfo_id(info);
                 dbMovie.update(localMovie);
+            } else {
+                System.out.println("No movie info found for "+localMovie.getName());
             }
         } catch (IOException e) {
             e.printStackTrace();
