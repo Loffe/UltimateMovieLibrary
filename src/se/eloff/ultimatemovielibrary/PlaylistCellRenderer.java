@@ -25,10 +25,11 @@ public class PlaylistCellRenderer extends JLabel implements ListCellRenderer {
         else if(value.toString().equals(Localization.profileSeenList))
             setIcon(Localization.listsSeenIcon);
         else
+        {
             setIcon(new ImageIcon());
+            //setBackground(isSelected ? Color.lightGray : Color.lightGray);
+        }
         setText(value.toString());
-        setBackground(isSelected ? Color.red : Color.white);
-        setForeground(isSelected ? Color.white : Color.black);
         return this;
     }
 }
