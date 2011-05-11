@@ -2,6 +2,7 @@ package se.eloff.ultimatemovielibrary;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Font;
 
 
 import javax.swing.ImageIcon;
@@ -14,11 +15,17 @@ public class PlaylistCellRenderer extends JLabel implements ListCellRenderer {
         setOpaque(true);
     }
     
-    
+  //  searchItem.setFont(new Font(searchItem.getFont().getName(), searchItem
+    //        .getFont().getStyle(), Localization.menuFontSize));
 
     public Component getListCellRendererComponent(JList list, Object value,
             int index, boolean isSelected, boolean cellHasFocus) {
-        if(value.toString().equals(Localization.profileFavoriteList))
+        setFont(new Font(getFont().getName(), getFont().getStyle(), Localization.playlistDefaultTextSize));
+        if(value.toString().equals(Localization.profileAllMoviesList)){
+            setIcon(new ImageIcon()); 
+            setFont(new Font(getFont().getName(), getFont().getStyle(), Localization.playlistAllMoviesTextSize));
+        }
+        else if(value.toString().equals(Localization.profileFavoriteList))
             setIcon(Localization.listsFavoriteIcon);
         else if(value.toString().equals(Localization.profileWishList))
             setIcon(Localization.listsWishIcon);
@@ -33,6 +40,7 @@ public class PlaylistCellRenderer extends JLabel implements ListCellRenderer {
             setBackground(Color.red);
         }else
             setOpaque(false);
+        
         setText(value.toString());
         return this;
     }

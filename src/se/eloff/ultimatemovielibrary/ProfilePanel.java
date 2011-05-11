@@ -56,6 +56,7 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
     public ProfilePanel() {
         setTitle(Localization.profileTitle);
         initComponents();
+        lists.setSelectedIndex(0);
         resultPanel.search();
     }
 
