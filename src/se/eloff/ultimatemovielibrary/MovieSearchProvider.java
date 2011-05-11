@@ -15,6 +15,29 @@ public class MovieSearchProvider {
     static private int key = 0;
 
     /**
+     * Used by raw query by search with joined tables to map rows to LocalMovie
+     * objects.
+     */
+    static RawRowMapper<LocalMovie> rowMapper = new RawRowMapper<LocalMovie>() {
+        @Override
+        public LocalMovie mapRow(String[] columnNames, String[] resultColumns)
+                throws SQLException {
+            String name = resultColumns[1];
+            int year = Integer.parseInt(resultColumns[2]);
+            String filepath = resultColumns[3];
+            int disc = Integer.parseInt(resultColumns[4]);
+            int rating = Integer.parseInt(resultColumns[5]);
+            boolean seen = resultColumns[6].equals("1");
+
+            LocalMovie m = new LocalMovie(name, year, filepath, disc, rating);
+
+            m.setId(Integer.parseInt(resultColumns[0]));
+            m.setSeen(seen);
+            return m;
+        }
+    };
+
+    /**
      * Search for movies, call backs to the serachClient with the results
      * 
      * @param name
@@ -137,21 +160,6 @@ public class MovieSearchProvider {
                         sql = String.format(sql, name, order_clause);
                     }
 
-                    RawRowMapper<LocalMovie> rowMapper = new RawRowMapper<LocalMovie>() {
-                        @Override
-                        public LocalMovie mapRow(String[] columnNames,
-                                String[] resultColumns) throws SQLException {
-                            LocalMovie m = new LocalMovie(resultColumns[1],
-                                    Integer.parseInt(resultColumns[2]),
-                                    resultColumns[3], Integer
-                                            .parseInt(resultColumns[4]),
-                                    Integer.parseInt(resultColumns[5]));
-                            boolean seen = resultColumns[6].equals("1");
-                            m.setId(Integer.parseInt(resultColumns[0]));
-                            m.setSeen(seen);
-                            return m;
-                        }
-                    };
                     GenericRawResults<LocalMovie> res = movieDao.queryRaw(sql,
                             rowMapper);
 
