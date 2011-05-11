@@ -2,3 +2,4 @@
 *.class
 *bin/*
 database.db
+*TMDBAPIKey.*
