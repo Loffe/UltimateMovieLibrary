@@ -31,7 +31,7 @@ public class MovieInfo {
     public MovieInfo(String cast, String directors, String cover, String plot,
             String genres, int onlineRating) {
         super();
-        this.cast = cast;
+        this.setCast(cast);
         this.directors = directors;
         this.cover = cover;
         this.plot = plot;
@@ -88,6 +88,14 @@ public class MovieInfo {
 
     public void setOnlineRating(int onlineRating) {
         this.onlineRating = onlineRating;
+    }
+
+    public void setCast(String cast) {
+        this.cast = cast;
+    }
+
+    public String getCast() {
+        return cast;
     }
 
 }
