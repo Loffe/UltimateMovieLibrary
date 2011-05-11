@@ -80,6 +80,8 @@ public class ListElement extends javax.swing.JPanel {
                             .getInstance().getListDao();
                     // fetch all lists
                     for (final Playlist playlist : listsDb) {
+                        if (playlist.getId() < 4)
+                            continue;
                         final JCheckBoxMenuItem listItem = new JCheckBoxMenuItem(
                                 playlist.getName(), null);
 
@@ -180,7 +182,8 @@ public class ListElement extends javax.swing.JPanel {
                             listsDb.create(playlist);
                             listsDb.refresh(playlist);
                             movieListDb.create(new MovieList(movie, playlist));
-                            //TODO update the profilePanel listview with the new playlist!
+                            // TODO update the profilePanel listview with the
+                            // new playlist!
 
                         } catch (SQLException e1) {
                             // TODO Auto-generated catch block
