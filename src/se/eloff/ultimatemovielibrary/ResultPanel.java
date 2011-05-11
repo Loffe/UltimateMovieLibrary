@@ -86,7 +86,7 @@ public abstract class ResultPanel extends JScrollPane implements
                 repaint();
             } else {
                 for (LocalMovie movie : movies) {
-                    resultPanel.add(new ListElement2(movie));
+                    resultPanel.add(new ListElement(movie));
                 }
             }
             revalidate();
