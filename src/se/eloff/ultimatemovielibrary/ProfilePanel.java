@@ -54,6 +54,7 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
 
                 try {
                     Playlist selectedList = (Playlist) lists.getSelectedValue();
+                    //If its the "all movies" list...
                     if (selectedList != null && selectedList.getId() == 1){
                         lastSearchId = MovieSearchProvider.searchByName(
                                 searchTextField.getText(), resultPanel,
@@ -103,7 +104,7 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
                 JList.DropLocation dl = (JList.DropLocation) support
                         .getDropLocation();
                 int index = dl.getIndex();
-                if(index<3 || tmp.getSelectedIndex() <3)
+                if(index<3 || tmp.getSelectedIndex() <4)
                     return false;
                 listModel.add(index,
                         listModel.getElementAt(tmp.getSelectedIndex()));
