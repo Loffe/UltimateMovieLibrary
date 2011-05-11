@@ -162,7 +162,7 @@ public class ListElement extends javax.swing.JPanel {
 
                 // playlistMenu.setInvoker(this);
 
-                playlistMenu.show(playlistButton, 0, 0 + 55);
+                playlistMenu.show(playlistButton, 0, 0 + 50);
 
             }
         });

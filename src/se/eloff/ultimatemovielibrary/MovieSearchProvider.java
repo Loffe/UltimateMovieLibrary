@@ -151,7 +151,10 @@ public class MovieSearchProvider {
                                 + " order by %s";
                         sql = String.format(sql, list_id, name, order_clause);
                     } else {
-
+                        if (orderByColumn.equals("position")) {
+                            order_clause = "name";
+                            order_clause += " ASC";
+                        }
                         sql = "select id, name, year, filepath, discnumber, rating, seen"
                                 + " from movies"
                                 + " where discnumber = 1"
@@ -190,8 +193,8 @@ public class MovieSearchProvider {
                     while (randomMovies.size() < numberOfMovies && rating > -1) {
                         QueryBuilder<LocalMovie, Integer> queryBuilder = dbMovie
                                 .queryBuilder();
-                        queryBuilder.where().eq("discnumber", 1).and().eq(
-                                "seen", false).and().eq("rating", rating);
+                        queryBuilder.where().eq("discnumber", 1).and()
+                                .eq("seen", false).and().eq("rating", rating);
 
                         List<LocalMovie> movies = dbMovie.query(queryBuilder
                                 .prepare());
