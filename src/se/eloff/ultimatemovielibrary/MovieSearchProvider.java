@@ -15,6 +15,29 @@ public class MovieSearchProvider {
     static private int key = 0;
 
     /**
+     * Used by raw query by search with joined tables to map rows to LocalMovie
+     * objects.
+     */
+    static RawRowMapper<LocalMovie> rowMapper = new RawRowMapper<LocalMovie>() {
+        @Override
+        public LocalMovie mapRow(String[] columnNames, String[] resultColumns)
+                throws SQLException {
+            String name = resultColumns[1];
+            int year = Integer.parseInt(resultColumns[2]);
+            String filepath = resultColumns[3];
+            int disc = Integer.parseInt(resultColumns[4]);
+            int rating = Integer.parseInt(resultColumns[5]);
+            boolean seen = resultColumns[6].equals("1");
+
+            LocalMovie m = new LocalMovie(name, year, filepath, disc, rating);
+
+            m.setId(Integer.parseInt(resultColumns[0]));
+            m.setSeen(seen);
+            return m;
+        }
+    };
+
+    /**
      * Search for movies, call backs to the serachClient with the results
      * 
      * @param name
@@ -114,9 +137,6 @@ public class MovieSearchProvider {
                         order_clause += ascending ? " ASC" : " DESC";
                     }
 
-                    // Sorry Elof, guess you have to fix it again, but this
-                    // returns correct result for all movies as well even if they
-                    // are in no list
                     String sql;
                     String list_id;
                     if (list != null) {
@@ -126,38 +146,20 @@ public class MovieSearchProvider {
                                 + " from movies_lists ml"
                                 + " left join movies m on ml.movie_id = m.id"
                                 + " where discnumber = 1"
-                                + " and list_id = "
-                                + list_id
-                                + " and name like '%"
-                                + name
-                                + "%'"
-                                + " order by " + order_clause;
+                                + " and list_id = %s"
+                                + " and name like '%%%s%%'    "
+                                + " order by %s";
+                        sql = String.format(sql, list_id, name, order_clause);
                     } else {
 
                         sql = "select id, name, year, filepath, discnumber, rating, seen"
                                 + " from movies"
                                 + " where discnumber = 1"
-                                + " and name like '%"
-                                + name
-                                + "%'"
-                                + " order by " + order_clause;
+                                + " and name like '%%%s%%'    "
+                                + " order by %s";
+                        sql = String.format(sql, name, order_clause);
                     }
 
-                    RawRowMapper<LocalMovie> rowMapper = new RawRowMapper<LocalMovie>() {
-                        @Override
-                        public LocalMovie mapRow(String[] columnNames,
-                                String[] resultColumns) throws SQLException {
-                            LocalMovie m = new LocalMovie(resultColumns[1],
-                                    Integer.parseInt(resultColumns[2]),
-                                    resultColumns[3],
-                                    Integer.parseInt(resultColumns[4]),
-                                    Integer.parseInt(resultColumns[5]));
-                            boolean seen = resultColumns[6].equals("1");
-                            m.setId(Integer.parseInt(resultColumns[0]));
-                            m.setSeen(seen);
-                            return m;
-                        }
-                    };
                     GenericRawResults<LocalMovie> res = movieDao.queryRaw(sql,
                             rowMapper);
 
@@ -188,8 +190,8 @@ public class MovieSearchProvider {
                     while (randomMovies.size() < numberOfMovies && rating > -1) {
                         QueryBuilder<LocalMovie, Integer> queryBuilder = dbMovie
                                 .queryBuilder();
-                        queryBuilder.where().eq("discnumber", 1).and()
-                                .eq("seen", false).and().eq("rating", rating);
+                        queryBuilder.where().eq("discnumber", 1).and().eq(
+                                "seen", false).and().eq("rating", rating);
 
                         List<LocalMovie> movies = dbMovie.query(queryBuilder
                                 .prepare());
