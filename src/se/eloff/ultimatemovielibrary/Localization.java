@@ -2,6 +2,7 @@ package se.eloff.ultimatemovielibrary;
 
 import java.awt.Image;
 
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
 /**
@@ -127,6 +128,9 @@ public final class Localization {
 
     // HomePanel
     public static String homeTitle = "Välkommen!";
+    public static final Icon listsWishIcon = new ImageIcon("img/Button-Favorite-icon_16.png");
+    public static final Icon listsFavoriteIcon = new ImageIcon("img/Favorite-icon-16.png");
     public static final int homePanelFontSize = 40;
+    public static final Icon listsSeenIcon = new ImageIcon("img/eye_16.png");
 
 }
