@@ -103,6 +103,8 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
                 JList.DropLocation dl = (JList.DropLocation) support
                         .getDropLocation();
                 int index = dl.getIndex();
+                if(index<3 || tmp.getSelectedIndex() <3)
+                    return false;
                 listModel.add(index,
                         listModel.getElementAt(tmp.getSelectedIndex()));
                 listModel.remove(tmp.getSelectedIndex());
