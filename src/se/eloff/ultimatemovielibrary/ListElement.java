@@ -80,7 +80,7 @@ public class ListElement extends javax.swing.JPanel {
                             .getInstance().getListDao();
                     // fetch all lists
                     for (final Playlist playlist : listsDb) {
-                        if (playlist.getId() < 4)
+                        if (playlist.getId() < 5)
                             continue;
                         final JCheckBoxMenuItem listItem = new JCheckBoxMenuItem(
                                 playlist.getName(), null);

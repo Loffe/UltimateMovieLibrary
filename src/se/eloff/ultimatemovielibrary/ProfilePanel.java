@@ -54,9 +54,15 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
 
                 try {
                     Playlist selectedList = (Playlist) lists.getSelectedValue();
+                    if (selectedList != null && selectedList.getId() == 1){
+                        lastSearchId = MovieSearchProvider.searchByName(
+                                searchTextField.getText(), resultPanel,
+                                getOrderColumn(), isOrderAscending());
+                    }else{
                     lastSearchId = MovieSearchProvider.searchByList(
                             searchTextField.getText(), resultPanel,
                             getOrderColumn(), isOrderAscending(), selectedList);
+                    }
                 } catch (ClassCastException e) {
                     e.printStackTrace();
                 }
