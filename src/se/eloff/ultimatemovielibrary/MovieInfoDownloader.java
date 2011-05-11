@@ -1,7 +1,14 @@
 package se.eloff.ultimatemovielibrary;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+
+import net.sf.jtmdb.Auth;
+import net.sf.jtmdb.GeneralSettings;
+import net.sf.jtmdb.Movie;
+
+import org.json.JSONException;
 
 import com.google.api.translate.Language;
 import com.google.api.translate.Translate;
@@ -76,6 +83,27 @@ public class MovieInfoDownloader {
 
     private void fetchMovieInfo(LocalMovie movie) {
         // TODO: download the info
+        System.out.println("Fetching info for "+movie.getName());
+        List<Movie> movies = null;
+        try {
+            String token = Auth.getToken();
+            GeneralSettings.setApiKey(TMDBAPIKey.APIKey);
+            movies = Movie.search(movie.getName());
+            System.out.println(movies);
+        } catch (IOException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        } catch (JSONException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
+
+        if (movies != null) {
+            for (Movie m : movies) {
+                System.out.println(m.getName());
+            }
+        }
+        
         
         // TODO: modify translation, just testing atm...
         // This is just to help Google identify how their translation tools are used
