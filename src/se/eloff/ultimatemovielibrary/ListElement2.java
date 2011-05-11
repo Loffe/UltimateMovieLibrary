@@ -20,8 +20,10 @@ import java.util.List;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.JToggleButton;
 import javax.swing.LayoutStyle;
@@ -108,17 +110,23 @@ public class ListElement2 extends javax.swing.JPanel {
                                         if (listItem.isSelected()) {
                                             MovieList mList = new MovieList(
                                                     movie, playlist);
-                                            //get the last position and add 1
-                                            QueryBuilder<MovieList, Integer> lastPositionQuery = movieListDb.queryBuilder();
-                                            lastPositionQuery.where().eq("list_id", playlist.getId());
+                                            // get the last position and add 1
+                                            QueryBuilder<MovieList, Integer> lastPositionQuery = movieListDb
+                                                    .queryBuilder();
+                                            lastPositionQuery.where()
+                                                    .eq("list_id",
+                                                            playlist.getId());
                                             lastPositionQuery.distinct();
-                                            lastPositionQuery.orderBy("position", false);
-                                            
-                                            List<MovieList> lastPos = movieListDb.query(lastPositionQuery
-                                                    .prepare());
+                                            lastPositionQuery.orderBy(
+                                                    "position", false);
+
+                                            List<MovieList> lastPos = movieListDb
+                                                    .query(lastPositionQuery
+                                                            .prepare());
                                             int newPos = 0;
-                                            if (!lastPos.isEmpty()){
-                                                newPos = lastPos.get(0).getPosition() +1;
+                                            if (!lastPos.isEmpty()) {
+                                                newPos = lastPos.get(0)
+                                                        .getPosition() + 1;
                                             }
                                             mList.setPosition(newPos);
                                             movieListDb.create(mList);
@@ -160,6 +168,29 @@ public class ListElement2 extends javax.swing.JPanel {
                         public void actionPerformed(ActionEvent e) {
                             // TODO Create a new playlist and add this movie
                             // somehow
+                            try {
+                                Dao<Playlist, Integer> listsDb = DatabaseManager
+                                        .getInstance().getListDao();
+                                Dao<MovieList, Integer> movieListDb = DatabaseManager
+                                        .getInstance().getMovieListDao();
+
+                                Playlist playlist = new Playlist(
+                                        JOptionPane
+                                                .showInputDialog(
+                                                        null,
+                                                        Localization.playlistCreateNewMessage,
+                                                        Localization.playlistCreateNewHeading,
+                                                        1));
+
+                                listsDb.create(playlist);
+                                listsDb.refresh(playlist);
+                                movieListDb.create(new MovieList(movie, playlist));
+
+                            } catch (SQLException e1) {
+                                // TODO Auto-generated catch block
+                                e1.printStackTrace();
+                            }
+
                         }
                     });
 

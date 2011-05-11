@@ -128,5 +128,8 @@ public final class Localization {
     // HomePanel
     public static String homeTitle = "Välkommen!";
     public static final int homePanelFontSize = 40;
-
+    
+    //Playlists
+    public static String playlistCreateNewMessage = "Namn på ny playlist";
+    public static String playlistCreateNewHeading = "Ny playlist";
 }
