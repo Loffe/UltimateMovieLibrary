@@ -138,5 +138,6 @@ public final class Localization {
     public static final Icon listsSeenIcon = new ImageIcon("img/eye_16.png");
     
     public static final String translationFailedText = "Översättningen misslyckades! Engelsk version: ";
+    public static final Icon ratingRemoveRating = new ImageIcon("img/rating-remove-vote.png");
 
 }
