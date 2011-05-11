@@ -73,129 +73,124 @@ public class ListElement2 extends javax.swing.JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Build the playlist Menu.
-                if (playlistMenu == null) {
-                    playlistMenu = new JPopupMenu("Playlists");
+                playlistMenu = new JPopupMenu("Playlists");
 
-                    try {
-                        Dao<Playlist, Integer> listsDb = DatabaseManager
-                                .getInstance().getListDao();
-                        // fetch all lists
-                        for (final Playlist playlist : listsDb) {
-                            final JCheckBoxMenuItem listItem = new JCheckBoxMenuItem(
-                                    playlist.getName(), null);
+                try {
+                    Dao<Playlist, Integer> listsDb = DatabaseManager
+                            .getInstance().getListDao();
+                    // fetch all lists
+                    for (final Playlist playlist : listsDb) {
+                        final JCheckBoxMenuItem listItem = new JCheckBoxMenuItem(
+                                playlist.getName(), null);
 
-                            // TODO much better way to find out if the movie is
-                            // in the
-                            // playlist.movie_list.contains(movie) do not work
-                            // as it should
-                            // maybe override the contains function in playlist
-                            for (LocalMovie compareMovie : playlist.getMovies()) {
-                                if (compareMovie.compareTo(movie) == 0) {
-                                    listItem.setSelected(true);
-                                    break;
-                                }
+                        // TODO much better way to find out if the movie is
+                        // in the
+                        // playlist.movie_list.contains(movie) do not work
+                        // as it should
+                        // maybe override the contains function in playlist
+                        for (LocalMovie compareMovie : playlist.getMovies()) {
+                            if (compareMovie.compareTo(movie) == 0) {
+                                listItem.setSelected(true);
+                                break;
                             }
-                            playlistMenu.add(listItem);
-                            // for each playlist entry, add a listener
-                            listItem.addActionListener(new ActionListener() {
+                        }
+                        playlistMenu.add(listItem);
+                        // for each playlist entry, add a listener
+                        listItem.addActionListener(new ActionListener() {
 
-                                @Override
-                                public void actionPerformed(ActionEvent e) {
-                                    Dao<MovieList, Integer> movieListDb;
-                                    try {
-                                        movieListDb = DatabaseManager
-                                                .getInstance()
-                                                .getMovieListDao();
-                                        // add it to the list, put it last
-                                        if (listItem.isSelected()) {
-                                            MovieList mList = new MovieList(
-                                                    movie, playlist);
-                                            // get the last position and add 1
-                                            QueryBuilder<MovieList, Integer> lastPositionQuery = movieListDb
-                                                    .queryBuilder();
-                                            lastPositionQuery.where()
-                                                    .eq("list_id",
-                                                            playlist.getId());
-                                            lastPositionQuery.distinct();
-                                            lastPositionQuery.orderBy(
-                                                    "position", false);
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+                                Dao<MovieList, Integer> movieListDb;
+                                try {
+                                    movieListDb = DatabaseManager.getInstance()
+                                            .getMovieListDao();
+                                    // add it to the list, put it last
+                                    if (listItem.isSelected()) {
+                                        MovieList mList = new MovieList(movie,
+                                                playlist);
+                                        // get the last position and add 1
+                                        QueryBuilder<MovieList, Integer> lastPositionQuery = movieListDb
+                                                .queryBuilder();
+                                        lastPositionQuery.where().eq("list_id",
+                                                playlist.getId());
+                                        lastPositionQuery.distinct();
+                                        lastPositionQuery.orderBy("position",
+                                                false);
 
-                                            List<MovieList> lastPos = movieListDb
-                                                    .query(lastPositionQuery
-                                                            .prepare());
-                                            int newPos = 0;
-                                            if (!lastPos.isEmpty()) {
-                                                newPos = lastPos.get(0)
-                                                        .getPosition() + 1;
-                                            }
-                                            mList.setPosition(newPos);
-                                            movieListDb.create(mList);
-                                        } else {
-                                            DeleteBuilder<MovieList, Integer> deleteBuilder = movieListDb
-                                                    .deleteBuilder();
-                                            deleteBuilder
-                                                    .where()
-                                                    .eq("movie_id",
-                                                            movie.getId())
-                                                    .and()
-                                                    .eq("list_id",
-                                                            playlist.getId());
-
-                                            movieListDb.delete(deleteBuilder
-                                                    .prepare());
+                                        List<MovieList> lastPos = movieListDb
+                                                .query(lastPositionQuery
+                                                        .prepare());
+                                        int newPos = 0;
+                                        if (!lastPos.isEmpty()) {
+                                            newPos = lastPos.get(0)
+                                                    .getPosition() + 1;
                                         }
+                                        mList.setPosition(newPos);
+                                        movieListDb.create(mList);
+                                    } else {
+                                        DeleteBuilder<MovieList, Integer> deleteBuilder = movieListDb
+                                                .deleteBuilder();
+                                        deleteBuilder
+                                                .where()
+                                                .eq("movie_id", movie.getId())
+                                                .and()
+                                                .eq("list_id", playlist.getId());
 
-                                    } catch (SQLException e1) {
-                                        // TODO Auto-generated catch block
-                                        e1.printStackTrace();
+                                        movieListDb.delete(deleteBuilder
+                                                .prepare());
                                     }
+
+                                } catch (SQLException e1) {
+                                    // TODO Auto-generated catch block
+                                    e1.printStackTrace();
                                 }
-                            });
-                        }
-                    } catch (SQLException e2) {
-                        // TODO Auto-generated catch block
-                        e2.printStackTrace();
-                    }
-
-                    // a nice line
-                    playlistMenu.addSeparator();
-                    JMenuItem AddToNewListItem = new JMenuItem(
-                            Localization.movieAddToNewPlaylistText, null);
-                    playlistMenu.add(AddToNewListItem);
-                    AddToNewListItem.addActionListener(new ActionListener() {
-
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                            // TODO Create a new playlist and add this movie
-                            // somehow
-                            try {
-                                Dao<Playlist, Integer> listsDb = DatabaseManager
-                                        .getInstance().getListDao();
-                                Dao<MovieList, Integer> movieListDb = DatabaseManager
-                                        .getInstance().getMovieListDao();
-
-                                Playlist playlist = new Playlist(
-                                        JOptionPane
-                                                .showInputDialog(
-                                                        null,
-                                                        Localization.playlistCreateNewMessage,
-                                                        Localization.playlistCreateNewHeading,
-                                                        1));
-
-                                listsDb.create(playlist);
-                                listsDb.refresh(playlist);
-                                movieListDb.create(new MovieList(movie, playlist));
-
-                            } catch (SQLException e1) {
-                                // TODO Auto-generated catch block
-                                e1.printStackTrace();
                             }
-
-                        }
-                    });
-
-                    // playlistMenu.setInvoker(this);
+                        });
+                    }
+                } catch (SQLException e2) {
+                    // TODO Auto-generated catch block
+                    e2.printStackTrace();
                 }
+
+                // a nice line
+                playlistMenu.addSeparator();
+                JMenuItem AddToNewListItem = new JMenuItem(
+                        Localization.movieAddToNewPlaylistText, null);
+                playlistMenu.add(AddToNewListItem);
+                AddToNewListItem.addActionListener(new ActionListener() {
+
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        // TODO Create a new playlist and add this movie
+                        // somehow
+                        try {
+                            Dao<Playlist, Integer> listsDb = DatabaseManager
+                                    .getInstance().getListDao();
+                            Dao<MovieList, Integer> movieListDb = DatabaseManager
+                                    .getInstance().getMovieListDao();
+
+                            Playlist playlist = new Playlist(
+                                    JOptionPane
+                                            .showInputDialog(
+                                                    null,
+                                                    Localization.playlistCreateNewMessage,
+                                                    Localization.playlistCreateNewHeading,
+                                                    1));
+
+                            listsDb.create(playlist);
+                            listsDb.refresh(playlist);
+                            movieListDb.create(new MovieList(movie, playlist));
+
+                        } catch (SQLException e1) {
+                            // TODO Auto-generated catch block
+                            e1.printStackTrace();
+                        }
+
+                    }
+                });
+
+                // playlistMenu.setInvoker(this);
+
                 playlistMenu.show(playlistButton, 0, 0 + 55);
 
             }
