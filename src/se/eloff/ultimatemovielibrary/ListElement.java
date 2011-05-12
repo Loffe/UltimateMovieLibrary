@@ -15,12 +15,10 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
-import java.util.List;
 
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
@@ -30,8 +28,6 @@ import javax.swing.LayoutStyle;
 import javax.swing.SwingConstants;
 
 import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.stmt.DeleteBuilder;
-import com.j256.ormlite.stmt.QueryBuilder;
 
 /**
  * 
@@ -102,10 +98,7 @@ public class ListElement extends javax.swing.JPanel {
 
                             @Override
                             public void actionPerformed(ActionEvent e) {
-                                Dao<MovieList, Integer> movieListDb;
                                 try {
-                                    movieListDb = DatabaseManager.getInstance()
-                                            .getMovieListDao();
                                     // add it to the list, put it last
                                     if (listItem.isSelected()) {
                                         playlist.add(movie);
@@ -114,14 +107,12 @@ public class ListElement extends javax.swing.JPanel {
                                     }
 
                                 } catch (SQLException e1) {
-                                    // TODO Auto-generated catch block
                                     e1.printStackTrace();
                                 }
                             }
                         });
                     }
                 } catch (SQLException e2) {
-                    // TODO Auto-generated catch block
                     e2.printStackTrace();
                 }
 
@@ -146,7 +137,8 @@ public class ListElement extends javax.swing.JPanel {
                                     Localization.playlistCreateNewMessage,
                                     Localization.playlistCreateNewHeading, 1);
 
-                            Playlist playlist = DatabaseManager.getInstance().createPlaylist(playlistname);
+                            Playlist playlist = DatabaseManager.getInstance()
+                                    .createPlaylist(playlistname);
 
                             movieListDb.create(new MovieList(movie, playlist));
                             // TODO update the profilePanel listview with the
@@ -341,27 +333,6 @@ public class ListElement extends javax.swing.JPanel {
             }
         });
 
-        seenButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // TODO Auto-generated method stub
-            }
-        });
-
-        wishButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // TODO Auto-generated method stub
-            }
-        });
-
-        favoriteButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // TODO Auto-generated method stub
-            }
-        });
-
         rating.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -378,7 +349,17 @@ public class ListElement extends javax.swing.JPanel {
         wishButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                movie.setWish(wishButton.isSelected());
+                try {
+                    if (wishButton.isSelected()) {
+                        Playlist.getWishlist().add(movie);
+                    } else {
+                        Playlist.getWishlist().remove(movie);
+                    }
+                } catch (SQLException e1) {
+                    System.out
+                            .println("Failed to update movie with new rating");
+                }
+
                 if (movie.isWish()) {
                     wishButton.setIcon(Localization.movieStarButtonIcon);
                     wishButton.setToolTipText(Localization.toolTipsWishDisable);
@@ -388,12 +369,6 @@ public class ListElement extends javax.swing.JPanel {
                     wishButton.setToolTipText(Localization.toolTipsWish);
                 }
 
-                try {
-                    DatabaseManager.getInstance().getMovieDao().update(movie);
-                } catch (SQLException e1) {
-                    System.out
-                            .println("Failed to update movie with new rating");
-                }
             }
         });
 
