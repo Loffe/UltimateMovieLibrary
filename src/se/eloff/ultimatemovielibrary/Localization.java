@@ -35,6 +35,8 @@ public final class Localization {
     public static final ImageIcon removeWatchFolderButtonIcon = new ImageIcon(
             "img/delete_16.png");
     public static final String removeWatchFolderConfirmationText = "Vill du sluta bevaka katalogen?\n";
+    
+    public static final String closeWatchFolderButtonText = "Stäng";
 
     // Search
     public static final String searchTitle = "Sök";

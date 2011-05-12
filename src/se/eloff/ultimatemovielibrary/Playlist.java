@@ -69,7 +69,6 @@ public class Playlist {
         DatabaseManager db = DatabaseManager.getInstance();
         Dao<MovieList, Integer> movieListDao = db.getMovieListDao();
         MovieList movieList = new MovieList(movie, this);
-        movieListDao.create(movieList);
 
         // get the last position and add 1
         QueryBuilder<MovieList, Integer> lastPositionQuery = movieListDao
@@ -84,7 +83,9 @@ public class Playlist {
         if (!lastPos.isEmpty()) {
             newPos = lastPos.get(0).getPosition() + 1;
         }
+
         movieList.setPosition(newPos);
+        movieListDao.create(movieList);
 
         return movieList;
     }

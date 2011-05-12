@@ -97,7 +97,26 @@ public class WatchFolderManagerDialog extends JDialog {
         JScrollPane scrollPane = new JScrollPane(outerPanel);
         scrollPane.setPreferredSize(new Dimension(600, 400));
         add(scrollPane, BorderLayout.CENTER);
+        
+        //Make done button
+        JButton closeButton = new JButton(Localization.closeWatchFolderButtonText);
+        closeButton.addActionListener(new ActionListener() {
 
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+            }
+
+        });
+        buttonPanel.add(addFolderButton);
+        JPanel bottomPanel = new JPanel(new FlowLayout());
+        bottomPanel.setAlignmentX(CENTER_ALIGNMENT);
+        bottomPanel.add(closeButton);
+        add(bottomPanel, BorderLayout.SOUTH);
+        
+        
+        
+        
         // Add all the currently watched folders from database.
         for (WatchFolder watchFolder : WatchFolderManager.getAllWatchFolders()) {
             addFolderToList(watchFolder);

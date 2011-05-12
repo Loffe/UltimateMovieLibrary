@@ -11,12 +11,10 @@ public class MovieList {
     @DatabaseField(canBeNull = false, foreign = true)
     private LocalMovie movie;
 
-    //@DatabaseField(canBeNull = false, foreign = true, uniqueIndex = true, uniqueIndexName = "playlist")
-    @DatabaseField(canBeNull = false, foreign = true)
+    @DatabaseField(canBeNull = false, foreign = true, uniqueIndex = true, uniqueIndexName = "playlist")
     private Playlist list;
 
-   // @DatabaseField(canBeNull = false, uniqueIndex = true, uniqueIndexName = "playlist")
-    @DatabaseField(canBeNull = false)
+    @DatabaseField(canBeNull = false, uniqueIndex = true, uniqueIndexName = "playlist")
     private int position;
 
     public MovieList() {
