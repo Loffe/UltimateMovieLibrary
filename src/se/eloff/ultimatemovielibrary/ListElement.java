@@ -11,7 +11,11 @@
 
 package se.eloff.ultimatemovielibrary;
 
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
@@ -22,10 +26,13 @@ import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JToggleButton;
 import javax.swing.LayoutStyle;
 import javax.swing.SwingConstants;
+
+import sun.awt.VerticalBagLayout;
 
 import com.j256.ormlite.dao.Dao;
 
@@ -47,6 +54,8 @@ public class ListElement extends javax.swing.JPanel {
     private JToggleButton favoriteButton;
     private LocalMovie movie;
     private JPopupMenu playlistMenu;
+    private JButton moveUpButton;
+    private JButton moveDownButton;
 
     public ListElement(LocalMovie movie) {
         this.movie = movie;
@@ -63,6 +72,13 @@ public class ListElement extends javax.swing.JPanel {
         wishButton = new JToggleButton();
         favoriteButton = new JToggleButton();
         rating = new RatingButton();
+        moveUpButton = new JButton();/*{
+            @Override
+            protected void paintComponent(Graphics g) {
+                // Make sure no button is painte
+            }
+        };*/
+        moveDownButton = new JButton();
 
         playlistButton.addActionListener(new ActionListener() {
 
@@ -213,6 +229,26 @@ public class ListElement extends javax.swing.JPanel {
         favoriteButton.setHorizontalTextPosition(SwingConstants.RIGHT);
 
         javax.swing.GroupLayout layout = new GroupLayout(this);
+
+        
+        Dimension moveButtonDimension = new Dimension(30,25);
+        moveUpButton.setIcon(Localization.movieMoveUpButtonIcon);
+        //moveUpButton.add(Localization.movieMoveDownButtonIcon);
+        moveDownButton.setIcon(Localization.movieMoveDownButtonIcon);
+        moveUpButton.setMaximumSize(moveButtonDimension);
+        moveDownButton.setMaximumSize(moveButtonDimension);
+        moveUpButton.setPreferredSize(moveButtonDimension);
+        moveDownButton.setPreferredSize(moveButtonDimension);
+        moveUpButton.setMinimumSize(moveButtonDimension);
+        moveDownButton.setMinimumSize(moveButtonDimension);
+        
+        moveUpButton.setBorderPainted(false);
+                
+        JPanel movePanel = new JPanel(new VerticalBagLayout());
+        movePanel.setAlignmentX(CENTER_ALIGNMENT);
+        movePanel.add(moveUpButton);
+        movePanel.add(moveDownButton);
+
         this.setLayout(layout);
         layout
                 .setHorizontalGroup(layout
@@ -221,6 +257,11 @@ public class ListElement extends javax.swing.JPanel {
                                 layout
                                         .createSequentialGroup()
                                         .addContainerGap()
+                                        .addComponent(
+                                                                movePanel,
+                                                                GroupLayout.PREFERRED_SIZE,
+                                                                52,
+                                                                GroupLayout.PREFERRED_SIZE)
                                         .addComponent(playButton,
                                                 GroupLayout.PREFERRED_SIZE, 52,
                                                 GroupLayout.PREFERRED_SIZE)
@@ -268,6 +309,11 @@ public class ListElement extends javax.swing.JPanel {
                                                 layout
                                                         .createParallelGroup(
                                                                 GroupLayout.Alignment.TRAILING)
+                                                        .addComponent(
+                                                                movePanel,
+                                                                GroupLayout.PREFERRED_SIZE,
+                                                                52,
+                                                                GroupLayout.PREFERRED_SIZE)
                                                         .addComponent(
                                                                 playButton,
                                                                 GroupLayout.PREFERRED_SIZE,

@@ -35,7 +35,7 @@ public final class Localization {
     public static final ImageIcon removeWatchFolderButtonIcon = new ImageIcon(
             "img/delete_16.png");
     public static final String removeWatchFolderConfirmationText = "Vill du sluta bevaka katalogen?\n";
-    
+
     public static final String closeWatchFolderButtonText = "Stäng";
 
     // Search
@@ -76,6 +76,10 @@ public final class Localization {
             "img/Favorite-icon_50.png");
     public static final ImageIcon movieStarButtonIcon = new ImageIcon(
             "img/Button-Favorite-icon_50.png");
+    public static final ImageIcon movieMoveUpButtonIcon = new ImageIcon(
+            "img/navigate-up-icon.png");
+    public static final ImageIcon movieMoveDownButtonIcon = new ImageIcon(
+            "img/navigate-down-icon.png");
 
     public static final ImageIcon movieSeenButtonIconDisabled = new ImageIcon(
             "img/eye_50_disabled.png");
@@ -136,13 +140,18 @@ public final class Localization {
     // Playlists
     public static final String playlistCreateNewMessage = "Namn på ny playlist";
     public static final String playlistCreateNewHeading = "Ny playlist";
-    public static final Icon listsWishIcon = new ImageIcon("img/Button-Favorite-icon_16.png");
-    public static final Icon listsFavoriteIcon = new ImageIcon("img/Favorite-icon-16.png");
+    public static final Icon listsWishIcon = new ImageIcon(
+            "img/Button-Favorite-icon_16.png");
+    public static final Icon listsFavoriteIcon = new ImageIcon(
+            "img/Favorite-icon-16.png");
     public static final Icon listsSeenIcon = new ImageIcon("img/eye_16.png");
     public static final int playlistDefaultTextSize = 12;
     public static final int playlistAllMoviesTextSize = 22;
-    
+
     public static final String translationFailedText = "Översättningen misslyckades! Engelsk version: ";
-    public static final Icon ratingRemoveRating = new ImageIcon("img/rating-remove-vote.png");
+
+    //public static final Icon ratingRemoveRating = new ImageIcon("img/rating-remove-vote.png");
+    public static final String ratingRemoveRating = "img/rating-remove-vote.png";
+
 
 }
