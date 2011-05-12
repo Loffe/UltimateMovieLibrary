@@ -26,6 +26,9 @@ public class Playlist {
             Localization.profileFavoriteList, Localization.profileWishList,
             Localization.profileSeenList };
 
+    private static final int FAVORITELIST_ID = 2;
+    private static final int WISHLIST_ID = 3;
+
     @DatabaseField(generatedId = true)
     private int id;
 
@@ -121,6 +124,12 @@ public class Playlist {
         return list;
     }
 
+    public static Playlist getWishlist() throws SQLException {
+        DatabaseManager db = DatabaseManager.getInstance();
+        Dao<Playlist, Integer> listDao = db.getListDao();
+        return listDao.queryForId(Playlist.WISHLIST_ID);
+    }
+
     public static void main(String[] args) throws SQLException {
         Dao<Playlist, Integer> listDao = DatabaseManager.getInstance()
                 .getListDao();
@@ -160,6 +169,16 @@ public class Playlist {
          * 
          * MovieList ml = new MovieList(movie, myFavs); movieListDao.create(ml);
          */
+    }
+
+    public boolean contains(int movie_id) throws SQLException {
+        DatabaseManager db = DatabaseManager.getInstance();
+        Dao<MovieList, Integer> movieListDao = db.getMovieListDao();
+        PreparedQuery<MovieList> preparedQuery = movieListDao.queryBuilder()
+                .where().eq("movie_id", movie_id).and().eq("list_id", this.id)
+                .prepare();
+        List<MovieList> result = movieListDao.query(preparedQuery);
+        return !result.isEmpty();
     }
 
 }
