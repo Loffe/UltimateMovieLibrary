@@ -1,5 +1,7 @@
 package se.eloff.ultimatemovielibrary;
 
+import java.sql.SQLException;
+
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
@@ -119,12 +121,16 @@ public class LocalMovie implements Comparable<LocalMovie> {
         this.favorite = favorite;
     }
 
+    @Deprecated
     public boolean isWish() {
-        return wish;
-    }
-
-    public void setWish(boolean wish) {
-        this.wish = wish;
+        try {
+            Playlist wishlist = Playlist.getWishlist();
+            return wishlist.contains(this.id);
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return false;
     }
 
     @Override

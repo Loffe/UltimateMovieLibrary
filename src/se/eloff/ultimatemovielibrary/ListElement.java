@@ -114,10 +114,7 @@ public class ListElement extends javax.swing.JPanel {
 
                             @Override
                             public void actionPerformed(ActionEvent e) {
-                                Dao<MovieList, Integer> movieListDb;
                                 try {
-                                    movieListDb = DatabaseManager.getInstance()
-                                            .getMovieListDao();
                                     // add it to the list, put it last
                                     if (listItem.isSelected()) {
                                         playlist.add(movie);
@@ -126,14 +123,12 @@ public class ListElement extends javax.swing.JPanel {
                                     }
 
                                 } catch (SQLException e1) {
-                                    // TODO Auto-generated catch block
                                     e1.printStackTrace();
                                 }
                             }
                         });
                     }
                 } catch (SQLException e2) {
-                    // TODO Auto-generated catch block
                     e2.printStackTrace();
                 }
 
@@ -384,27 +379,6 @@ public class ListElement extends javax.swing.JPanel {
             }
         });
 
-        seenButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // TODO Auto-generated method stub
-            }
-        });
-
-        wishButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // TODO Auto-generated method stub
-            }
-        });
-
-        favoriteButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // TODO Auto-generated method stub
-            }
-        });
-
         rating.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -421,7 +395,17 @@ public class ListElement extends javax.swing.JPanel {
         wishButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                movie.setWish(wishButton.isSelected());
+                try {
+                    if (wishButton.isSelected()) {
+                        Playlist.getWishlist().add(movie);
+                    } else {
+                        Playlist.getWishlist().remove(movie);
+                    }
+                } catch (SQLException e1) {
+                    System.out
+                            .println("Failed to update movie with new rating");
+                }
+
                 if (movie.isWish()) {
                     wishButton.setIcon(Localization.movieStarButtonIcon);
                     wishButton.setToolTipText(Localization.toolTipsWishDisable);
@@ -431,12 +415,6 @@ public class ListElement extends javax.swing.JPanel {
                     wishButton.setToolTipText(Localization.toolTipsWish);
                 }
 
-                try {
-                    DatabaseManager.getInstance().getMovieDao().update(movie);
-                } catch (SQLException e1) {
-                    System.out
-                            .println("Failed to update movie with new rating");
-                }
             }
         });
 
