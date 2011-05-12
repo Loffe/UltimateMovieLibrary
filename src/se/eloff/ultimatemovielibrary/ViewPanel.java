@@ -9,6 +9,7 @@ public abstract class ViewPanel extends JPanel {
     private static final long serialVersionUID = 7489639404248359628L;
 
     protected ResultPanel resultPanel;
+    protected MovieInfoPanel movieInfoPanel;
     
     private String title;
 

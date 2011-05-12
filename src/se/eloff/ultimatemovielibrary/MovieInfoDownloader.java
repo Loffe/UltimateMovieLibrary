@@ -59,6 +59,12 @@ public class MovieInfoDownloader {
         } else
             doNewScan = true;
     }
+    
+    //call when you want to display the info panel but info is not fetched yet
+    //TODO make it async with a callback to stop swing from locking up
+    public void updateInfo(LocalMovie localMovie){
+        fetchMovieInfo(localMovie);
+    }
 
     private void updateLibraryInfoAsync() {
 
@@ -139,8 +145,6 @@ public class MovieInfoDownloader {
                         if (!downloadImage(poster.next().getLargestImage(), thumbPath))
                             thumbPath = "";
                 }
-                    
-   
 
                 // extract info
                 String genres = "";
