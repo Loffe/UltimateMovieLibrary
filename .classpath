@@ -7,5 +7,6 @@
 	<classpathentry kind="lib" path="lib/sqlite-jdbc-3.7.2.jar"/>
 	<classpathentry kind="lib" path="lib/jtmdb-1.9.16.jar"/>
 	<classpathentry kind="lib" path="lib/google-api-translate-java-0.95/google-api-translate-java-0.95.jar"/>
+	<classpathentry kind="lib" path="lib/commons-io-2.0.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

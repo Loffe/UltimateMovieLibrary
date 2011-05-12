@@ -1,14 +1,26 @@
 package se.eloff.ultimatemovielibrary;
 
+import java.io.*;
+import java.net.*;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.awt.image.ImageObserver;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Iterator;
 import java.util.List;
+
+import javax.imageio.ImageIO;
 
 import net.sf.jtmdb.CastInfo;
 import net.sf.jtmdb.GeneralSettings;
 import net.sf.jtmdb.Genre;
 import net.sf.jtmdb.Movie;
+import net.sf.jtmdb.MovieImages;
+import net.sf.jtmdb.MoviePoster;
 
+import org.apache.commons.io.FileUtils;
 import org.json.JSONException;
 
 import com.google.api.translate.Language;
@@ -100,8 +112,9 @@ public class MovieInfoDownloader {
         String yearString = "";
         if (localMovie.getYear() != 0)
             yearString = Integer.toString(localMovie.getYear());
-        
-        System.out.println("Trying to fetch info for " + localMovie.getName() + " " + yearString);
+
+        System.out.println("Trying to fetch info for " + localMovie.getName()
+                + " " + yearString);
         List<Movie> reducedMovies = null;
         try {
             // Search for the Movie
@@ -116,8 +129,26 @@ public class MovieInfoDownloader {
                 System.out.println("Fetching all info for " + movie.getName());
                 movie = Movie.getInfo(movie.getID());
 
-                // Translate the overview (plot?!)
+                String thumbPath = "thumbs/" + movie.getID() + ".jpg";
+                
+                // get the thumb
+                MovieImages images = Movie.getImages(movie.getID());
+                if (!images.posters.isEmpty()){
+                    Iterator<MoviePoster> poster = images.posters.iterator();
+                    if (poster.hasNext())
+                        if (!downloadImage(poster.next().getLargestImage(), thumbPath))
+                            thumbPath = "";
+                }
+                    
+   
+
+                // extract info
+                String genres = "";
+                String cast = "";
+                String directors = "";
                 String plot = movie.getOverview();
+
+                // Translate the overview (plot?!)
                 String translatedPlot = Localization.translationFailedText
                         + " " + plot;
                 try {
@@ -127,14 +158,6 @@ public class MovieInfoDownloader {
                     // Translation failed.
                     System.out.println("Plot translation failed!");
                 }
-
-                // Save the info
-                Dao<MovieInfo, Integer> dbInfo = DatabaseManager.getInstance()
-                        .getMovieInfoDao();
-
-                String genres = "";
-                String cast = "";
-                String directors = "";
 
                 for (Genre genre : movie.getGenres())
                     genres += genre.getName() + ", ";
@@ -153,16 +176,20 @@ public class MovieInfoDownloader {
                 if (!directors.isEmpty())
                     directors = directors.substring(0, directors.length() - 3);
 
-                MovieInfo info = new MovieInfo(cast, directors, "cover",
-                        translatedPlot, genres, 5);
+                // Save the info
+                Dao<MovieInfo, Integer> dbInfo = DatabaseManager.getInstance()
+                        .getMovieInfoDao();
+                MovieInfo info = new MovieInfo(cast, directors, thumbPath,
+                        translatedPlot, genres, (int) (movie.getRating() * 10));
 
                 dbInfo.create(info);
 
+                // update the movie
                 Dao<LocalMovie, Integer> dbMovie = DatabaseManager
                         .getInstance().getMovieDao();
 
                 localMovie.setName(movie.getName());
-                localMovie.setYear(movie.getReleasedDate().getYear() +1900);
+                localMovie.setYear(movie.getReleasedDate().getYear() + 1900);
                 localMovie.setInfo_id(info);
                 dbMovie.update(localMovie);
             } else {
@@ -179,4 +206,13 @@ public class MovieInfoDownloader {
 
     }
 
+    public boolean downloadImage(URL url, String imagePath) {
+        try {
+            FileUtils.copyURLToFile(url, new File(imagePath));
+        } catch (IOException e) {
+            System.out.println("krashing when trying to download image");
+            e.printStackTrace();
+        }
+        return true;
+    }
 }
