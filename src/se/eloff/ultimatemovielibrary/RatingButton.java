@@ -3,10 +3,14 @@ package se.eloff.ultimatemovielibrary;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -25,8 +29,11 @@ public class RatingButton extends JButton implements ActionListener {
 
     public RatingButton() {
         this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-        buttons = new RateButton[MAX_RATING];
-        for (int i = 0; i < MAX_RATING; i++) {
+        buttons = new RateButton[MAX_RATING+1];
+        buttons[0] = new RemoveRateButton();
+        buttons[0].addActionListener(this);
+        this.add(buttons[0]);
+        for (int i = 1; i <= MAX_RATING; i++) {
             buttons[i] = new RateButton();
             buttons[i].addActionListener(this);
             this.add(buttons[i]);
@@ -56,29 +63,29 @@ public class RatingButton extends JButton implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         int currentButtonIndex = 0;
-        for (int i = 0; i < MAX_RATING; i++) {
+        for (int i = 0; i <= MAX_RATING; i++) {
             if (e.getSource() == buttons[i]) {
                 currentButtonIndex = i;
                 break;
             }
         }
 
+        //currentButtonIndex++;
         if (e.getActionCommand().equals("hover_exited")) {
-            currentButtonIndex = currentRating - 1;
+            currentButtonIndex = currentRating;
         } else if (e.getActionCommand().equals("hover_entered")) {
-
+            
         } else {
-            currentRating = currentButtonIndex + 1;
+            currentRating = currentButtonIndex;
             fireActionPerformed(new ActionEvent(this,
                     ActionEvent.ACTION_PERFORMED, "rating changed"));
         }
-
-        activateRating(currentButtonIndex + 1);
+        activateRating(currentButtonIndex);
     }
 
     private void activateRating(int rating) {
-        for (int i = 0; i < MAX_RATING; i++) {
-            buttons[i].setActive(i < rating);
+        for (int i = 0; i <= MAX_RATING; i++) {
+            buttons[i].setActive(i <= rating);
         }
     }
 
@@ -158,7 +165,6 @@ public class RatingButton extends JButton implements ActionListener {
                     cross_w, cross_h);
             g.fillRect(width / 2 - cross_h / 2, height / 2 - cross_w / 2,
                     cross_h, cross_w);
-
         }
 
         @Override
@@ -174,6 +180,33 @@ public class RatingButton extends JButton implements ActionListener {
 
             }
             super.processMouseEvent(e);
+        }
+    }
+    
+    private class RemoveRateButton extends RateButton {
+        @Override
+        public Dimension getPreferredSize() {
+            return new Dimension(42, 42);
+        }
+
+        @Override
+        public Dimension getMinimumSize() {
+            return new Dimension(42, 42);
+        }
+
+        @Override
+        public Dimension getMaximumSize() {
+            return new Dimension(42, 42);
+        }
+        protected void paintComponent(Graphics g) {
+            Graphics2D g2 = (Graphics2D)g;
+            g2.scale(1.0, 1.0);
+            try {
+                g2.drawImage(ImageIO.read(new File(Localization.ratingRemoveRating)), 0, 0, null);
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
         }
     }
 
