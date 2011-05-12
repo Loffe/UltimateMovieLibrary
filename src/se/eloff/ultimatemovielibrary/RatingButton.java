@@ -15,6 +15,7 @@ import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.UIManager;
 
 public class RatingButton extends JButton implements ActionListener {
@@ -29,10 +30,31 @@ public class RatingButton extends JButton implements ActionListener {
 
     public RatingButton() {
         this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+        JPanel space = new JPanel(){
+            int space = 22;
+            @Override
+            public Dimension getPreferredSize() {
+                return new Dimension(1, space);
+            }
+
+            @Override
+            public Dimension getMinimumSize() {
+                return new Dimension(1, space);
+            }
+
+            @Override
+            public Dimension getMaximumSize() {
+                return new Dimension(1, space);
+            }
+        };
+        JPanel both = new JPanel();
+        both.setLayout(new BoxLayout(both, BoxLayout.Y_AXIS));
         buttons = new RateButton[MAX_RATING+1];
         buttons[0] = new RemoveRateButton();
         buttons[0].addActionListener(this);
-        this.add(buttons[0]);
+        both.add(space);
+        both.add(buttons[0]);
+        this.add(both);
         for (int i = 1; i <= MAX_RATING; i++) {
             buttons[i] = new RateButton();
             buttons[i].addActionListener(this);
@@ -84,7 +106,8 @@ public class RatingButton extends JButton implements ActionListener {
     }
 
     private void activateRating(int rating) {
-        for (int i = 0; i <= MAX_RATING; i++) {
+        buttons[0].setActive(rating == 0);
+        for (int i = 1; i <= MAX_RATING; i++) {
             buttons[i].setActive(i <= rating);
         }
     }
@@ -155,8 +178,8 @@ public class RatingButton extends JButton implements ActionListener {
                     / 2 - border, cross_h + 2 * border, cross_w + 2 * border);
 
             if (this.getModel().isRollover())
-                g.setColor(fillColorHigh);
-            else if (isActive())
+                g.setColor(borderColorHigh);
+            if (isActive())
                 g.setColor(fillColorActive);
             else
                 g.setColor(fillColorInactive);
@@ -184,25 +207,31 @@ public class RatingButton extends JButton implements ActionListener {
     }
     
     private class RemoveRateButton extends RateButton {
-        @Override
+        int size =22;
         public Dimension getPreferredSize() {
-            return new Dimension(42, 42);
+            return new Dimension(size, size);
         }
 
         @Override
         public Dimension getMinimumSize() {
-            return new Dimension(42, 42);
+            return new Dimension(size, size);
         }
 
         @Override
         public Dimension getMaximumSize() {
-            return new Dimension(42, 42);
+            return new Dimension(size, size);
         }
         protected void paintComponent(Graphics g) {
             Graphics2D g2 = (Graphics2D)g;
             g2.scale(1.0, 1.0);
             try {
-                g2.drawImage(ImageIO.read(new File(Localization.ratingRemoveRating)), 0, 0, null);
+                if (this.getModel().isRollover())
+                    g2.drawImage(ImageIO.read(new File(Localization.ratingRemoveRatingActive)), 0, 0, null);
+                else if (isActive())
+                    g2.drawImage(ImageIO.read(new File(Localization.ratingRemoveRating)), 0, 0, null);
+                else
+                    g2.drawImage(ImageIO.read(new File(Localization.ratingRemoveRating)), 0, 0, null);
+                
             } catch (IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();

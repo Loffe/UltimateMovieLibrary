@@ -1,7 +1,10 @@
 package se.eloff.ultimatemovielibrary;
 
 import java.awt.Image;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
@@ -152,6 +155,5 @@ public final class Localization {
 
     //public static final Icon ratingRemoveRating = new ImageIcon("img/rating-remove-vote.png");
     public static final String ratingRemoveRating = "img/rating-remove-vote.png";
-
-
+    public static final String ratingRemoveRatingActive = "img/rating-remove-vote-active.png";
 }
