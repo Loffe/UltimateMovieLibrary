@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
+import net.sf.jtmdb.CastInfo;
 import net.sf.jtmdb.GeneralSettings;
+import net.sf.jtmdb.Genre;
 import net.sf.jtmdb.Movie;
 
 import org.json.JSONException;
@@ -95,7 +97,11 @@ public class MovieInfoDownloader {
      */
     private void fetchMovieInfo(LocalMovie localMovie) {
         // TODO: Download the info, but first set the API Key in constructor.
-        System.out.println("Trying to fetch info for " + localMovie.getName());
+        String yearString = "";
+        if (localMovie.getYear() != 0)
+            yearString = Integer.toString(localMovie.getYear());
+        
+        System.out.println("Trying to fetch info for " + localMovie.getName() + " " + yearString);
         List<Movie> reducedMovies = null;
         try {
             // Search for the Movie
@@ -126,18 +132,42 @@ public class MovieInfoDownloader {
                 Dao<MovieInfo, Integer> dbInfo = DatabaseManager.getInstance()
                         .getMovieInfoDao();
 
-                MovieInfo info = new MovieInfo("bk", "director", "cover",
-                        translatedPlot, "genres", 5);
+                String genres = "";
+                String cast = "";
+                String directors = "";
+
+                for (Genre genre : movie.getGenres())
+                    genres += genre.getName() + ", ";
+
+                for (CastInfo castInfo : movie.getCast()) {
+                    if (castInfo.getJob().toLowerCase().equals("director"))
+                        directors += castInfo.getName() + ", ";
+                    else
+                        cast += castInfo.getName() + ", ";
+                }
+
+                if (!genres.isEmpty())
+                    genres = genres.substring(0, genres.length() - 3);
+                if (!cast.isEmpty())
+                    cast = cast.substring(0, cast.length() - 3);
+                if (!directors.isEmpty())
+                    directors = directors.substring(0, directors.length() - 3);
+
+                MovieInfo info = new MovieInfo(cast, directors, "cover",
+                        translatedPlot, genres, 5);
 
                 dbInfo.create(info);
 
                 Dao<LocalMovie, Integer> dbMovie = DatabaseManager
                         .getInstance().getMovieDao();
 
+                localMovie.setName(movie.getName());
+                localMovie.setYear(movie.getReleasedDate().getYear() +1900);
                 localMovie.setInfo_id(info);
                 dbMovie.update(localMovie);
             } else {
-                System.out.println("No movie info found for "+localMovie.getName());
+                System.out.println("No movie info found for "
+                        + localMovie.getName());
             }
         } catch (IOException e) {
             e.printStackTrace();
