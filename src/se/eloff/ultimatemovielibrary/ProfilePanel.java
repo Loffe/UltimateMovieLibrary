@@ -181,6 +181,7 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
             throws SQLException {
         List<Playlist> my_lists = DatabaseManager.getInstance().getListDao()
                 .queryForAll();
+        listModel.removeAllElements();
         for (Playlist list : my_lists)
             listModel.addElement(list);
     }
