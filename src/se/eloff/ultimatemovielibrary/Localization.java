@@ -69,6 +69,7 @@ public final class Localization {
             "img/Button-Refresh-icon_20.png");
     public static final String recommendRefreshNoMatchText = "Inga filmer i databasen.";
     public static final String recommendRefreshProgressText = "Laddar filmer...";
+    public static final int numberOfRecommendedMovies = 3;
 
     // MovieElement
     public static final ImageIcon moviePlayButtonIcon = new ImageIcon(
@@ -139,6 +140,17 @@ public final class Localization {
     // HomePanel
     public static final String homeTitle = "Välkommen!";
     public static final int homePanelFontSize = 40;
+    
+    // MovieInfo
+    public static final int movieCoverWidth = 214;
+    public static final int movieCoverHeight = 317;
+    public static final int moviePlotWidth = 30;
+    public static final int moviePlotHeight = 10;
+    public static final String moviePlotLabel = "Handling: ";
+    public static final String movieGenreLabel = "Genre: ";
+    public static final String movieRatingLabel = "Betyg: ";
+    public static final String movieDirectorLabel = "Regisör: ";
+    public static final String movieCastLabel = "Skådespelare: ";
 
     // Playlists
     public static final String playlistCreateNewMessage = "Namn på ny playlist";

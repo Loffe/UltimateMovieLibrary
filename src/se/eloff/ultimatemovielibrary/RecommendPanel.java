@@ -1,10 +1,13 @@
 package se.eloff.ultimatemovielibrary;
 
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BoxLayout;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
+import javax.swing.JPanel;
 import javax.swing.LayoutStyle;
 
 public class RecommendPanel extends ViewPanel {
@@ -12,6 +15,10 @@ public class RecommendPanel extends ViewPanel {
     private static final long serialVersionUID = 4596307634677007370L;
 
     private JButton refreshButton;
+    
+    JPanel recommendedMoviesPanel;
+    
+    MovieInfoPanel infoPanels[];
 
     private static final int NUMOFMOVIES = 3;
 
@@ -22,6 +29,14 @@ public class RecommendPanel extends ViewPanel {
     }
 
     private void initComponents() {
+        recommendedMoviesPanel = new JPanel();
+        infoPanels = new MovieInfoPanel[Localization.numberOfRecommendedMovies];
+        /*TODO Lägg till movieinfo och localmovie ifrån databas
+        for(int i=0;i<Localization.numberOfRecommendedMovies;i++){
+            infoPanels[i]=new MovieInfoPanel();
+        }*/
+        recommendedMoviesPanel.setLayout(new BoxLayout(recommendedMoviesPanel, BoxLayout.X_AXIS));
+        
         refreshButton = new JButton(Localization.recommendRefreshButtonText,
                 Localization.recommendRefreshButtonIcon);
         refreshButton.setToolTipText(Localization.toolTipsRefresh);

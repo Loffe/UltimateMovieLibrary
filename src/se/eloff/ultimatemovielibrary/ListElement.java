@@ -20,6 +20,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
+import javax.swing.BoxLayout;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
@@ -71,7 +72,28 @@ public class ListElement extends javax.swing.JPanel {
         seenButton = new JToggleButton();
         wishButton = new JToggleButton();
         favoriteButton = new JToggleButton();
+        JPanel ratingSpace = new JPanel(){
+            int space = 14;
+            @Override
+            public Dimension getPreferredSize() {
+                return new Dimension(1, space);
+            }
+
+            @Override
+            public Dimension getMinimumSize() {
+                return new Dimension(1, space);
+            }
+
+            @Override
+            public Dimension getMaximumSize() {
+                return new Dimension(1, space);
+            }
+        };
+        JPanel ratingContainer = new JPanel();
+        ratingContainer.setLayout(new BoxLayout(ratingContainer, BoxLayout.Y_AXIS));
+        ratingContainer.add(ratingSpace);
         rating = new RatingButton();
+        ratingContainer.add(rating);
         moveUpButton = new JButton();/*{
             @Override
             protected void paintComponent(Graphics g) {
@@ -295,7 +317,7 @@ public class ListElement extends javax.swing.JPanel {
                                                 GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(
                                                 LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(rating,
+                                        .addComponent(ratingContainer,
                                                 GroupLayout.PREFERRED_SIZE,
                                                 300, GroupLayout.PREFERRED_SIZE)));
         layout
@@ -339,7 +361,7 @@ public class ListElement extends javax.swing.JPanel {
                                                                                                 yearLabel))
 
                                                                         .addComponent(
-                                                                                rating,
+                                                                                ratingContainer,
                                                                                 GroupLayout.PREFERRED_SIZE,
                                                                                 70,
                                                                                 GroupLayout.PREFERRED_SIZE))))
