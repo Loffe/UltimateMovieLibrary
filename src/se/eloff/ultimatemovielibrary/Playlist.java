@@ -36,6 +36,9 @@ public class Playlist {
     @DatabaseField(canBeNull = false)
     private String name;
 
+    @DatabaseField(canBeNull = false)
+    private int position;
+
     @ForeignCollectionField(eager = true)
     ForeignCollection<MovieList> movie_list;
 
@@ -60,6 +63,14 @@ public class Playlist {
 
     public int getId() {
         return id;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
+    }
+
+    public int getPosition() {
+        return position;
     }
 
     /**
@@ -130,7 +141,6 @@ public class Playlist {
         Dao<Playlist, Integer> listDao = db.getListDao();
         return listDao.queryForId(Playlist.WISH_LIST_ID);
     }
-
 
     public static Playlist getFavoriteList() throws SQLException {
         DatabaseManager db = DatabaseManager.getInstance();
