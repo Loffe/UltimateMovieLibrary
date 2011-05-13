@@ -1,17 +1,11 @@
 package se.eloff.ultimatemovielibrary;
 
-import java.io.*;
-import java.net.*;
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.image.BufferedImage;
-import java.awt.image.ImageObserver;
+import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.List;
-
-import javax.imageio.ImageIO;
 
 import net.sf.jtmdb.CastInfo;
 import net.sf.jtmdb.GeneralSettings;
@@ -59,10 +53,10 @@ public class MovieInfoDownloader {
         } else
             doNewScan = true;
     }
-    
-    //call when you want to display the info panel but info is not fetched yet
-    //TODO make it async with a callback to stop swing from locking up
-    public void updateInfo(LocalMovie localMovie){
+
+    // call when you want to display the info panel but info is not fetched yet
+    // TODO make it async with a callback to stop swing from locking up
+    public void updateInfo(LocalMovie localMovie) {
         fetchMovieInfo(localMovie);
     }
 
@@ -91,7 +85,6 @@ public class MovieInfoDownloader {
                     }
 
                 } catch (SQLException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
                 if (doNewScan) {
@@ -114,7 +107,6 @@ public class MovieInfoDownloader {
      *            the movie to get info for.
      */
     private void fetchMovieInfo(LocalMovie localMovie) {
-        // TODO: Download the info, but first set the API Key in constructor.
         String yearString = "";
         if (localMovie.getYear() != 0)
             yearString = Integer.toString(localMovie.getYear());
@@ -136,13 +128,14 @@ public class MovieInfoDownloader {
                 movie = Movie.getInfo(movie.getID());
 
                 String thumbPath = "thumbs/" + movie.getID() + ".jpg";
-                
+
                 // get the thumb
                 MovieImages images = Movie.getImages(movie.getID());
-                if (!images.posters.isEmpty()){
+                if (!images.posters.isEmpty()) {
                     Iterator<MoviePoster> poster = images.posters.iterator();
                     if (poster.hasNext())
-                        if (!downloadImage(poster.next().getLargestImage(), thumbPath))
+                        if (!downloadImage(poster.next().getLargestImage(),
+                                thumbPath))
                             thumbPath = "";
                 }
 

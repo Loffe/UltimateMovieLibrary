@@ -26,8 +26,8 @@ public class Playlist {
             Localization.profileFavoriteList, Localization.profileWishList,
             Localization.profileSeenList };
 
-    private static final int FAVORITELIST_ID = 2;
-    private static final int WISHLIST_ID = 3;
+    private static final int FAVORITE_LIST_ID = 2;
+    private static final int WISH_LIST_ID = 3;
 
     @DatabaseField(generatedId = true)
     private int id;
@@ -127,7 +127,14 @@ public class Playlist {
     public static Playlist getWishlist() throws SQLException {
         DatabaseManager db = DatabaseManager.getInstance();
         Dao<Playlist, Integer> listDao = db.getListDao();
-        return listDao.queryForId(Playlist.WISHLIST_ID);
+        return listDao.queryForId(Playlist.WISH_LIST_ID);
+    }
+
+
+    public static Playlist getFavoriteList() throws SQLException {
+        DatabaseManager db = DatabaseManager.getInstance();
+        Dao<Playlist, Integer> listDao = db.getListDao();
+        return listDao.queryForId(Playlist.FAVORITE_LIST_ID);
     }
 
     public static void main(String[] args) throws SQLException {
