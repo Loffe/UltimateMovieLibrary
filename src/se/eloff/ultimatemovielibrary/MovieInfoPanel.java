@@ -17,6 +17,7 @@ import javax.swing.JPanel;
 public class MovieInfoPanel extends JPanel {
 
     private MovieInfo info;
+    private LocalMovie movie;
     private JLabel title;
     private JLabel plot;
     private Cover cover;
@@ -28,16 +29,31 @@ public class MovieInfoPanel extends JPanel {
     
     private final int gapsize = 20;
     
-    public MovieInfoPanel(MovieInfo info, LocalMovie movie){
-        this.info = info;
-        title = new JLabel(movie.getName()+", "+movie.getYear());
-        plot = new JLabel(Localization.moviePlotLabel);
-        genre = new JLabel(Localization.movieGenreLabel + info.getGenres());
-        rating = new JLabel(Localization.movieRatingLabel + info.getOnlineRating());
-        director = new JLabel(Localization.movieDirectorLabel + info.getDirectors());
-        cast = new JLabel(Localization.movieCastLabel + info.getCast());
+    public void refresh(LocalMovie movie)
+    {
+        this.info = movie.getInfo_id();
+        this.movie = movie;
+        title.setText(movie.getName()+", "+movie.getYear());
+        plot.setText(Localization.moviePlotLabel);
+        genre.setText(Localization.movieGenreLabel + info.getGenres());
+        rating.setText(Localization.movieRatingLabel + info.getOnlineRating());
+        director.setText(Localization.movieDirectorLabel + info.getDirectors());
+        cast.setText(Localization.movieCastLabel + info.getCast());
+        plotText.setText(info.getPlot());
+        cover.refresh(info.getCover());
+    }
+    
+    public MovieInfoPanel(){
         cover = new Cover();
-        plotText = new TextArea(info.getPlot(), Localization.moviePlotHeight, Localization.moviePlotWidth, TextArea.SCROLLBARS_VERTICAL_ONLY);
+        title = new JLabel("Filminfo");
+        plot = new JLabel();
+        genre = new JLabel();
+        rating = new JLabel();
+        director = new JLabel();
+        cast = new JLabel();
+        plotText = new TextArea("", Localization.moviePlotHeight, Localization.moviePlotWidth, TextArea.SCROLLBARS_VERTICAL_ONLY);
+        plotText.setEditable(false);
+        
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
         cover.setAlignmentX(Component.CENTER_ALIGNMENT);
         plot.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -64,10 +80,11 @@ public class MovieInfoPanel extends JPanel {
     }
     
     private class Cover extends JLabel{
-        
         public Cover(){
-            this.setBackground(Color.BLUE);
-            this.setIcon(new ImageIcon(info.getCover()));
+            this.setBackground(Color.green);
+        }
+        public void refresh(String src){
+            this.setIcon(new ImageIcon(src));
         }
         @Override
         public Dimension getPreferredSize() {
@@ -86,30 +103,23 @@ public class MovieInfoPanel extends JPanel {
     }
     
     public static void main(String[] args) {
-        LocalMovie movie = new LocalMovie();
-        movie.setName("The Dark Knight");
-        movie.setYear(2009);
-        MovieInfo info = new MovieInfo();
-        info.setCover("img/dark.jpg");
-        info.setPlot("Det var en gång");
-        info.setCast("Christian Bale");
-        info.setDirectors("Christopher Nolan");
-        info.setGenres("Action");
-        info.setOnlineRating(9);
-        final MovieInfoPanel infoPanel = new MovieInfoPanel(info, movie);
+        final MovieInfoPanel infoPanel = new MovieInfoPanel();
+        LocalMovie local = new LocalMovie();
+        local.setName("The dark knight");
+        local.setYear(2009);
+        MovieInfo movie = new MovieInfo();
+        movie.setCover("img/dark.jpg");
+        movie.setCast("Christian Bale");
+        movie.setDirectors("Christopher Nolan");
+        movie.setGenres("Action");
+        movie.setOnlineRating(9);
+        movie.setPlot("Bla bla");
+        local.setInfo_id(movie);
+        infoPanel.refresh(local);
         JFrame frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.add(infoPanel);
         frame.pack();
-        frame.setVisible(true);
-
-        /*rating.setRating(2);
-        info.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("Clicked rating " + info.getRating());
-            }
-        });*/
+        frame.setVisible(true);     
     }
 }
