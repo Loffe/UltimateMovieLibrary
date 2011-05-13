@@ -66,9 +66,9 @@ public class HomePanel extends ViewPanel {
         this.add(Box.createVerticalGlue());
 
         searchItem.addActionListener(parent);
-        searchItem.setActionCommand(GuiPanel.Search.toString());
+        // searchItem.setActionCommand(GuiPanel.Search.toString());
 
-        recommendItem.setActionCommand(GuiPanel.Recommend.toString());
+        // recommendItem.setActionCommand(GuiPanel.Recommend.toString());
         recommendItem.addActionListener(parent);
 
         profileItem.addActionListener(parent);

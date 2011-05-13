@@ -31,13 +31,13 @@ public class BotMenuBar extends DefaultMenuBar {
                 Localization.menuSearchText);
         searchItem.setFont(new Font(searchItem.getFont().getName(), searchItem
                 .getFont().getStyle(), Localization.menuFontSize));
-        searchItem.setActionCommand(GuiPanel.Search.toString());
+        // searchItem.setActionCommand(GuiPanel.Search.toString());
         addButton(searchItem);
         toggleButtons.add(searchItem);
 
         JToggleButton recommendItem = new JToggleButton(
                 Localization.menuRecommendText);
-        recommendItem.setActionCommand(GuiPanel.Recommend.toString());
+        // recommendItem.setActionCommand(GuiPanel.Recommend.toString());
         recommendItem.setFont(new Font(recommendItem.getFont().getName(),
                 recommendItem.getFont().getStyle(), Localization.menuFontSize));
         addButton(recommendItem);
