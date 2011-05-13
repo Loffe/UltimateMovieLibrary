@@ -26,24 +26,30 @@ public class MovieInfoPanel extends JPanel {
     private JLabel rating;
     private JLabel cast;
     private JLabel director;
-    
+
     private final int gapsize = 20;
-    
-    public void refresh(LocalMovie movie)
-    {
-        this.info = movie.getInfo_id();
+
+    public void refresh(LocalMovie movie, MovieInfo info) {
+        System.out.println("refreshing info");
         this.movie = movie;
-        title.setText(movie.getName()+", "+movie.getYear());
+        title.setText(movie.getName() + ", " + movie.getYear());
         plot.setText(Localization.moviePlotLabel);
-        genre.setText(Localization.movieGenreLabel + info.getGenres());
-        rating.setText(Localization.movieRatingLabel + info.getOnlineRating());
-        director.setText(Localization.movieDirectorLabel + info.getDirectors());
-        cast.setText(Localization.movieCastLabel + info.getCast());
-        plotText.setText(info.getPlot());
-        cover.refresh(info.getCover());
+
+        this.info = info;
+        if (info != null) {
+
+            genre.setText(Localization.movieGenreLabel + info.getGenres());
+            rating.setText(Localization.movieRatingLabel
+                    + info.getOnlineRating());
+            director.setText(Localization.movieDirectorLabel
+                    + info.getDirectors());
+            cast.setText(Localization.movieCastLabel + info.getCast());
+            plotText.setText(info.getPlot());
+            cover.refresh(info.getCover());
+        }
     }
-    
-    public MovieInfoPanel(){
+
+    public MovieInfoPanel() {
         cover = new Cover();
         title = new JLabel("Filminfo");
         plot = new JLabel();
@@ -51,9 +57,10 @@ public class MovieInfoPanel extends JPanel {
         rating = new JLabel();
         director = new JLabel();
         cast = new JLabel();
-        plotText = new TextArea("", Localization.moviePlotHeight, Localization.moviePlotWidth, TextArea.SCROLLBARS_VERTICAL_ONLY);
+        plotText = new TextArea("", Localization.moviePlotHeight,
+                Localization.moviePlotWidth, TextArea.SCROLLBARS_VERTICAL_ONLY);
         plotText.setEditable(false);
-        
+
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
         cover.setAlignmentX(Component.CENTER_ALIGNMENT);
         plot.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -61,7 +68,7 @@ public class MovieInfoPanel extends JPanel {
         rating.setAlignmentX(Component.LEFT_ALIGNMENT);
         director.setAlignmentX(Component.LEFT_ALIGNMENT);
         cast.setAlignmentX(Component.LEFT_ALIGNMENT);
-        
+
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         add(title);
         this.add(Box.createRigidArea(new Dimension(0, gapsize)));
@@ -78,31 +85,36 @@ public class MovieInfoPanel extends JPanel {
         this.add(Box.createRigidArea(new Dimension(0, gapsize)));
         this.add(cast);
     }
-    
-    private class Cover extends JLabel{
-        public Cover(){
+
+    private class Cover extends JLabel {
+        public Cover() {
             this.setBackground(Color.green);
         }
-        public void refresh(String src){
+
+        public void refresh(String src) {
             this.setIcon(new ImageIcon(src));
         }
+
         @Override
         public Dimension getPreferredSize() {
-            return new Dimension(Localization.movieCoverWidth, Localization.movieCoverHeight);
+            return new Dimension(Localization.movieCoverWidth,
+                    Localization.movieCoverHeight);
         }
 
         @Override
         public Dimension getMinimumSize() {
-            return new Dimension(Localization.movieCoverWidth, Localization.movieCoverHeight);
+            return new Dimension(Localization.movieCoverWidth,
+                    Localization.movieCoverHeight);
         }
 
         @Override
         public Dimension getMaximumSize() {
-            return new Dimension(Localization.movieCoverWidth, Localization.movieCoverHeight);
+            return new Dimension(Localization.movieCoverWidth,
+                    Localization.movieCoverHeight);
         }
     }
-    
-    public static void main(String[] args) {
+
+  /*  public static void main(String[] args) {
         final MovieInfoPanel infoPanel = new MovieInfoPanel();
         LocalMovie local = new LocalMovie();
         local.setName("The dark knight");
@@ -114,12 +126,12 @@ public class MovieInfoPanel extends JPanel {
         movie.setGenres("Action");
         movie.setOnlineRating(9);
         movie.setPlot("Bla bla");
-        local.setInfo_id(movie);
+        local.setInfo(movie);
         infoPanel.refresh(local);
         JFrame frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.add(infoPanel);
         frame.pack();
-        frame.setVisible(true);     
-    }
+        frame.setVisible(true);
+    }*/
 }

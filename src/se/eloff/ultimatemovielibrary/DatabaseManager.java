@@ -51,6 +51,8 @@ public class DatabaseManager {
             source = new JdbcConnectionSource(url);
             getMovieDao();
             getWatchFolderDao();
+            getMovieInfoDao();
+            getMovieListDao();
 
         } catch (SQLException e) {
             e.printStackTrace();

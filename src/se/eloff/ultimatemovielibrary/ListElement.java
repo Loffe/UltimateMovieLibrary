@@ -12,23 +12,13 @@
 package se.eloff.ultimatemovielibrary;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
-import java.awt.event.ContainerListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.sql.SQLException;
-import java.util.Observer;
-
 import javax.swing.BoxLayout;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
@@ -58,17 +48,16 @@ public class ListElement extends JPanel {
     private RatingButton rating;
     private JLabel titleLabel;
     private JLabel yearLabel;
-    private JButton viewInfoButton;
     private JButton playlistButton;
     private JToggleButton seenButton;
     private JToggleButton wishButton;
     private JToggleButton favoriteButton;
-    private LocalMovie movie;
     private JPopupMenu playlistMenu;
     private JButton moveUpButton;
     private JButton moveDownButton;
 
     private ResultPanel parentPanel;
+    private LocalMovie movie;
 
     public ListElement(LocalMovie movie, ResultPanel parentPanel) {
         this.parentPanel = parentPanel;
@@ -76,12 +65,15 @@ public class ListElement extends JPanel {
         initComponents();
     }
 
+    public LocalMovie getMovie() {
+        return movie;
+    }
+
     private void initComponents() {
 
         playButton = new JButton();
         titleLabel = new JLabel();
         yearLabel = new JLabel();
-        viewInfoButton = new JButton();
         playlistButton = new JButton();
         seenButton = new JToggleButton();
         wishButton = new JToggleButton();
@@ -118,6 +110,9 @@ public class ListElement extends JPanel {
                                       * sure no button is painte } };
                                       */
         moveDownButton = new JButton();
+        
+        moveUpButton.setVisible(false);
+        moveDownButton.setVisible(false);
 
         playlistButton.addActionListener(new ActionListener() {
 
@@ -308,9 +303,6 @@ public class ListElement extends JPanel {
                                                 .addComponent(titleLabel, 50,
                                                         50, Short.MAX_VALUE))
                                 .addGap(57, 57, 57)
-                                .addComponent(viewInfoButton,
-                                        GroupLayout.PREFERRED_SIZE, 52,
-                                        GroupLayout.PREFERRED_SIZE)
                                 .addComponent(playlistButton,
                                         GroupLayout.PREFERRED_SIZE, 52,
                                         GroupLayout.PREFERRED_SIZE)
@@ -378,11 +370,6 @@ public class ListElement extends JPanel {
                                         layout.createParallelGroup(
                                                 GroupLayout.Alignment.LEADING)
                                                 .addComponent(
-                                                        viewInfoButton,
-                                                        GroupLayout.PREFERRED_SIZE,
-                                                        52,
-                                                        GroupLayout.PREFERRED_SIZE)
-                                                .addComponent(
                                                         playlistButton,
                                                         GroupLayout.PREFERRED_SIZE,
                                                         52,
@@ -412,35 +399,39 @@ public class ListElement extends JPanel {
 
         // Update the MovieInfo panel with this movie info
         this.addMouseListener(new MouseListener() {
-            
+
             @Override
             public void mouseReleased(MouseEvent e) {
                 // TODO Auto-generated method stub
-                
+
             }
-            
+
             @Override
             public void mousePressed(MouseEvent e) {
                 select();
                 parentPanel.setSelectedElement(ListElement.this);
-                
+
             }
-            
+
             @Override
             public void mouseExited(MouseEvent e) {
-                // TODO Auto-generated method stub
-                
+                moveUpButton.setVisible(false);
+                moveDownButton.setVisible(false);
+                repaint();
+
             }
-            
+
             @Override
             public void mouseEntered(MouseEvent e) {
-                // TODO Auto-generated method stub
-                
+                moveUpButton.setVisible(true);
+                moveDownButton.setVisible(true);
+                repaint();
+
             }
-            
+
             @Override
             public void mouseClicked(MouseEvent arg0) {
-                
+
             }
         });
 
@@ -538,10 +529,12 @@ public class ListElement extends JPanel {
     public void select() {
         this.setOpaque(true);
         this.setBackground(Color.red);
+
     }
 
     public void deSelect() {
         this.setOpaque(false);
         this.setBackground(Color.black);
+
     }
 }

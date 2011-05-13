@@ -23,6 +23,8 @@ import javax.swing.event.ListDataListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import com.j256.ormlite.dao.Dao;
+
 public class ProfilePanel extends ViewPanel implements DocumentListener {
 
     private static final long serialVersionUID = 8595144249306891196L;
@@ -36,7 +38,19 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
     
     public void setSelectedElement(ListElement element){
         selectedElement = element;
-        //TODO update movieinfopanel with this movie and info
+        LocalMovie movie = element.getMovie();
+        MovieInfo info = null;
+        try {
+            Dao<LocalMovie, Integer> dbMovie = DatabaseManager
+            .getInstance().getMovieDao();
+           movie = dbMovie.queryForId(movie.getId());
+           info = movie.getInfo();
+            
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        movieInfoPanel.refresh(movie, info);
     }
 
     private ListDataListener playlistListener = new ListDataListener() {
@@ -184,8 +198,9 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
         Box centerBox = Box.createVerticalBox();
         centerBox.add(searchBox);
         centerBox.add(resultPanel);
-
+        movieInfoPanel = new MovieInfoPanel();
         this.add(centerBox, BorderLayout.CENTER);
+        this.add(movieInfoPanel, BorderLayout.EAST);
 
         // add a listener to the input field
         searchTextField.getDocument().addDocumentListener(this);

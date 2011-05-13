@@ -187,7 +187,7 @@ public class MovieInfoDownloader {
 
                 localMovie.setName(movie.getName());
                 localMovie.setYear(movie.getReleasedDate().getYear() + 1900);
-                localMovie.setInfo_id(info);
+                localMovie.setInfo(info);
                 dbMovie.update(localMovie);
             } else {
                 System.out.println("No movie info found for "
