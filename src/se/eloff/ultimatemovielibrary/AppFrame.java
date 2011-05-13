@@ -21,22 +21,29 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+/**
+ * AppFrame. The main window of the Ultimate Movie Library.
+ */
 public class AppFrame extends JFrame implements ActionListener {
 
     private static final long serialVersionUID = 5297734322373835993L;
     private WatchFolderManagerDialog watchFolderManagerPanel;
-    private ViewPanel searchPanel;
+    // private ViewPanel searchPanel;
     private ProfilePanel profilePanel;
-    private ViewPanel recomendPanel;
-    private DefaultMenuBar botMenu;
+    // private ViewPanel recomendPanel;
+    // private DefaultMenuBar botMenu;
     private DefaultMenuBar topMenu;
     private JPanel centerPanel;
-    private JPanel homePanel;
+    // private JPanel homePanel;
     private JPanel topPanel = new JPanel();
     private JPanel infoPanel;
     private JLabel titleLabel;
-    private JLabel breadCrumbLabel;
 
+    // private JLabel breadCrumbLabel;
+
+    /**
+     * Constructor. Creates a new AppFrame window.
+     */
     public AppFrame() throws HeadlessException {
         // scan the currently watch folders and look for new content
         WatchFolderManager.updateLibrary();
@@ -46,7 +53,7 @@ public class AppFrame extends JFrame implements ActionListener {
         setTitle(Localization.title);
         setIconImage(Localization.icon);
 
-        // TODO: decide on type of fullscreen
+        // Try to go into fullscreen mode!
         initializeFullScreen();
         this.setMinimumSize(new Dimension(640, 480));
         this.setExtendedState(this.getExtendedState() | JFrame.MAXIMIZED_BOTH);
@@ -56,26 +63,18 @@ public class AppFrame extends JFrame implements ActionListener {
 
             @Override
             public void windowOpened(WindowEvent e) {
-                // TODO Auto-generated method stub
-
             }
 
             @Override
             public void windowIconified(WindowEvent e) {
-                // TODO Auto-generated method stub
-
             }
 
             @Override
             public void windowDeiconified(WindowEvent e) {
-                // TODO Auto-generated method stub
-
             }
 
             @Override
             public void windowDeactivated(WindowEvent e) {
-                // TODO Auto-generated method stub
-
             }
 
             @Override
@@ -85,90 +84,91 @@ public class AppFrame extends JFrame implements ActionListener {
 
             @Override
             public void windowClosed(WindowEvent e) {
-                // TODO Auto-generated method stub
-
             }
 
             @Override
             public void windowActivated(WindowEvent e) {
-                // TODO Auto-generated method stub
-
             }
         });
 
         centerPanel = new JPanel();
         centerPanel.setLayout(new CardLayout());
 
-        searchPanel = new SearchPanel();
-        recomendPanel = new RecommendPanel();
+        // searchPanel = new SearchPanel();
+        // recomendPanel = new RecommendPanel();
         profilePanel = new ProfilePanel();
-        homePanel = new HomePanel(this);
+        // homePanel = new HomePanel(this);
 
-        centerPanel.add(searchPanel, GuiPanel.Search.name());
-        centerPanel.add(recomendPanel, GuiPanel.Recommend.name());
+        // centerPanel.add(searchPanel, GuiPanel.Search.name());
+        // centerPanel.add(recomendPanel, GuiPanel.Recommend.name());
         centerPanel.add(profilePanel, GuiPanel.Profile.name());
-        centerPanel.add(homePanel, GuiPanel.Home.name());
+        // centerPanel.add(homePanel, GuiPanel.Home.name());
 
         infoPanel = new JPanel();
-        titleLabel = new JLabel(Localization.title + " > ");
+        titleLabel = new JLabel(Localization.title);
         titleLabel.setFont(new Font(titleLabel.getFont().getName(), titleLabel
                 .getFont().getStyle(), Localization.titleFontSize));
 
-        breadCrumbLabel = new JLabel();
-        breadCrumbLabel.setFont(new Font(breadCrumbLabel.getFont().getName(),
-                breadCrumbLabel.getFont().getStyle(),
-                Localization.breadCrumbFontSize));
+        // breadCrumbLabel = new JLabel();
+        // breadCrumbLabel.setFont(new Font(breadCrumbLabel.getFont().getName(),
+        // breadCrumbLabel.getFont().getStyle(),
+        // Localization.breadCrumbFontSize));
 
         infoPanel.add(new JLabel(new ImageIcon(Localization.icon)));
         infoPanel.add(titleLabel);
-        infoPanel.add(breadCrumbLabel);
+        // infoPanel.add(breadCrumbLabel);
 
         // Assemble menus
         initializeTopMenu();
-        botMenu = new BotMenuBar();
-        botMenu.addActionListener(this);
+        // botMenu = new BotMenuBar();
+        // botMenu.addActionListener(this);
 
         topPanel.setLayout(new BorderLayout());
         topPanel.add(infoPanel, BorderLayout.WEST);
         topPanel.add(topMenu, BorderLayout.EAST);
         getContentPane().add(topPanel, BorderLayout.PAGE_START);
         getContentPane().add(centerPanel, BorderLayout.CENTER);
-        getContentPane().add(botMenu, BorderLayout.PAGE_END);
+        // getContentPane().add(botMenu, BorderLayout.PAGE_END);
 
-        setCurrentPanel(GuiPanel.Home);
+        setCurrentPanel(GuiPanel.Profile);
         setVisible(true);
     }
 
+    /**
+     * Change the current panel to the specified GuiPanel.
+     * 
+     * @param panel
+     *            the panel to switch to.
+     */
     public void setCurrentPanel(GuiPanel panel) {
-        botMenu.setVisible(true);
+        // botMenu.setVisible(true);
         CardLayout layout = (CardLayout) centerPanel.getLayout();
-        switch (panel) {
-        case Search:
-            breadCrumbLabel.setText(Localization.searchTitle);
-            searchPanel.update();
-            break;
-        case Recommend:
-            breadCrumbLabel.setText(Localization.recommendTitle);
-            recomendPanel.update();
-            break;
-        case Profile:
-            breadCrumbLabel.setText(Localization.profileTitle);
-            break;
-        case Home:
-            breadCrumbLabel.setText(Localization.homeTitle);
-            botMenu.setVisible(false);
-            break;
-        }
+        /*
+         * switch (panel) { case Search:
+         * breadCrumbLabel.setText(Localization.searchTitle);
+         * searchPanel.update(); break; case Recommend:
+         * breadCrumbLabel.setText(Localization.recommendTitle);
+         * recomendPanel.update(); break; case Profile: //
+         * breadCrumbLabel.setText(Localization.profileTitle); break; case Home:
+         * breadCrumbLabel.setText(Localization.homeTitle);
+         * botMenu.setVisible(false); break; }
+         */
         layout.show(centerPanel, panel.name());
     }
 
+    /**
+     * Update current panel. Refresh content.
+     */
     public void updateCurrentPanel() {
-        searchPanel.update();
-        recomendPanel.update();
+        // searchPanel.update();
+        // recomendPanel.update();
+        profilePanel.update();
     }
 
+    /**
+     * Initialize the top menu.
+     */
     private void initializeTopMenu() {
-        // TODO: Break out to its own class?
         topMenu = new DefaultMenuBar();
         topMenu.setLayout(new FlowLayout(FlowLayout.RIGHT));
 
@@ -201,11 +201,14 @@ public class AppFrame extends JFrame implements ActionListener {
         topMenu.addButton(exitItem);
     }
 
+    /**
+     * Go to fullscreen mode if possible.
+     */
     private void initializeFullScreen() {
         this.setUndecorated(true);
 
         GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment()
-                .getDefaultScreenDevice();
+        .getDefaultScreenDevice();
         DisplayMode displayMode = gd.getDisplayMode();
         int width, height;
         if (displayMode != null) {
@@ -233,8 +236,12 @@ public class AppFrame extends JFrame implements ActionListener {
         }
     }
 
+    /*
+     * Enumeration of all the GuiPanels able to be shown in the center panel.
+     */
     enum GuiPanel {
-        Search, Recommend, Profile, Home
+        Profile
+        // Home, Search, Recommend
     }
 
     @Override
@@ -242,4 +249,5 @@ public class AppFrame extends JFrame implements ActionListener {
         GuiPanel panel = GuiPanel.valueOf(e.getActionCommand());
         setCurrentPanel(panel);
     }
+
 }

@@ -1,10 +1,7 @@
 package se.eloff.ultimatemovielibrary;
 
 import java.awt.Image;
-import java.io.File;
-import java.io.IOException;
 
-import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
@@ -19,7 +16,7 @@ public final class Localization {
     public static final int titleFontSize = 24;
     public static final Image icon = new ImageIcon("img/video_16.png")
             .getImage();
-    public static final int breadCrumbFontSize = 24;
+    // public static final int breadCrumbFontSize = 24;
 
     // Watch Folder Manager
     public static final ImageIcon watchFolderIcon = new ImageIcon(
@@ -98,11 +95,11 @@ public final class Localization {
     public static final int movieYearFontSize = 16;
 
     // Menu
-    public static final int menuHeight = 100;
-    public static final int menuFontSize = 20;
-    public static final String menuSearchText = "Sök";
-    public static final String menuProfileText = "Profil";
-    public static final String menuRecommendText = "Rekommendationer";
+    // public static final int menuHeight = 100;
+    // public static final int menuFontSize = 20;
+    // public static final String menuSearchText = "Sök";
+    // public static final String menuProfileText = "Profil";
+    // public static final String menuRecommendText = "Rekommendationer";
     public static final String menuManageWatchFolderText = null;
     public static final ImageIcon menuManageWatchFolderIcon = new ImageIcon(
             "img/Folder-Add_16.png");
@@ -135,9 +132,10 @@ public final class Localization {
     public static final String profileSeenList = "Sedda filmer";
     public static final String profileWishList = "Önskelista";
 
-    // HomePanel
-    public static final String homeTitle = "Välkommen!";
-    public static final int homePanelFontSize = 40;
+
+    // // HomePanel
+    // public static final String homeTitle = "Välkommen!";
+    // public static final int homePanelFontSize = 40;
 
     // MovieInfo
     public static final int movieCoverWidth = 214;
