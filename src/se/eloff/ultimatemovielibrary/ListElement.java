@@ -11,21 +11,16 @@
 
 package se.eloff.ultimatemovielibrary;
 
-<<<<<<< HEAD
-=======
 import java.awt.Color;
 import java.awt.Component;
->>>>>>> 19be05cc7b6e48294203d5cc75e843b28a702ee7
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-<<<<<<< HEAD
 import java.io.File;
 import java.io.IOException;
-=======
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.ContainerListener;
@@ -33,7 +28,6 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
->>>>>>> 19be05cc7b6e48294203d5cc75e843b28a702ee7
 import java.sql.SQLException;
 import java.util.Observer;
 
@@ -119,7 +113,6 @@ public class ListElement extends JPanel {
         ratingContainer.add(ratingSpace);
         rating = new RatingButton();
         ratingContainer.add(rating);
-<<<<<<< HEAD
         
         moveUpButton = new JButton(){
         @Override
@@ -151,16 +144,7 @@ public class ListElement extends JPanel {
             }
         }
     };
-=======
-        moveUpButton = new JButton();/*
-                                      * {
-                                      * 
-                                      * @Override protected void
-                                      * paintComponent(Graphics g) { // Make
-                                      * sure no button is painte } };
-                                      */
-        moveDownButton = new JButton();
->>>>>>> 19be05cc7b6e48294203d5cc75e843b28a702ee7
+
 
         playlistButton.addActionListener(new ActionListener() {
 
