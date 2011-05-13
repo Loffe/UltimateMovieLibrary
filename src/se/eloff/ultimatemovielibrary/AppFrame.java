@@ -53,7 +53,7 @@ public class AppFrame extends JFrame implements ActionListener {
         setTitle(Localization.title);
         setIconImage(Localization.icon);
 
-        // TODO: decide on type of fullscreen
+        // Try to go into fullscreen mode!
         initializeFullScreen();
         this.setMinimumSize(new Dimension(640, 480));
         this.setExtendedState(this.getExtendedState() | JFrame.MAXIMIZED_BOTH);
@@ -63,26 +63,18 @@ public class AppFrame extends JFrame implements ActionListener {
 
             @Override
             public void windowOpened(WindowEvent e) {
-                // TODO Auto-generated method stub
-
             }
 
             @Override
             public void windowIconified(WindowEvent e) {
-                // TODO Auto-generated method stub
-
             }
 
             @Override
             public void windowDeiconified(WindowEvent e) {
-                // TODO Auto-generated method stub
-
             }
 
             @Override
             public void windowDeactivated(WindowEvent e) {
-                // TODO Auto-generated method stub
-
             }
 
             @Override
@@ -92,14 +84,10 @@ public class AppFrame extends JFrame implements ActionListener {
 
             @Override
             public void windowClosed(WindowEvent e) {
-                // TODO Auto-generated method stub
-
             }
 
             @Override
             public void windowActivated(WindowEvent e) {
-                // TODO Auto-generated method stub
-
             }
         });
 
@@ -117,7 +105,7 @@ public class AppFrame extends JFrame implements ActionListener {
         // centerPanel.add(homePanel, GuiPanel.Home.name());
 
         infoPanel = new JPanel();
-        titleLabel = new JLabel(Localization.title + " > ");
+        titleLabel = new JLabel(Localization.title);
         titleLabel.setFont(new Font(titleLabel.getFont().getName(), titleLabel
                 .getFont().getStyle(), Localization.titleFontSize));
 
@@ -220,7 +208,7 @@ public class AppFrame extends JFrame implements ActionListener {
         this.setUndecorated(true);
 
         GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment()
-                .getDefaultScreenDevice();
+        .getDefaultScreenDevice();
         DisplayMode displayMode = gd.getDisplayMode();
         int width, height;
         if (displayMode != null) {
