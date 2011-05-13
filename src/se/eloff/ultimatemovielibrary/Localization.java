@@ -80,10 +80,8 @@ public final class Localization {
             "img/Favorite-icon_50.png");
     public static final ImageIcon movieStarButtonIcon = new ImageIcon(
             "img/Button-Favorite-icon_50.png");
-    public static final ImageIcon movieMoveUpButtonIcon = new ImageIcon(
-            "img/navigate-up-icon.png");
-    public static final ImageIcon movieMoveDownButtonIcon = new ImageIcon(
-            "img/navigate-down-icon.png");
+    public static final String movieMoveUpButtonIcon = "img/navigate-up-icon.png";
+    public static final String movieMoveDownButtonIcon = "img/navigate-down-icon.png";
 
     public static final ImageIcon movieSeenButtonIconDisabled = new ImageIcon(
             "img/eye_50_disabled.png");
@@ -140,7 +138,7 @@ public final class Localization {
     // HomePanel
     public static final String homeTitle = "Välkommen!";
     public static final int homePanelFontSize = 40;
-    
+
     // MovieInfo
     public static final int movieCoverWidth = 214;
     public static final int movieCoverHeight = 317;
@@ -165,7 +163,8 @@ public final class Localization {
 
     public static final String translationFailedText = "Översättningen misslyckades! Engelsk version: ";
 
-    //public static final Icon ratingRemoveRating = new ImageIcon("img/rating-remove-vote.png");
+    // public static final Icon ratingRemoveRating = new
+    // ImageIcon("img/rating-remove-vote.png");
     public static final String ratingRemoveRating = "img/rating-remove-vote.png";
     public static final String ratingRemoveRatingActive = "img/rating-remove-vote-active.png";
 }

@@ -93,6 +93,7 @@ public abstract class ResultPanel extends JScrollPane implements
         }
     }
 
+    
     @Override
     public void actionPerformed(ActionEvent e) {
         for (SortButton button : sortButtons) {

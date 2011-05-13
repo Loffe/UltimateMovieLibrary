@@ -11,15 +11,17 @@
 
 package se.eloff.ultimatemovielibrary;
 
-import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
 
+import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
@@ -94,13 +96,37 @@ public class ListElement extends javax.swing.JPanel {
         ratingContainer.add(ratingSpace);
         rating = new RatingButton();
         ratingContainer.add(rating);
-        moveUpButton = new JButton();/*{
-            @Override
-            protected void paintComponent(Graphics g) {
-                // Make sure no button is painte
+        
+        moveUpButton = new JButton(){
+        @Override
+        protected void paintComponent(Graphics g) {
+            // Make sure no button is painted
+            Graphics2D g2 = (Graphics2D) g;
+            g2.scale(1.0, 1.0);
+            try {
+                g2.drawImage(ImageIO.read(new File(
+                        Localization.movieMoveUpButtonIcon)), 0, 0, null);
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
             }
-        };*/
-        moveDownButton = new JButton();
+        }
+    };
+    moveDownButton = new JButton(){
+        @Override
+        protected void paintComponent(Graphics g) {
+            // Make sure no button is painted
+            Graphics2D g2 = (Graphics2D) g;
+            g2.scale(1.0, 1.0);
+            try {
+                g2.drawImage(ImageIO.read(new File(
+                        Localization.movieMoveDownButtonIcon)), 0, 0, null);
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+    };
 
         playlistButton.addActionListener(new ActionListener() {
 
@@ -254,9 +280,6 @@ public class ListElement extends javax.swing.JPanel {
 
         
         Dimension moveButtonDimension = new Dimension(30,25);
-        moveUpButton.setIcon(Localization.movieMoveUpButtonIcon);
-        //moveUpButton.add(Localization.movieMoveDownButtonIcon);
-        moveDownButton.setIcon(Localization.movieMoveDownButtonIcon);
         moveUpButton.setMaximumSize(moveButtonDimension);
         moveDownButton.setMaximumSize(moveButtonDimension);
         moveUpButton.setPreferredSize(moveButtonDimension);
@@ -411,6 +434,20 @@ public class ListElement extends javax.swing.JPanel {
                     System.out
                             .println("Failed to update movie with new rating");
                 }
+            }
+        });
+        
+        moveUpButton.addActionListener(new ActionListener() {
+            
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            }
+        });
+        moveDownButton.addActionListener(new ActionListener() {
+            
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                
             }
         });
 
