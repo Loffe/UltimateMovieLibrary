@@ -28,6 +28,7 @@ public class Playlist {
 
     private static final int FAVORITE_LIST_ID = 2;
     private static final int WISH_LIST_ID = 3;
+    protected static final int SEEN_LIST_ID = 4;
 
     @DatabaseField(generatedId = true)
     private int id;
