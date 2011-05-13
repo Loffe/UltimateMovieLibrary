@@ -24,9 +24,13 @@ public abstract class ResultPanel extends JScrollPane implements
     private SortButton[] sortButtons = new SortButton[3];
     protected String orderColumn = "name";
     private boolean orderAscending;
+    
+    private ProfilePanel parentPanel;
 
-    public ResultPanel() {
+    public ResultPanel(ProfilePanel parentPanel) {
+        this.parentPanel = parentPanel;
 
+        
         resultPanel = new JPanel();
         resultPanel.setLayout(new BoxLayout(resultPanel, BoxLayout.PAGE_AXIS));
 
@@ -86,7 +90,7 @@ public abstract class ResultPanel extends JScrollPane implements
                 repaint();
             } else {
                 for (LocalMovie movie : movies) {
-                    resultPanel.add(new ListElement(movie));
+                    resultPanel.add(new ListElement(movie, this));
                 }
             }
             revalidate();
@@ -121,4 +125,9 @@ public abstract class ResultPanel extends JScrollPane implements
     }
 
     public abstract void search();
+
+    public void setSelectedElement(ListElement element) {
+       parentPanel.setSelectedElement(element);
+        
+    }
 }

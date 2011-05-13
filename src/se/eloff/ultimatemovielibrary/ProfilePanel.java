@@ -31,6 +31,13 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
     private JTextField searchTextField;
 
     private JList lists;
+    
+    private ListElement selectedElement = null;
+    
+    public void setSelectedElement(ListElement element){
+        selectedElement = element;
+        //TODO update movieinfopanel with this movie and info
+    }
 
     private ListDataListener playlistListener = new ListDataListener() {
         @Override
@@ -61,7 +68,7 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
     }
 
     private void initComponents() {
-        resultPanel = new ResultPanel() {
+        resultPanel = new ResultPanel(this) {
 
             @Override
             public void search() {
