@@ -1,6 +1,7 @@
 package se.eloff.ultimatemovielibrary;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -24,13 +25,12 @@ public abstract class ResultPanel extends JScrollPane implements
     private SortButton[] sortButtons = new SortButton[3];
     protected String orderColumn = "name";
     private boolean orderAscending;
-    
+
     private ProfilePanel parentPanel;
 
     public ResultPanel(ProfilePanel parentPanel) {
         this.parentPanel = parentPanel;
 
-        
         resultPanel = new JPanel();
         resultPanel.setLayout(new BoxLayout(resultPanel, BoxLayout.PAGE_AXIS));
 
@@ -47,18 +47,22 @@ public abstract class ResultPanel extends JScrollPane implements
         Box header = Box.createHorizontalBox();
 
         SortButton titleSortButton = new SortButton(
-                Localization.searchOrderButtonMovieTitle, "name", SortButton.State.Asc);
+                Localization.searchOrderButtonMovieTitle, "name",
+                SortButton.State.Asc);
         titleSortButton.setPreferredSize(new Dimension(200, 20));
         titleSortButton.addActionListener(this);
-        titleSortButton.setToolTipText(Localization.searchOrderButtonMovieTitleToolTip);
+        titleSortButton
+                .setToolTipText(Localization.searchOrderButtonMovieTitleToolTip);
 
         header.add(titleSortButton);
 
         SortButton yearSortButton = new SortButton(
-                Localization.searchOrderButtonMovieYear, "year", SortButton.State.Desc);
+                Localization.searchOrderButtonMovieYear, "year",
+                SortButton.State.Desc);
         yearSortButton.setPreferredSize(new Dimension(100, 20));
         yearSortButton.addActionListener(this);
-        yearSortButton.setToolTipText(Localization.searchOrderButtonMovieYearToolTip);
+        yearSortButton
+                .setToolTipText(Localization.searchOrderButtonMovieYearToolTip);
         header.add(yearSortButton);
 
         header.add(Box.createHorizontalGlue());
@@ -68,10 +72,12 @@ public abstract class ResultPanel extends JScrollPane implements
         header.add(dummyLabel);
 
         SortButton ratingSortButton = new SortButton(
-                Localization.searchOrderButtonMovieRating, "rating", SortButton.State.Desc);
+                Localization.searchOrderButtonMovieRating, "rating",
+                SortButton.State.Desc);
         ratingSortButton.setPreferredSize(new Dimension(300, 20));
         ratingSortButton.addActionListener(this);
-        ratingSortButton.setToolTipText(Localization.searchOrderButtonMovieRatingToolTip);
+        ratingSortButton
+                .setToolTipText(Localization.searchOrderButtonMovieRatingToolTip);
         header.add(ratingSortButton);
 
         sortButtons[0] = titleSortButton;
@@ -127,7 +133,17 @@ public abstract class ResultPanel extends JScrollPane implements
     public abstract void search();
 
     public void setSelectedElement(ListElement element) {
-       parentPanel.setSelectedElement(element);
-        
+        parentPanel.setSelectedElement(element);
+
+        for (Component elementL : resultPanel.getComponents()) {
+            try {
+                ListElement listElement = (ListElement) elementL;
+                if (listElement != element)
+                    listElement.deSelect();
+            } catch (Exception e) {
+                System.out.println("fel castning");
+            }
+        }
+
     }
 }

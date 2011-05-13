@@ -19,6 +19,13 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
+import java.awt.event.ContainerListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.sql.SQLException;
 import java.util.Observer;
 
@@ -43,7 +50,7 @@ import com.j256.ormlite.dao.Dao;
  * 
  * @author david
  */
-public class ListElement extends javax.swing.JPanel {
+public class ListElement extends JPanel {
 
     private static final long serialVersionUID = -6318896437132825786L;
 
@@ -404,12 +411,36 @@ public class ListElement extends javax.swing.JPanel {
         });
 
         // Update the MovieInfo panel with this movie info
-        viewInfoButton.addActionListener(new ActionListener() {
-
+        this.addMouseListener(new MouseListener() {
+            
             @Override
-            public void actionPerformed(ActionEvent e) {
-                parentPanel.setSelectedElement((ListElement)getParent());
-
+            public void mouseReleased(MouseEvent e) {
+                // TODO Auto-generated method stub
+                
+            }
+            
+            @Override
+            public void mousePressed(MouseEvent e) {
+                select();
+                parentPanel.setSelectedElement(ListElement.this);
+                
+            }
+            
+            @Override
+            public void mouseExited(MouseEvent e) {
+                // TODO Auto-generated method stub
+                
+            }
+            
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                // TODO Auto-generated method stub
+                
+            }
+            
+            @Override
+            public void mouseClicked(MouseEvent arg0) {
+                
             }
         });
 
@@ -503,13 +534,14 @@ public class ListElement extends javax.swing.JPanel {
             }
         });
     }
-    
-    public void select(){
+
+    public void select() {
         this.setOpaque(true);
         this.setBackground(Color.red);
     }
-    
-    public void deSelect(){
+
+    public void deSelect() {
         this.setOpaque(false);
+        this.setBackground(Color.black);
     }
 }
