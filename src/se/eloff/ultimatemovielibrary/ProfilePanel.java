@@ -85,16 +85,21 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
 
                 try {
                     Playlist selectedList = (Playlist) lists.getSelectedValue();
+                    assert selectedList != null;
                     // If its the "all movies" list...
-                    if (selectedList != null && selectedList.getId() == 1) {
-                        lastSearchId = MovieSearchProvider.searchByName(
-                                searchTextField.getText(), resultPanel,
-                                getOrderColumn(), isOrderAscending());
+                    String name = searchTextField.getText();
+                    if (selectedList.getId() == 1) {
+                        lastSearchId = MovieSearchProvider.searchByName(name,
+                                resultPanel, getOrderColumn(),
+                                isOrderAscending());
+                    } else if (selectedList.getId() == Playlist.SEEN_LIST_ID) {
+                        lastSearchId = MovieSearchProvider.searchByNameSeen(
+                                name, resultPanel, getOrderColumn(),
+                                isOrderAscending(), true);
                     } else {
-                        lastSearchId = MovieSearchProvider.searchByList(
-                                searchTextField.getText(), resultPanel,
-                                getOrderColumn(), isOrderAscending(),
-                                selectedList);
+                        lastSearchId = MovieSearchProvider.searchByList(name,
+                                resultPanel, getOrderColumn(),
+                                isOrderAscending(), selectedList);
                     }
                 } catch (ClassCastException e) {
                     e.printStackTrace();
@@ -113,6 +118,7 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
             e.printStackTrace();
         }
         lists = new JList(listModel);
+        lists.setSelectedIndex(0);
         lists.setCellRenderer(new PlaylistCellRenderer());
         lists.setPreferredSize(new Dimension(200, 10));
         lists.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -132,7 +138,8 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
                 JList.DropLocation dl = (JList.DropLocation) support
                         .getDropLocation();
                 int index = dl.getIndex();
-                if (index < Playlist.fixedPlaylists.length || tmp.getSelectedIndex() < Playlist.fixedPlaylists.length)
+                if (index < Playlist.fixedPlaylists.length
+                        || tmp.getSelectedIndex() < Playlist.fixedPlaylists.length)
                     return false;
                 return true;
             }

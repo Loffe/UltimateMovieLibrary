@@ -137,6 +137,11 @@ public class MovieSearchProvider {
                         order_clause += ascending ? " ASC" : " DESC";
                     }
 
+                    String filterSeen = "";
+                    if (useSeen && seen) {
+                        filterSeen = " and seen = 1";
+                    }
+
                     String sql;
                     String list_id;
                     if (list != null) {
@@ -148,6 +153,7 @@ public class MovieSearchProvider {
                                 + " where discnumber = 1"
                                 + " and list_id = %s"
                                 + " and name like '%%%s%%'    "
+                                + filterSeen
                                 + " order by %s";
                         sql = String.format(sql, list_id, name, order_clause);
                     } else {
@@ -159,6 +165,7 @@ public class MovieSearchProvider {
                                 + " from movies"
                                 + " where discnumber = 1"
                                 + " and name like '%%%s%%'    "
+                                + filterSeen
                                 + " order by %s";
                         sql = String.format(sql, name, order_clause);
                     }
@@ -193,8 +200,8 @@ public class MovieSearchProvider {
                     while (randomMovies.size() < numberOfMovies && rating > -1) {
                         QueryBuilder<LocalMovie, Integer> queryBuilder = dbMovie
                                 .queryBuilder();
-                        queryBuilder.where().eq("discnumber", 1).and()
-                                .eq("seen", false).and().eq("rating", rating);
+                        queryBuilder.where().eq("discnumber", 1).and().eq(
+                                "seen", false).and().eq("rating", rating);
 
                         List<LocalMovie> movies = dbMovie.query(queryBuilder
                                 .prepare());
