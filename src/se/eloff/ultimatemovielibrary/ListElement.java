@@ -443,7 +443,18 @@ public class ListElement extends javax.swing.JPanel {
         favoriteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                movie.setFavorite(favoriteButton.isSelected());
+
+                try {
+                    if (favoriteButton.isSelected()) {
+                        Playlist.getFavoriteList().add(movie);
+                    } else {
+                        Playlist.getFavoriteList().remove(movie);
+                    }
+
+                } catch (SQLException e1) {
+                    System.out
+                            .println("Failed to update movie with new rating");
+                }
                 if (movie.isFavorite()) {
                     favoriteButton
                             .setIcon(Localization.movieFavoriteButtonIcon);
@@ -454,13 +465,6 @@ public class ListElement extends javax.swing.JPanel {
                             .setIcon(Localization.movieFavoriteButtonIconDisabled);
                     favoriteButton
                             .setToolTipText(Localization.toolTipsFavorite);
-                }
-
-                try {
-                    DatabaseManager.getInstance().getMovieDao().update(movie);
-                } catch (SQLException e1) {
-                    System.out
-                            .println("Failed to update movie with new rating");
                 }
             }
         });

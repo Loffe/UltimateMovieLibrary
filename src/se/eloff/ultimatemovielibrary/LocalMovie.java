@@ -113,12 +113,16 @@ public class LocalMovie implements Comparable<LocalMovie> {
         this.seen = seen;
     }
 
+    @Deprecated
     public boolean isFavorite() {
-        return favorite;
-    }
-
-    public void setFavorite(boolean favorite) {
-        this.favorite = favorite;
+        try {
+            Playlist favlist = Playlist.getFavoriteList();
+            return favlist.contains(this.id);
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return false;
     }
 
     @Deprecated
