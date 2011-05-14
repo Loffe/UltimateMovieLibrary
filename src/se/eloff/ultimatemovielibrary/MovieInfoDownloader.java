@@ -75,7 +75,7 @@ public class MovieInfoDownloader {
 
                     // fetch all movies without info
                     Where<LocalMovie, Integer> where = queryBuilder.where();
-                    where.eq("info_id",-1).and().eq("discnumber", 1);
+                    where.eq("info_id", -1).and().eq("discnumber", 1);
 
                     List<LocalMovie> movies = dbMovie.query(queryBuilder
                             .prepare());
@@ -151,6 +151,10 @@ public class MovieInfoDownloader {
                 try {
                     translatedPlot = Translate.execute(plot, Language.ENGLISH,
                             Language.SWEDISH);
+                    if (translatedPlot.toLowerCase().contains(
+                            "ingen överblick hittades")) {
+                        translatedPlot = Localization.plotNotFoundText;
+                    }
                 } catch (Exception e) {
                     // Translation failed.
                     System.out.println("Plot translation failed!");

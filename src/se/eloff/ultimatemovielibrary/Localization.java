@@ -140,12 +140,18 @@ public final class Localization {
     public static final int movieCoverHeight = 317;
     public static final int moviePlotWidth = 300;
     public static final int moviePlotHeight = 300;
+    public static final int movieInfoWidth = 310;
+    public static final int movieInfoHeight = 310;
     public static final String moviePlotLabel = "Handling: ";
     public static final String movieGenreLabel = "Genre: ";
     public static final String movieRatingLabel = "Betyg: ";
     public static final String movieDirectorLabel = "Regisör: ";
     public static final String movieCastLabel = "Skådespelare: ";
-    public static final String movieInfoStandardCover ="img/no-poster-small.png";
+    public static final ImageIcon movieInfoStandardCover = new ImageIcon(
+            "img/no-poster-small.png");
+    public static final String translationFailedText = "Översättningen misslyckades! Engelsk version: ";
+    public static final String plotNotFoundText = "Ingen handling hittades.";
+    public static final String genresUnknownText = "Okänt";
 
     // Playlists
     public static final String playlistCreateNewMessage = "Namn på ny playlist";
@@ -157,6 +163,4 @@ public final class Localization {
     public static final Icon listsSeenIcon = new ImageIcon("img/eye_16.png");
     public static final int playlistDefaultTextSize = 12;
     public static final int playlistAllMoviesTextSize = 22;
-
-    public static final String translationFailedText = "Översättningen misslyckades! Engelsk version: ";
 }

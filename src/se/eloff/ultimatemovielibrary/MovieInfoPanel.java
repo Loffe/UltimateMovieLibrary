@@ -3,25 +3,21 @@ package se.eloff.ultimatemovielibrary;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.TextArea;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
-import javax.swing.JTextPane;
 
 public class MovieInfoPanel extends JPanel {
 
-    private MovieInfo info;
-    private LocalMovie movie;
+    private static final long serialVersionUID = 1404834758155030092L;
+
     private JLabel title;
+    private JLabel year;
     private JLabel plot;
     private Cover cover;
     private JTextArea plotText;
@@ -34,6 +30,7 @@ public class MovieInfoPanel extends JPanel {
 
     public void resetInfo() {
         title.setText("");
+        year.setText("");
         genre.setText(Localization.movieGenreLabel);
         rating.setText(Localization.movieRatingLabel);
         director.setText(Localization.movieDirectorLabel);
@@ -48,9 +45,8 @@ public class MovieInfoPanel extends JPanel {
         try {
             movie = DatabaseManager.getInstance().getMovieDao()
                     .queryForId(movie.getId());
-        } catch (SQLException e1) {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         MovieInfo info = null;
         if (movie.getInfo_id() != -1) {
@@ -58,17 +54,18 @@ public class MovieInfoPanel extends JPanel {
                 info = DatabaseManager.getInstance().getMovieInfoDao()
                         .queryForId(movie.getInfo_id());
             } catch (SQLException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
 
         }
-        this.movie = movie;
-        title.setText(movie.getName() + ", " + movie.getYear());
+        title.setText(movie.getName());
+        year.setText("" + movie.getYear());
         if (info != null) {
 
             String genreString = info.getGenres();
-            if (genreString.length() > 30) {
+            if (genreString.isEmpty()) {
+                genreString = Localization.genresUnknownText;
+            } else if (genreString.length() > 30) {
                 genreString = genreString.substring(0, 27) + "...";
             }
             genre.setText(Localization.movieGenreLabel + genreString);
@@ -93,7 +90,8 @@ public class MovieInfoPanel extends JPanel {
 
     public MovieInfoPanel() {
         cover = new Cover();
-        title = new JLabel("Filminfo");
+        title = new JLabel();
+        year = new JLabel();
         plot = new JLabel();
         genre = new JLabel();
         rating = new JLabel();
@@ -103,23 +101,38 @@ public class MovieInfoPanel extends JPanel {
 
         plot.setText(Localization.moviePlotLabel);
 
+        setSize(Localization.movieInfoWidth, Localization.movieInfoHeight);
+        setMaximumSize(new Dimension(Localization.movieInfoWidth,
+                Localization.movieInfoHeight));
+        setMinimumSize(new Dimension(Localization.movieInfoWidth,
+                Localization.movieInfoHeight));
+        setPreferredSize(new Dimension(Localization.movieInfoWidth,
+                Localization.movieInfoHeight));
+
         plotText.setSize(Localization.moviePlotWidth,
                 Localization.moviePlotHeight);
         plotText.setMaximumSize(new Dimension(Localization.moviePlotWidth,
                 Localization.moviePlotHeight));
+        plotText.setMinimumSize(new Dimension(Localization.moviePlotWidth,
+                Localization.moviePlotHeight));
+        plotText.setPreferredSize(new Dimension(Localization.moviePlotWidth,
+                Localization.moviePlotHeight));
         plotText.setLineWrap(true);
+        plotText.setWrapStyleWord(true);
         plotText.setEditable(false);
 
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
         cover.setAlignmentX(Component.CENTER_ALIGNMENT);
         plot.setAlignmentX(Component.CENTER_ALIGNMENT);
-        genre.setAlignmentX(Component.LEFT_ALIGNMENT);
-        rating.setAlignmentX(Component.LEFT_ALIGNMENT);
-        director.setAlignmentX(Component.LEFT_ALIGNMENT);
-        cast.setAlignmentX(Component.LEFT_ALIGNMENT);
+        genre.setAlignmentX(Component.CENTER_ALIGNMENT);
+        rating.setAlignmentX(Component.CENTER_ALIGNMENT);
+        director.setAlignmentX(Component.CENTER_ALIGNMENT);
+        cast.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         add(title);
+        this.add(Box.createRigidArea(new Dimension(0, gapsize)));
+        add(year);
         this.add(Box.createRigidArea(new Dimension(0, gapsize)));
         add(cover);
         this.add(Box.createRigidArea(new Dimension(0, gapsize)));
@@ -137,12 +150,19 @@ public class MovieInfoPanel extends JPanel {
     }
 
     private class Cover extends JLabel {
+
+        private static final long serialVersionUID = 4247095294118428348L;
+
         public Cover() {
             this.setBackground(Color.green);
         }
 
         public void refresh(String src) {
-            this.setIcon(new ImageIcon(src));
+            this.refresh(new ImageIcon(src));
+        }
+
+        public void refresh(ImageIcon icon) {
+            this.setIcon(icon);
         }
 
         @Override
@@ -164,16 +184,4 @@ public class MovieInfoPanel extends JPanel {
         }
     }
 
-    /*
-     * public static void main(String[] args) { final MovieInfoPanel infoPanel =
-     * new MovieInfoPanel(); LocalMovie local = new LocalMovie();
-     * local.setName("The dark knight"); local.setYear(2009); MovieInfo movie =
-     * new MovieInfo(); movie.setCover("img/dark.jpg");
-     * movie.setCast("Christian Bale"); movie.setDirectors("Christopher Nolan");
-     * movie.setGenres("Action"); movie.setOnlineRating(9);
-     * movie.setPlot("Bla bla"); local.setInfo(movie); infoPanel.refresh(local);
-     * JFrame frame = new JFrame();
-     * frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-     * frame.add(infoPanel); frame.pack(); frame.setVisible(true); }
-     */
 }
