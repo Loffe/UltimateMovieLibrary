@@ -169,6 +169,7 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
 
                 listModel.remove(tmp.getSelectedIndex());
                 return true;
+
             }
 
             protected Transferable createTransferable(JComponent c) {
@@ -229,5 +230,26 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
     @Override
     public void removeUpdate(DocumentEvent arg0) {
         resultPanel.search();
+    }
+
+    /**
+     * Save the order of the playlists. Should be executed when application closes.
+     */
+    public void savePlaylistsOrder() {
+        try {
+            Dao<Playlist, Integer> listDao = DatabaseManager.getInstance()
+                    .getListDao();
+
+            for (int i = Playlist.fixedPlaylists.length; i < listModel
+                    .getSize(); i++) {
+                Playlist p = (Playlist) listModel.get(i);
+                p.setPosition(i + 1);
+                listDao.update(p);
+            }
+        } catch (SQLException e) {
+            System.err.println("Couldn't save playlist order");
+            e.printStackTrace();
+        }
+
     }
 }

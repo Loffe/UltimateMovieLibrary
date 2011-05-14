@@ -49,7 +49,6 @@ public class AppFrame extends JFrame implements ActionListener {
         WatchFolderManager.updateLibrary();
 
         setVisible(false); // Hide until ready, to avoid window "flashing"
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle(Localization.title);
         setIconImage(Localization.icon);
 
@@ -88,6 +87,14 @@ public class AppFrame extends JFrame implements ActionListener {
 
             @Override
             public void windowActivated(WindowEvent e) {
+            }
+        });
+
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                profilePanel.savePlaylistsOrder();
+                dispose();
             }
         });
 
@@ -194,6 +201,7 @@ public class AppFrame extends JFrame implements ActionListener {
 
             @Override
             public void actionPerformed(ActionEvent e) {
+                profilePanel.savePlaylistsOrder();
                 dispose();
                 // TODO: Is a System.exit(0); needed if scans or so are running?
             }
@@ -208,7 +216,7 @@ public class AppFrame extends JFrame implements ActionListener {
         this.setUndecorated(true);
 
         GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment()
-        .getDefaultScreenDevice();
+                .getDefaultScreenDevice();
         DisplayMode displayMode = gd.getDisplayMode();
         int width, height;
         if (displayMode != null) {
