@@ -93,12 +93,17 @@ public abstract class ResultPanel extends JScrollPane implements
             resultPanel.removeAll();
             if (movies.isEmpty()) {
                 resultPanel.add(new JLabel(Localization.searchNoMatchText));
+                setSelectedElement(null);
                 repaint();
             } else {
                 for (LocalMovie movie : movies) {
                     resultPanel.add(new ListElement(movie, this));
                 }
+                ListElement listElement = (ListElement) resultPanel.getComponent(0);
+                listElement.select();
+                setSelectedElement(listElement);
             }
+            
             revalidate();
         }
     }

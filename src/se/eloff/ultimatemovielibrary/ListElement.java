@@ -110,13 +110,6 @@ public class ListElement extends JPanel {
         rating = new RatingButton();
         ratingContainer.add(rating);
 
-        moveUpButton = new JButton();
-        moveDownButton = new JButton();
-        
-        moveUpButton.setVisible(false);
-        moveDownButton.setVisible(false);
-
-        
         moveUpButton = new JButton(){
         @Override
         protected void paintComponent(Graphics g) {
@@ -147,6 +140,9 @@ public class ListElement extends JPanel {
             }
         }
     };
+    moveUpButton.setVisible(false);
+    moveDownButton.setVisible(false);
+
 
 
         playlistButton.addActionListener(new ActionListener() {
@@ -448,17 +444,13 @@ public class ListElement extends JPanel {
 
             @Override
             public void mouseExited(MouseEvent e) {
-                moveUpButton.setVisible(false);
-                moveDownButton.setVisible(false);
-                repaint();
+
 
             }
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                moveUpButton.setVisible(true);
-                moveDownButton.setVisible(true);
-                repaint();
+
 
             }
 
@@ -574,14 +566,20 @@ public class ListElement extends JPanel {
     }
 
     public void select() {
+        moveUpButton.setVisible(true);
+        moveDownButton.setVisible(true);
+        repaint();
         this.setOpaque(true);
         this.setBackground(Localization.selectedListElementColor);
-
     }
 
     public void deSelect() {
+        moveUpButton.setVisible(false);
+        moveDownButton.setVisible(false);
+        repaint();
         this.setOpaque(false);
         this.setBackground(Color.black);
+
 
     }
 }

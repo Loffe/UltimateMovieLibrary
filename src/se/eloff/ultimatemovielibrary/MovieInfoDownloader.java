@@ -75,7 +75,7 @@ public class MovieInfoDownloader {
 
                     // fetch all movies without info
                     Where<LocalMovie, Integer> where = queryBuilder.where();
-                    where.isNull("info_id").and().eq("discnumber", 1);
+                    where.eq("info_id",-1).and().eq("discnumber", 1);
 
                     List<LocalMovie> movies = dbMovie.query(queryBuilder
                             .prepare());
@@ -167,11 +167,11 @@ public class MovieInfoDownloader {
                 }
 
                 if (!genres.isEmpty())
-                    genres = genres.substring(0, genres.length() - 3);
+                    genres = genres.substring(0, genres.length() - 2);
                 if (!cast.isEmpty())
-                    cast = cast.substring(0, cast.length() - 3);
+                    cast = cast.substring(0, cast.length() - 2);
                 if (!directors.isEmpty())
-                    directors = directors.substring(0, directors.length() - 3);
+                    directors = directors.substring(0, directors.length() - 2);
 
                 // Save the info
                 Dao<MovieInfo, Integer> dbInfo = DatabaseManager.getInstance()
@@ -187,7 +187,7 @@ public class MovieInfoDownloader {
 
                 localMovie.setName(movie.getName());
                 localMovie.setYear(movie.getReleasedDate().getYear() + 1900);
-                localMovie.setInfo(info);
+                localMovie.setInfo_id(info.getId());
                 dbMovie.update(localMovie);
             } else {
                 System.out.println("No movie info found for "
