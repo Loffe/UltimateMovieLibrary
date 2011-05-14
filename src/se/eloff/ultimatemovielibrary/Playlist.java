@@ -148,6 +148,14 @@ public class Playlist {
         return listDao.queryForId(Playlist.FAVORITE_LIST_ID);
     }
 
+    public static List<Playlist> getPlaylists() throws SQLException {
+        Dao<Playlist, Integer> listDao = DatabaseManager.getInstance()
+                .getListDao();
+        PreparedQuery<Playlist> query = listDao.queryBuilder().orderBy(
+                "position", true).prepare();
+        return listDao.query(query);
+    }
+
     public static void main(String[] args) throws SQLException {
         Dao<Playlist, Integer> listDao = DatabaseManager.getInstance()
                 .getListDao();

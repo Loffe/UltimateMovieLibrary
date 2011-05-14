@@ -209,8 +209,7 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
 
     private void refreshPlaylists(final DefaultListModel listModel)
             throws SQLException {
-        List<Playlist> my_lists = DatabaseManager.getInstance().getListDao()
-                .queryForAll();
+        List<Playlist> my_lists = Playlist.getPlaylists();
         listModel.removeAllElements();
         for (Playlist list : my_lists)
             listModel.addElement(list);
