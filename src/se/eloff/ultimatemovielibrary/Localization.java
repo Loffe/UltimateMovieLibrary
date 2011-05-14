@@ -1,5 +1,6 @@
 package se.eloff.ultimatemovielibrary;
 
+import java.awt.Color;
 import java.awt.Image;
 
 import javax.swing.Icon;
@@ -16,7 +17,6 @@ public final class Localization {
     public static final int titleFontSize = 24;
     public static final Image icon = new ImageIcon("img/video_16.png")
             .getImage();
-    // public static final int breadCrumbFontSize = 24;
 
     // Watch Folder Manager
     public static final ImageIcon watchFolderIcon = new ImageIcon(
@@ -94,12 +94,12 @@ public final class Localization {
     public static final int movieTitleFontSize = 24;
     public static final int movieYearFontSize = 16;
 
+    public static final Image ratingRemoveRatingImage = new ImageIcon(
+            "img/rating-remove-vote.png").getImage();
+    public static final Image ratingRemoveRatingActiveImage = new ImageIcon(
+            "img/rating-remove-vote-active.png").getImage();
+
     // Menu
-    // public static final int menuHeight = 100;
-    // public static final int menuFontSize = 20;
-    // public static final String menuSearchText = "Sök";
-    // public static final String menuProfileText = "Profil";
-    // public static final String menuRecommendText = "Rekommendationer";
     public static final String menuManageWatchFolderText = null;
     public static final ImageIcon menuManageWatchFolderIcon = new ImageIcon(
             "img/Folder-Add_16.png");
@@ -132,10 +132,7 @@ public final class Localization {
     public static final String profileSeenList = "Sedda filmer";
     public static final String profileWishList = "Önskelista";
 
-
-    // // HomePanel
-    // public static final String homeTitle = "Välkommen!";
-    // public static final int homePanelFontSize = 40;
+    public static final Color selectedListElementColor = new Color(0, 200, 251);
 
     // MovieInfo
     public static final int movieCoverWidth = 214;
@@ -160,9 +157,4 @@ public final class Localization {
     public static final int playlistAllMoviesTextSize = 22;
 
     public static final String translationFailedText = "Översättningen misslyckades! Engelsk version: ";
-
-    // public static final Icon ratingRemoveRating = new
-    // ImageIcon("img/rating-remove-vote.png");
-    public static final String ratingRemoveRating = "img/rating-remove-vote.png";
-    public static final String ratingRemoveRatingActive = "img/rating-remove-vote-active.png";
 }

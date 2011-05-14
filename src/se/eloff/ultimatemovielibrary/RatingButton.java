@@ -1,23 +1,24 @@
 package se.eloff.ultimatemovielibrary;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
-import java.io.File;
-import java.io.IOException;
 
-import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 
+/**
+ * RatingButton is used for rating movies, using a scale from 0 to MAX_RATING.
+ */
 public class RatingButton extends JButton implements ActionListener {
 
     private static final long serialVersionUID = 2321500964797490876L;
@@ -28,10 +29,17 @@ public class RatingButton extends JButton implements ActionListener {
 
     private RateButton[] buttons;
 
+    /**
+     * Constructor. Creates a new RatingButton.
+     */
     public RatingButton() {
+        this.setOpaque(false);
         this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-        JPanel space = new JPanel(){
-            int space = 22;
+        JPanel space = new JPanel() {
+            private static final long serialVersionUID = -8145780491377236643L;
+
+            private int space = 22;
+
             @Override
             public Dimension getPreferredSize() {
                 return new Dimension(1, space);
@@ -47,9 +55,11 @@ public class RatingButton extends JButton implements ActionListener {
                 return new Dimension(1, space);
             }
         };
+        space.setOpaque(false);
         JPanel both = new JPanel();
+        both.setOpaque(false);
         both.setLayout(new BoxLayout(both, BoxLayout.Y_AXIS));
-        buttons = new RateButton[MAX_RATING+1];
+        buttons = new RateButton[MAX_RATING + 1];
         buttons[0] = new RemoveRateButton();
         buttons[0].addActionListener(this);
         both.add(space);
@@ -67,6 +77,17 @@ public class RatingButton extends JButton implements ActionListener {
     @Override
     protected void paintComponent(Graphics g) {
         // Make sure no big button is painted
+
+        // set the parent to not be opaque
+        Component parent = this.getParent();
+        if (parent != null) {
+            if (parent instanceof JComponent) {
+                JComponent jparent = (JComponent) parent;
+                if (jparent.isOpaque()) {
+                    jparent.setOpaque(false);
+                }
+            }
+        }
     }
 
     public int getRating() {
@@ -92,11 +113,11 @@ public class RatingButton extends JButton implements ActionListener {
             }
         }
 
-        //currentButtonIndex++;
+        // currentButtonIndex++;
         if (e.getActionCommand().equals("hover_exited")) {
             currentButtonIndex = currentRating;
         } else if (e.getActionCommand().equals("hover_entered")) {
-            
+
         } else {
             currentRating = currentButtonIndex;
             fireActionPerformed(new ActionEvent(this,
@@ -129,8 +150,9 @@ public class RatingButton extends JButton implements ActionListener {
         private boolean active = false;
 
         public RateButton() {
+            this.setOpaque(false);
             this.setBorderPainted(false);
-           
+
         }
 
         public void setActive(boolean active) {
@@ -159,8 +181,10 @@ public class RatingButton extends JButton implements ActionListener {
 
         @Override
         protected void paintComponent(Graphics g) {
-            g.setColor(UIManager.getColor("Panel.background"));
-            g.fillRect(0, 0, this.getWidth(), this.getHeight());
+            if (this.isOpaque()) {
+                g.setColor(UIManager.getColor("Panel.background"));
+                g.fillRect(0, 0, this.getWidth(), this.getHeight());
+            }
 
             int cross_w = 10;
             int cross_h = 40;
@@ -206,9 +230,20 @@ public class RatingButton extends JButton implements ActionListener {
             super.processMouseEvent(e);
         }
     }
-    
+
     private class RemoveRateButton extends RateButton {
-        int size =22;
+
+        private static final long serialVersionUID = 2688440941960157437L;
+
+        private int size = 22;
+
+        /**
+         * Constructor. Creates a new RemoveRateButton
+         */
+        public RemoveRateButton() {
+            this.setOpaque(false);
+        }
+
         public Dimension getPreferredSize() {
             return new Dimension(size, size);
         }
@@ -222,21 +257,18 @@ public class RatingButton extends JButton implements ActionListener {
         public Dimension getMaximumSize() {
             return new Dimension(size, size);
         }
+
+        @Override
         protected void paintComponent(Graphics g) {
-            Graphics2D g2 = (Graphics2D)g;
+            Graphics2D g2 = (Graphics2D) g;
             g2.scale(1.0, 1.0);
-            try {
-                if (this.getModel().isRollover())
-                    g2.drawImage(ImageIO.read(new File(Localization.ratingRemoveRatingActive)), 0, 0, null);
-                else if (isActive())
-                    g2.drawImage(ImageIO.read(new File(Localization.ratingRemoveRating)), 0, 0, null);
-                else
-                    g2.drawImage(ImageIO.read(new File(Localization.ratingRemoveRating)), 0, 0, null);
-                
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
+            if (this.getModel().isRollover())
+                g2.drawImage(Localization.ratingRemoveRatingActiveImage, 0, 0,
+                        null);
+            else if (isActive())
+                g2.drawImage(Localization.ratingRemoveRatingImage, 0, 0, null);
+            else
+                g2.drawImage(Localization.ratingRemoveRatingImage, 0, 0, null);
         }
     }
 

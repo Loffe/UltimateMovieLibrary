@@ -14,26 +14,18 @@ package se.eloff.ultimatemovielibrary;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.sql.SQLException;
-
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.io.File;
 import java.io.IOException;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
-import java.awt.event.ContainerListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import java.util.Observer;
+import java.sql.SQLException;
 
 import javax.imageio.ImageIO;
-
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
@@ -98,17 +90,17 @@ public class ListElement extends JPanel {
 
             @Override
             public Dimension getPreferredSize() {
-                return new Dimension(1, space);
+                return new Dimension(0, space);
             }
 
             @Override
             public Dimension getMinimumSize() {
-                return new Dimension(1, space);
+                return new Dimension(0, space);
             }
 
             @Override
             public Dimension getMaximumSize() {
-                return new Dimension(1, space);
+                return new Dimension(0, space);
             }
         };
         JPanel ratingContainer = new JPanel();
@@ -583,7 +575,7 @@ public class ListElement extends JPanel {
 
     public void select() {
         this.setOpaque(true);
-        this.setBackground(Color.red);
+        this.setBackground(Localization.selectedListElementColor);
 
     }
 
