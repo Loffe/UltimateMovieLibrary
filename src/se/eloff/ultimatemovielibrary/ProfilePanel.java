@@ -33,24 +33,15 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
     private JTextField searchTextField;
 
     private JList lists;
-    
+
     private ListElement selectedElement = null;
-    
-    public void setSelectedElement(ListElement element){
+
+    public void setSelectedElement(ListElement element) {
         selectedElement = element;
-        LocalMovie movie = element.getMovie();
-        MovieInfo info = null;
-        try {
-            Dao<LocalMovie, Integer> dbMovie = DatabaseManager
-            .getInstance().getMovieDao();
-           movie = dbMovie.queryForId(movie.getId());
-           info = movie.getInfo();
-            
-        } catch (SQLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        movieInfoPanel.refresh(movie, info);
+        if (selectedElement != null)
+            movieInfoPanel.refresh(element.getMovie());
+        else
+            movieInfoPanel.resetInfo();
     }
 
     private ListDataListener playlistListener = new ListDataListener() {
@@ -164,8 +155,8 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
                         .getDropLocation();
                 int index = dl.getIndex();
 
-                listModel.add(index, listModel.getElementAt(tmp
-                        .getSelectedIndex()));
+                listModel.add(index,
+                        listModel.getElementAt(tmp.getSelectedIndex()));
 
                 listModel.remove(tmp.getSelectedIndex());
                 return true;
@@ -232,7 +223,8 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
     }
 
     /**
-     * Save the order of the playlists. Should be executed when application closes.
+     * Save the order of the playlists. Should be executed when application
+     * closes.
      */
     public void savePlaylistsOrder() {
         try {
