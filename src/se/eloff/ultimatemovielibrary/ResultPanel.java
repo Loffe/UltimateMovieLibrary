@@ -29,7 +29,7 @@ public abstract class ResultPanel extends JScrollPane implements
 
     private SortButton[] sortButtons = new SortButton[3];
     protected String orderColumn = "position";
-    private boolean orderAscending;
+    private boolean orderAscending = true;
 
     private ProfilePanel parentPanel;
 
