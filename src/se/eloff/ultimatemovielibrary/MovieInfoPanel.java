@@ -61,7 +61,8 @@ public class MovieInfoPanel extends JPanel {
         if (info == null) 
             resetInfo();
         title.setText(movie.getName());
-        year.setText("" + movie.getYear());
+        year.setText((movie.getYear() != 0) ? "" + movie.getYear()
+                : Localization.movieNoYearText);
         if (info != null) {
 
             String genreString = info.getGenres();
