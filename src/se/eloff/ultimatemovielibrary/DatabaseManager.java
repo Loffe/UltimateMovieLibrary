@@ -109,10 +109,6 @@ public class DatabaseManager {
                     for (String name : Playlist.fixedPlaylists) {
                         listManager.create(new Playlist(name));
                     }
-
-                    listManager.create(new Playlist("Bra filmer"));
-                    listManager.create(new Playlist("Fredagsmys"));
-                    listManager.create(new Playlist("Thejfilmer"));
                 } catch (SQLException e1) {
                     // TODO Auto-generated catch block
                     e1.printStackTrace();
