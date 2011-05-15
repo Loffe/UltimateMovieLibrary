@@ -40,7 +40,7 @@ public class MovieInfoPanel extends JPanel {
     }
 
     public void refresh(LocalMovie movie) {
-        resetInfo();
+       // 
 
         try {
             movie = DatabaseManager.getInstance().getMovieDao()
@@ -58,6 +58,8 @@ public class MovieInfoPanel extends JPanel {
             }
 
         }
+        if (info == null) 
+            resetInfo();
         title.setText(movie.getName());
         year.setText("" + movie.getYear());
         if (info != null) {
