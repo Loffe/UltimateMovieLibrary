@@ -86,7 +86,6 @@ public final class Localization {
             "img/Favorite-icon_50_disabled.png");
     public static final ImageIcon movieStarButtonIconDisabled = new ImageIcon(
             "img/Button-Favorite-icon_50_disabled.png");
-    public static final Color movieSelectedBgColor = Color.magenta;
 
     public static final String movieNoYearText = "Okänt";
 
@@ -99,6 +98,11 @@ public final class Localization {
             "img/rating-remove-vote.png").getImage();
     public static final Image ratingRemoveRatingActiveImage = new ImageIcon(
             "img/rating-remove-vote-active.png").getImage();
+    
+    public static final String managePlaylistsMenuTitle = "Hantera listor";
+    public static final String managePlaylistsMenuDescriptionText = "Lägg till film i befintlig lista:";
+    public static final Icon managePlaylistsButtonIcon = new ImageIcon("img/arrow-down.png");
+    public static final String managePlaylistsButtonToolTipText = "Hantera listor";
 
     // Menu
     public static final String menuManageWatchFolderText = null;
@@ -163,4 +167,5 @@ public final class Localization {
     public static final Icon listsSeenIcon = new ImageIcon("img/eye_16.png");
     public static final int playlistDefaultTextSize = 12;
     public static final int playlistAllMoviesTextSize = 22;
+    
 }

@@ -13,6 +13,7 @@ package se.eloff.ultimatemovielibrary;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -25,7 +26,6 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 import javax.imageio.ImageIO;
-import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
@@ -81,7 +81,7 @@ public class ListElement extends JPanel {
         playButton = new JButton();
         titleLabel = new JLabel();
         yearLabel = new JLabel();
-        playlistButton = new JButton();
+        playlistButton = new JButton(Localization.managePlaylistsButtonIcon);
         seenButton = new JToggleButton();
         wishButton = new JToggleButton();
         favoriteButton = new JToggleButton();
@@ -162,12 +162,22 @@ public class ListElement extends JPanel {
         moveUpButton.setVisible(false);
         moveDownButton.setVisible(false);
 
+        playlistButton.setToolTipText(Localization.managePlaylistsButtonToolTipText);
         playlistButton.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Build the playlist Menu.
-                playlistMenu = new JPopupMenu("Playlists");
+                playlistMenu = new JPopupMenu(Localization.managePlaylistsMenuTitle);
+                FlowLayout flowLayout = new FlowLayout();
+                flowLayout.setHgap(8);
+                flowLayout.setVgap(8);
+                JPanel labelPanel = new JPanel();
+                labelPanel.setLayout(flowLayout);
+                JLabel label = new JLabel(Localization.managePlaylistsMenuDescriptionText);
+                labelPanel.add(label);
+                labelPanel.setOpaque(false);
+                playlistMenu.add(labelPanel);
 
                 try {
                     Dao<Playlist, Integer> listsDb = DatabaseManager
