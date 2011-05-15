@@ -564,19 +564,16 @@ public class ListElement extends JPanel {
     }
 
     public void select() {
-        moveUpButton.setVisible(true);
-        moveDownButton.setVisible(true);
-        repaint();
         this.setOpaque(true);
         this.setBackground(Localization.selectedListElementColor);
+        moveUpButton.setVisible(true);
+        moveDownButton.setVisible(true);
     }
 
     public void deSelect() {
-        moveUpButton.setVisible(false);
-        moveDownButton.setVisible(false);
-        repaint();
         this.setOpaque(false);
         this.setBackground(Color.black);
-
+        moveUpButton.setVisible(false);
+        moveDownButton.setVisible(false);
     }
 }
