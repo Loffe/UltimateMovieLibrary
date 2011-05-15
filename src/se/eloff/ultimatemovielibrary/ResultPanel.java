@@ -106,9 +106,7 @@ public abstract class ResultPanel extends JScrollPane implements
                 for (LocalMovie movie : movies) {
                     resultPanel.add(new ListElement(movie, this));
                 }
-                ListElement listElement = (ListElement) resultPanel
-                        .getComponent(0);
-                setSelectedElement(listElement);
+                setSelectedElement((ListElement) resultPanel.getComponent(0));
             }
 
             revalidate();
@@ -201,16 +199,16 @@ public abstract class ResultPanel extends JScrollPane implements
 
             int newUpPos = listItemDown.getPosition();
             int newDownPos = listItemUp.getPosition();
-            
+
             listItemDown.setPosition(4563400);
             listItemUp.setPosition(1035455);
-            
+
             movieListDb.update(listItemUp);
             movieListDb.update(listItemDown);
-            
+
             listItemUp.setPosition(newUpPos);
             listItemDown.setPosition(newDownPos);
-            
+
             movieListDb.update(listItemUp);
             movieListDb.update(listItemDown);
 

@@ -108,6 +108,7 @@ public class ListElement extends JPanel {
                 BoxLayout.Y_AXIS));
         ratingContainer.add(ratingSpace);
         rating = new RatingButton();
+        ratingContainer.setOpaque(false);
         ratingContainer.add(rating);
 
         moveUpButton = new JButton() {
@@ -126,11 +127,11 @@ public class ListElement extends JPanel {
             }
         };
         moveUpButton.addActionListener(new ActionListener() {
-            
+
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 parentPanel.moveSelectedElementUp();
-                
+
             }
         });
         moveDownButton = new JButton() {
@@ -148,13 +149,13 @@ public class ListElement extends JPanel {
                 }
             }
         };
-        
+
         moveDownButton.addActionListener(new ActionListener() {
-            
+
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 parentPanel.moveSelectedElementDown();
-                
+
             }
         });
 
@@ -249,10 +250,7 @@ public class ListElement extends JPanel {
                     }
                 });
 
-                // playlistMenu.setInvoker(this);
-
                 playlistMenu.show(playlistButton, 0, 0 + 50);
-
             }
         });
 
@@ -454,7 +452,7 @@ public class ListElement extends JPanel {
 
             @Override
             public void mousePressed(MouseEvent e) {
-                //select();
+                // select();
                 parentPanel.setSelectedElement(ListElement.this);
 
             }

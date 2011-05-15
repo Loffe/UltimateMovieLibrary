@@ -152,7 +152,6 @@ public class RatingButton extends JButton implements ActionListener {
         public RateButton() {
             this.setOpaque(false);
             this.setBorderPainted(false);
-
         }
 
         public void setActive(boolean active) {

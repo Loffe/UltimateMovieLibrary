@@ -42,7 +42,7 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
 
     public void setSelectedElement(ListElement element) {
         if (element != null) {
-            if ((selectedElement != null && !selectedElement.equals(element))
+            if ((selectedElement != null && !selectedElement.getMovie().equals(element.getMovie()))
                     || selectedElement == null)
                 movieInfoPanel.refresh(element.getMovie());
         } else
