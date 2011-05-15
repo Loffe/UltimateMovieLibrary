@@ -120,6 +120,7 @@ public class MovieInfoPanel extends JPanel {
         plotText.setLineWrap(true);
         plotText.setWrapStyleWord(true);
         plotText.setEditable(false);
+        
 
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
         cover.setAlignmentX(Component.CENTER_ALIGNMENT);

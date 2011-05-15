@@ -139,7 +139,7 @@ public final class Localization {
     public static final int movieCoverWidth = 214;
     public static final int movieCoverHeight = 317;
     public static final int moviePlotWidth = 300;
-    public static final int moviePlotHeight = 300;
+    public static final int moviePlotHeight = 100;
     public static final int movieInfoWidth = 310;
     public static final int movieInfoHeight = 310;
     public static final String moviePlotLabel = "Handling: ";

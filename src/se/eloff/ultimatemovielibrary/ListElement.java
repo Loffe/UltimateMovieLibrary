@@ -110,40 +110,39 @@ public class ListElement extends JPanel {
         rating = new RatingButton();
         ratingContainer.add(rating);
 
-        moveUpButton = new JButton(){
-        @Override
-        protected void paintComponent(Graphics g) {
-            // Make sure no button is painted
-            Graphics2D g2 = (Graphics2D) g;
-            g2.scale(1.0, 1.0);
-            try {
-                g2.drawImage(ImageIO.read(new File(
-                        Localization.movieMoveUpButtonIcon)), 0, 0, null);
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+        moveUpButton = new JButton() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                // Make sure no button is painted
+                Graphics2D g2 = (Graphics2D) g;
+                g2.scale(1.0, 1.0);
+                try {
+                    g2.drawImage(ImageIO.read(new File(
+                            Localization.movieMoveUpButtonIcon)), 0, 0, null);
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
             }
-        }
-    };
-    moveDownButton = new JButton(){
-        @Override
-        protected void paintComponent(Graphics g) {
-            // Make sure no button is painted
-            Graphics2D g2 = (Graphics2D) g;
-            g2.scale(1.0, 1.0);
-            try {
-                g2.drawImage(ImageIO.read(new File(
-                        Localization.movieMoveDownButtonIcon)), 0, 0, null);
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+        };
+        moveDownButton = new JButton() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                // Make sure no button is painted
+                Graphics2D g2 = (Graphics2D) g;
+                g2.scale(1.0, 1.0);
+                try {
+                    g2.drawImage(ImageIO.read(new File(
+                            Localization.movieMoveDownButtonIcon)), 0, 0, null);
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
             }
-        }
-    };
-    moveUpButton.setVisible(false);
-    moveDownButton.setVisible(false);
+        };
 
-
+        moveUpButton.setVisible(false);
+        moveDownButton.setVisible(false);
 
         playlistButton.addActionListener(new ActionListener() {
 
@@ -294,8 +293,8 @@ public class ListElement extends JPanel {
         favoriteButton.setHorizontalTextPosition(SwingConstants.RIGHT);
 
         javax.swing.GroupLayout layout = new GroupLayout(this);
-        
-        Dimension moveButtonDimension = new Dimension(30,25);
+
+        Dimension moveButtonDimension = new Dimension(30, 25);
 
         moveUpButton.setMaximumSize(moveButtonDimension);
         moveDownButton.setMaximumSize(moveButtonDimension);
@@ -310,6 +309,7 @@ public class ListElement extends JPanel {
         movePanel.setAlignmentX(CENTER_ALIGNMENT);
         movePanel.add(moveUpButton);
         movePanel.add(moveDownButton);
+        movePanel.setOpaque(false);
 
         this.setLayout(layout);
         layout.setHorizontalGroup(layout
@@ -445,12 +445,10 @@ public class ListElement extends JPanel {
             @Override
             public void mouseExited(MouseEvent e) {
 
-
             }
 
             @Override
             public void mouseEntered(MouseEvent e) {
-
 
             }
 
@@ -472,18 +470,18 @@ public class ListElement extends JPanel {
                 }
             }
         });
-        
+
         moveUpButton.addActionListener(new ActionListener() {
-            
+
             @Override
             public void actionPerformed(ActionEvent e) {
             }
         });
         moveDownButton.addActionListener(new ActionListener() {
-            
+
             @Override
             public void actionPerformed(ActionEvent e) {
-                
+
             }
         });
 
@@ -579,7 +577,6 @@ public class ListElement extends JPanel {
         repaint();
         this.setOpaque(false);
         this.setBackground(Color.black);
-
 
     }
 }
