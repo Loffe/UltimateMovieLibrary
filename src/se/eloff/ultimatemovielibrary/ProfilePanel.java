@@ -7,16 +7,12 @@ import java.awt.datatransfer.Transferable;
 import java.sql.SQLException;
 import java.util.List;
 
-import javax.swing.BorderFactory;
 import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.DropMode;
-import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JList;
-import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.TransferHandler;
@@ -42,7 +38,8 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
 
     public void setSelectedElement(ListElement element) {
         if (element != null) {
-            if ((selectedElement != null && !selectedElement.getMovie().equals(element.getMovie()))
+            if ((selectedElement != null && !selectedElement.getMovie().equals(
+                    element.getMovie()))
                     || selectedElement == null)
                 movieInfoPanel.refresh(element.getMovie());
         } else
@@ -99,18 +96,21 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
                     assert selectedList != null;
                     // If its the "all movies" list...
                     String name = searchTextField.getText();
-                    if (selectedList.getId() == 1) {
-                        lastSearchId = MovieSearchProvider.searchByName(name,
-                                resultPanel, getOrderColumn(),
-                                isOrderAscending());
-                    } else if (selectedList.getId() == Playlist.SEEN_LIST_ID) {
-                        lastSearchId = MovieSearchProvider.searchByNameSeen(
-                                name, resultPanel, getOrderColumn(),
-                                isOrderAscending(), true);
-                    } else {
-                        lastSearchId = MovieSearchProvider.searchByList(name,
-                                resultPanel, getOrderColumn(),
-                                isOrderAscending(), selectedList);
+                    if (selectedList != null) {
+                        if (selectedList.getId() == 1) {
+                            lastSearchId = MovieSearchProvider.searchByName(
+                                    name, resultPanel, getOrderColumn(),
+                                    isOrderAscending());
+                        } else if (selectedList.getId() == Playlist.SEEN_LIST_ID) {
+                            lastSearchId = MovieSearchProvider
+                                    .searchByNameSeen(name, resultPanel,
+                                            getOrderColumn(),
+                                            isOrderAscending(), true);
+                        } else {
+                            lastSearchId = MovieSearchProvider.searchByList(
+                                    name, resultPanel, getOrderColumn(),
+                                    isOrderAscending(), selectedList);
+                        }
                     }
                 } catch (ClassCastException e) {
                     e.printStackTrace();
