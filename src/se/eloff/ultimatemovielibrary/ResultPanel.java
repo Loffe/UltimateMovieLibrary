@@ -5,6 +5,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.swing.Box;
@@ -13,6 +14,10 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+
+import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.stmt.DeleteBuilder;
+import com.j256.ormlite.stmt.QueryBuilder;
 
 public abstract class ResultPanel extends JScrollPane implements
         MovieSearchClient, ActionListener {
@@ -23,10 +28,12 @@ public abstract class ResultPanel extends JScrollPane implements
     protected int lastSearchId;
 
     private SortButton[] sortButtons = new SortButton[3];
-    protected String orderColumn = "name";
+    protected String orderColumn = "position";
     private boolean orderAscending;
 
     private ProfilePanel parentPanel;
+
+    private int selectedElementPosition = -1;
 
     public ResultPanel(ProfilePanel parentPanel) {
         this.parentPanel = parentPanel;
@@ -99,16 +106,15 @@ public abstract class ResultPanel extends JScrollPane implements
                 for (LocalMovie movie : movies) {
                     resultPanel.add(new ListElement(movie, this));
                 }
-                ListElement listElement = (ListElement) resultPanel.getComponent(0);
+                ListElement listElement = (ListElement) resultPanel
+                        .getComponent(0);
                 setSelectedElement(listElement);
-                listElement.select();
             }
-            
+
             revalidate();
         }
     }
 
-    
     @Override
     public void actionPerformed(ActionEvent e) {
         for (SortButton button : sortButtons) {
@@ -141,15 +147,107 @@ public abstract class ResultPanel extends JScrollPane implements
     public void setSelectedElement(ListElement element) {
         parentPanel.setSelectedElement(element);
 
+        // Tell the selected element that it is selected
+        int selectedListId = parentPanel.getSelecteListId();
+        if (element != null)
+            element.select(orderColumn.equals("position")
+                    && selectedListId != 1
+                    && selectedListId != Playlist.SEEN_LIST_ID);
+
+        // deselect all other
+        int position = 0;
         for (Component elementL : resultPanel.getComponents()) {
             try {
                 ListElement listElement = (ListElement) elementL;
+
                 if (listElement != element)
                     listElement.deSelect();
+                else
+                    selectedElementPosition = position;
+                position++;
             } catch (Exception e) {
                 System.out.println("fel castning");
             }
         }
+    }
 
+    private void switchPositions(ListElement moveUpElement,
+            ListElement moveDownElement, int moveDownElementPos) {
+        resultPanel.add(moveUpElement, moveDownElementPos);
+        resultPanel.add(moveDownElement, moveDownElementPos + 1);
+
+        // save the new positions to the db
+        try {
+            // update the moveupMovie
+            Dao<MovieList, Integer> movieListDb = DatabaseManager.getInstance()
+                    .getMovieListDao();
+            QueryBuilder<MovieList, Integer> queryUpElement = movieListDb
+                    .queryBuilder();
+            queryUpElement.where()
+                    .eq("movie_id", moveUpElement.getMovie().getId()).and()
+                    .eq("list_id", parentPanel.getSelecteListId());
+            queryUpElement.distinct();
+            MovieList listItemUp = (MovieList) movieListDb.query(
+                    queryUpElement.prepare()).get(0);
+
+            QueryBuilder<MovieList, Integer> queryDownElement = movieListDb
+                    .queryBuilder();
+            queryDownElement.where()
+                    .eq("movie_id", moveDownElement.getMovie().getId()).and()
+                    .eq("list_id", parentPanel.getSelecteListId());
+            queryDownElement.distinct();
+            MovieList listItemDown = (MovieList) movieListDb.query(
+                    queryDownElement.prepare()).get(0);
+
+            int newUpPos = listItemDown.getPosition();
+            int newDownPos = listItemUp.getPosition();
+            
+            listItemDown.setPosition(4563400);
+            listItemUp.setPosition(1035455);
+            
+            movieListDb.update(listItemUp);
+            movieListDb.update(listItemDown);
+            
+            listItemUp.setPosition(newUpPos);
+            listItemDown.setPosition(newDownPos);
+            
+            movieListDb.update(listItemUp);
+            movieListDb.update(listItemDown);
+
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+    }
+
+    public void moveSelectedElementUp() {
+        System.out.println("moving up, selpos :" + selectedElementPosition);
+        if (selectedElementPosition != 0 && resultPanel.getComponentCount() > 1) {
+            switchPositions(
+                    (ListElement) resultPanel
+                            .getComponent(selectedElementPosition),
+                    (ListElement) resultPanel
+                            .getComponent(selectedElementPosition - 1),
+                    selectedElementPosition - 1);
+            revalidate();
+            selectedElementPosition = selectedElementPosition - 1;
+        }
+    }
+
+    public void moveSelectedElementDown() {
+        System.out.println("moving donw, selpos :" + selectedElementPosition);
+        if (selectedElementPosition != resultPanel.getComponentCount() - 1
+                && resultPanel.getComponentCount() > 1) {
+            switchPositions(
+                    (ListElement) resultPanel
+                            .getComponent(selectedElementPosition + 1),
+                    (ListElement) resultPanel
+                            .getComponent(selectedElementPosition),
+                    selectedElementPosition);
+
+            revalidate();
+            selectedElementPosition = selectedElementPosition + 1;
+        }
     }
 }

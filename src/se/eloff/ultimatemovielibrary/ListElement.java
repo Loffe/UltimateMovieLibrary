@@ -63,7 +63,7 @@ public class ListElement extends JPanel {
     private JButton moveUpButton;
     private JButton moveDownButton;
 
-    private ResultPanel parentPanel;
+    private final ResultPanel parentPanel;
     private LocalMovie movie;
 
     public ListElement(LocalMovie movie, ResultPanel parentPanel) {
@@ -125,6 +125,14 @@ public class ListElement extends JPanel {
                 }
             }
         };
+        moveUpButton.addActionListener(new ActionListener() {
+            
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                parentPanel.moveSelectedElementUp();
+                
+            }
+        });
         moveDownButton = new JButton() {
             @Override
             protected void paintComponent(Graphics g) {
@@ -140,6 +148,15 @@ public class ListElement extends JPanel {
                 }
             }
         };
+        
+        moveDownButton.addActionListener(new ActionListener() {
+            
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                parentPanel.moveSelectedElementDown();
+                
+            }
+        });
 
         moveUpButton.setVisible(false);
         moveDownButton.setVisible(false);
@@ -437,7 +454,7 @@ public class ListElement extends JPanel {
 
             @Override
             public void mousePressed(MouseEvent e) {
-                select();
+                //select();
                 parentPanel.setSelectedElement(ListElement.this);
 
             }
@@ -563,11 +580,11 @@ public class ListElement extends JPanel {
         });
     }
 
-    public void select() {
+    public void select(boolean showMoveArrows) {
         this.setOpaque(true);
         this.setBackground(Localization.selectedListElementColor);
-        moveUpButton.setVisible(true);
-        moveDownButton.setVisible(true);
+        moveUpButton.setVisible(showMoveArrows);
+        moveDownButton.setVisible(showMoveArrows);
     }
 
     public void deSelect() {

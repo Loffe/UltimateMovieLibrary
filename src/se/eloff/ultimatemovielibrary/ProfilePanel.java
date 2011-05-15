@@ -7,12 +7,16 @@ import java.awt.datatransfer.Transferable;
 import java.sql.SQLException;
 import java.util.List;
 
+import javax.swing.BorderFactory;
 import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.DropMode;
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.TransferHandler;
@@ -37,11 +41,13 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
     private ListElement selectedElement = null;
 
     public void setSelectedElement(ListElement element) {
-        selectedElement = element;
-        if (selectedElement != null)
-            movieInfoPanel.refresh(element.getMovie());
-        else
+        if (element != null) {
+            if ((selectedElement != null && !selectedElement.equals(element))
+                    || selectedElement == null)
+                movieInfoPanel.refresh(element.getMovie());
+        } else
             movieInfoPanel.resetInfo();
+        selectedElement = element;
     }
 
     private ListDataListener playlistListener = new ListDataListener() {
@@ -242,5 +248,11 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
             e.printStackTrace();
         }
 
+    }
+
+    public int getSelecteListId() {
+        Playlist selectedList = (Playlist) lists.getSelectedValue();
+        assert selectedList != null;
+        return selectedList.getId();
     }
 }
