@@ -73,6 +73,7 @@ public class WatchFolderManager {
 
         Dao<WatchFolder, Integer> dbWatchFolder;
         Dao<LocalMovie, Integer> dbMovie;
+        Dao<MovieInfo, Integer>dbMovieInfo;
         try {
             // remove the watchFolder
             dbWatchFolder = DatabaseManager.getInstance().getWatchFolderDao();
@@ -86,8 +87,13 @@ public class WatchFolderManager {
             dbMovie = DatabaseManager.getInstance().getMovieDao();
             QueryBuilder<LocalMovie, Integer> queryBuilder = dbMovie.queryBuilder();
             queryBuilder.where().like("filepath", folder.getFolderPath() + "%");
-            PreparedQuery<LocalMovie> preparedQuery = queryBuilder.prepare();
-            dbMovie.delete(dbMovie.query(preparedQuery));
+            List<LocalMovie> movies = dbMovie.query(queryBuilder.prepare());
+            
+            dbMovieInfo = DatabaseManager.getInstance().getMovieInfoDao();
+            for (LocalMovie localMovie : movies) {
+                dbMovieInfo.delete(dbMovieInfo.queryForId(localMovie.getInfo_id()));
+                dbMovie.delete(localMovie);
+            }
             return true;
 
         } catch (SQLException e) {
