@@ -165,6 +165,7 @@ public final class Localization {
     // Playlists
     public static final String playlistCreateNewMessage = "Namn på ny playlist";
     public static final String playlistCreateNewHeading = "Ny playlist";
+    public static final String playlistDelete = "Ta bort";
     public static final Icon listsWishIcon = new ImageIcon(
             "img/Button-Favorite-icon_16.png");
     public static final Icon listsFavoriteIcon = new ImageIcon(
