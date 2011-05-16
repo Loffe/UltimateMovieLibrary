@@ -137,6 +137,76 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
             }
         };
 
+        buildPlaylistPanel();
+
+        searchTextField = new JTextField();
+        searchTextField.setPreferredSize(new Dimension(200, 30));
+        searchTextField.setMaximumSize(new Dimension(400, 30));
+
+        titleLabel = new JLabel(Localization.searchFieldLabelText);
+
+        hideSeenMoviesCheckBox = new JCheckBox(
+                Localization.searchHideSeenMoviesText);
+
+        this.setLayout(new BorderLayout());
+
+        recommendPanel = new RecommendPanel();
+        recommendedMovies = new JButton(
+                Localization.recommendRefreshButtonText,
+                Localization.recommendRefreshButtonIcon);
+        recommendedMovies.setToolTipText(Localization.recommendRefreshButtonToolTip);
+
+        final JPanel listPanel = new JPanel();
+        listPanel.setLayout(new BorderLayout());
+        listPanel.add(lists, BorderLayout.CENTER);
+        listPanel.add(recommendedMovies, BorderLayout.SOUTH);
+
+        recommendedMovies.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ProfilePanel.this.remove(movieInfoPanel);
+                ProfilePanel.this.remove(centerBox);
+                recommendPanel.refresh(ProfilePanel.this.getWidth()
+                        - lists.getWidth());
+                ProfilePanel.this.add(recommendPanel, BorderLayout.CENTER);
+                ProfilePanel.this.revalidate();
+                lists.clearSelection();
+                showsRecommended = true;
+            }
+        });
+
+        this.add(listPanel, BorderLayout.WEST);
+
+        Box searchBox = Box.createHorizontalBox();
+        searchBox.add(titleLabel);
+        searchBox.add(searchTextField);
+        searchBox.add(Box.createRigidArea(new Dimension(20, 20)));
+        searchBox.add(hideSeenMoviesCheckBox);
+        searchBox.add(Box.createHorizontalGlue());
+
+        centerBox = Box.createVerticalBox();
+        centerBox.add(searchBox);
+        centerBox.add(resultPanel);
+        movieInfoPanel = new MovieInfoPanel();
+        this.add(centerBox, BorderLayout.CENTER);
+        this.add(movieInfoPanel, BorderLayout.EAST);
+
+        // add a listener to the input field
+        searchTextField.getDocument().addDocumentListener(this);
+
+        hideSeenMoviesCheckBox.setToolTipText(Localization.toolTipsSearchSeen);
+        hideSeenMoviesCheckBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                resultPanel.search();
+            }
+
+        });
+
+    }
+
+    private void buildPlaylistPanel() {
         listModel = new DefaultListModel();
         try {
             refreshPlaylists(listModel);
@@ -146,22 +216,7 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        final JPopupMenu popupMenu = new JPopupMenu();
-        popupMenu.add(new AbstractAction(Localization.playlistDelete) {
-            private static final long serialVersionUID = 3776371380960369970L;
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    Playlist playlist = (Playlist) lists.getSelectedValue();
-                    playlist.delete();
-                    listModel.removeElement(playlist);
-                    lists.setSelectedIndex(0);
-                } catch (SQLException e1) {
-                    e1.printStackTrace();
-                }
-            }
-        });
+        final JPopupMenu popupMenu = buildPlaylistPopupMenu();
         lists = new JList(listModel);
         lists.addMouseListener(new MouseAdapter() {
             @Override
@@ -236,72 +291,26 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
                 return MOVE;
             }
         });
+    }
 
-        searchTextField = new JTextField();
-        searchTextField.setPreferredSize(new Dimension(200, 30));
-        searchTextField.setMaximumSize(new Dimension(400, 30));
-
-        titleLabel = new JLabel(Localization.searchFieldLabelText);
-
-        hideSeenMoviesCheckBox = new JCheckBox(
-                Localization.searchHideSeenMoviesText);
-
-        this.setLayout(new BorderLayout());
-
-        recommendPanel = new RecommendPanel();
-        recommendedMovies = new JButton(
-                Localization.recommendRefreshButtonText,
-                Localization.recommendRefreshButtonIcon);
-        recommendedMovies.setToolTipText(Localization.recommendRefreshButtonToolTip);
-
-        final JPanel listPanel = new JPanel();
-        listPanel.setLayout(new BorderLayout());
-        listPanel.add(lists, BorderLayout.CENTER);
-        listPanel.add(recommendedMovies, BorderLayout.SOUTH);
-
-        recommendedMovies.addActionListener(new ActionListener() {
+    private JPopupMenu buildPlaylistPopupMenu() {
+        final JPopupMenu popupMenu = new JPopupMenu();
+        popupMenu.add(new AbstractAction(Localization.playlistDelete) {
+            private static final long serialVersionUID = 3776371380960369970L;
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                ProfilePanel.this.remove(movieInfoPanel);
-                ProfilePanel.this.remove(centerBox);
-                recommendPanel.refresh(ProfilePanel.this.getWidth()
-                        - lists.getWidth());
-                ProfilePanel.this.add(recommendPanel, BorderLayout.CENTER);
-                ProfilePanel.this.revalidate();
-                lists.clearSelection();
-                showsRecommended = true;
+                try {
+                    Playlist playlist = (Playlist) lists.getSelectedValue();
+                    playlist.delete();
+                    listModel.removeElement(playlist);
+                    lists.setSelectedIndex(0);
+                } catch (SQLException e1) {
+                    e1.printStackTrace();
+                }
             }
         });
-
-        this.add(listPanel, BorderLayout.WEST);
-
-        Box searchBox = Box.createHorizontalBox();
-        searchBox.add(titleLabel);
-        searchBox.add(searchTextField);
-        searchBox.add(Box.createRigidArea(new Dimension(20, 20)));
-        searchBox.add(hideSeenMoviesCheckBox);
-        searchBox.add(Box.createHorizontalGlue());
-
-        centerBox = Box.createVerticalBox();
-        centerBox.add(searchBox);
-        centerBox.add(resultPanel);
-        movieInfoPanel = new MovieInfoPanel();
-        this.add(centerBox, BorderLayout.CENTER);
-        this.add(movieInfoPanel, BorderLayout.EAST);
-
-        // add a listener to the input field
-        searchTextField.getDocument().addDocumentListener(this);
-
-        hideSeenMoviesCheckBox.setToolTipText(Localization.toolTipsSearchSeen);
-        hideSeenMoviesCheckBox.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                resultPanel.search();
-            }
-
-        });
-
+        return popupMenu;
     }
 
     private void refreshPlaylists(final DefaultListModel listModel)
