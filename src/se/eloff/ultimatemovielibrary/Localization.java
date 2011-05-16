@@ -98,10 +98,11 @@ public final class Localization {
             "img/rating-remove-vote.png").getImage();
     public static final Image ratingRemoveRatingActiveImage = new ImageIcon(
             "img/rating-remove-vote-active.png").getImage();
-    
+
     public static final String managePlaylistsMenuTitle = "Hantera listor";
     public static final String managePlaylistsMenuDescriptionText = "Lägg till film i befintlig lista:";
-    public static final Icon managePlaylistsButtonIcon = new ImageIcon("img/arrow-down.png");
+    public static final Icon managePlaylistsButtonIcon = new ImageIcon(
+            "img/arrow-down.png");
     public static final String managePlaylistsButtonToolTipText = "Hantera listor";
 
     // Menu
@@ -143,19 +144,22 @@ public final class Localization {
     public static final int movieCoverWidth = 214;
     public static final int movieCoverHeight = 317;
     public static final int moviePlotWidth = 300;
-    public static final int moviePlotHeight = 100;
+    public static final int moviePlotHeight = 150;
     public static final int movieInfoWidth = 310;
     public static final int movieInfoHeight = 310;
     public static final String moviePlotLabel = "Handling: ";
     public static final String movieGenreLabel = "Genre: ";
-    public static final String movieRatingLabel = "Betyg: ";
+    public static final String movieRatingLabel = "Online-betyg: ";
     public static final String movieDirectorLabel = "Regisör: ";
     public static final String movieCastLabel = "Skådespelare: ";
     public static final ImageIcon movieInfoStandardCover = new ImageIcon(
             "img/no-poster.png");
     public static final String translationFailedText = "Översättningen misslyckades! Engelsk version: ";
-    public static final String plotNotFoundText = "Ingen handling hittades.";
-    public static final String genresUnknownText = "Okänt";
+    public static final String unknownPlotText = "Ingen handling hittades.";
+    public static final String unknownGenreText = "Okänd";
+    public static final String unknownRatingText = "Okänt";
+    public static final String unknownDirectorText = "Ingen regissör hittades.";
+    public static final String unknownCastText = "Inga skådespelare hittades.";
 
     // Playlists
     public static final String playlistCreateNewMessage = "Namn på ny playlist";
@@ -167,5 +171,5 @@ public final class Localization {
     public static final Icon listsSeenIcon = new ImageIcon("img/eye_16.png");
     public static final int playlistDefaultTextSize = 12;
     public static final int playlistAllMoviesTextSize = 22;
-    
+
 }

@@ -153,7 +153,7 @@ public class MovieInfoDownloader {
                             Language.SWEDISH);
                     if (translatedPlot.toLowerCase().contains(
                             "ingen överblick hittades")) {
-                        translatedPlot = Localization.plotNotFoundText;
+                        translatedPlot = Localization.unknownPlotText;
                     }
                 } catch (Exception e) {
                     // Translation failed.

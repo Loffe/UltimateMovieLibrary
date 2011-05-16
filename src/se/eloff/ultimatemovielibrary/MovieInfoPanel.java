@@ -1,8 +1,9 @@
 package se.eloff.ultimatemovielibrary;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.sql.SQLException;
 
 import javax.swing.Box;
@@ -10,38 +11,158 @@ import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 public class MovieInfoPanel extends JPanel {
 
     private static final long serialVersionUID = 1404834758155030092L;
 
-    private JLabel title;
-    private JLabel year;
-    private JLabel plot;
-    private Cover cover;
-    private JTextArea plotText;
-    private JLabel genre;
-    private JLabel rating;
-    private JLabel cast;
-    private JLabel director;
+    private JLabel title = new JLabel();
+    private JLabel year = new JLabel();
+
+    private Cover cover = new Cover();
+
+    private JPanel plotPanel = new JPanel();
+    private JLabel plotLabel = new JLabel();
+    private JTextArea plot = new JTextArea();
+    private JScrollPane plotScrollPane = new JScrollPane(plot);
+
+    private JPanel genrePanel = new JPanel();
+    private JLabel genreLabel = new JLabel();
+    private JLabel genre = new JLabel();
+
+    private JPanel ratingPanel = new JPanel();
+    private JLabel ratingLabel = new JLabel();
+    private JLabel rating = new JLabel();
+
+    private JPanel directorPanel = new JPanel();
+    private JLabel directorLabel = new JLabel();
+    private JLabel director = new JLabel();
+
+    private JPanel castPanel = new JPanel();
+    private JLabel castLabel = new JLabel();
+    private JLabel cast = new JLabel();
 
     private final int gapsize = 20;
 
+    /**
+     * Constructor. Creates a new MovieInfoPanel to show info about a movie.
+     */
+    public MovieInfoPanel() {
+        // Set fix size
+        setSize(Localization.movieInfoWidth, Localization.movieInfoHeight);
+        setMaximumSize(new Dimension(Localization.movieInfoWidth,
+                Localization.movieInfoHeight));
+        setMinimumSize(new Dimension(Localization.movieInfoWidth,
+                Localization.movieInfoHeight));
+        setPreferredSize(new Dimension(Localization.movieInfoWidth,
+                Localization.movieInfoHeight));
+
+        // Show the title
+        title.setAlignmentX(CENTER_ALIGNMENT);
+        title.setFont(new Font(title.getFont().getName(), title.getFont()
+                .getStyle(), Localization.movieTitleFontSize));
+
+        // Show the plot
+        year.setAlignmentX(CENTER_ALIGNMENT);
+        year.setFont(new Font(title.getFont().getName(), title.getFont()
+                .getStyle(), Localization.movieYearFontSize));
+
+        // Show the cover
+        cover.setAlignmentX(CENTER_ALIGNMENT);
+
+        // Show the plot in a scrollable textarea
+        plotLabel.setText(Localization.moviePlotLabel);
+        plotLabel.setFont(new Font(plotLabel.getFont().getName(), Font.BOLD,
+                plotLabel.getFont().getSize()));
+        plotPanel.add(plotLabel);
+        plot.setLineWrap(true);
+        plot.setWrapStyleWord(true);
+        plot.setEditable(false);
+        plotPanel.add(plotScrollPane);
+        plotScrollPane.setPreferredSize(new Dimension(
+                Localization.moviePlotWidth, Localization.moviePlotHeight));
+        plotPanel.setPreferredSize(new Dimension(Localization.moviePlotWidth,
+                Localization.moviePlotHeight + 40));
+        plotPanel.setAlignmentX(CENTER_ALIGNMENT);
+
+        // Assemble panel to show genres
+        genrePanel.setLayout(new BorderLayout());
+        genreLabel.setFont(new Font(genreLabel.getFont().getName(), Font.BOLD,
+                genreLabel.getFont().getSize()));
+        genrePanel.add(genreLabel, BorderLayout.WEST);
+        genrePanel.add(genre, BorderLayout.CENTER);
+        genrePanel.setAlignmentX(CENTER_ALIGNMENT);
+
+        // Show the online rating
+        ratingPanel.setLayout(new BorderLayout());
+        ratingLabel.setFont(new Font(ratingLabel.getFont().getName(),
+                Font.BOLD, ratingLabel.getFont().getSize()));
+        ratingPanel.add(ratingLabel, BorderLayout.WEST);
+        ratingPanel.add(rating, BorderLayout.CENTER);
+        ratingPanel.setAlignmentX(CENTER_ALIGNMENT);
+
+        // Show the director
+        directorPanel.setLayout(new BorderLayout());
+        directorLabel.setFont(new Font(directorLabel.getFont().getName(),
+                Font.BOLD, directorLabel.getFont().getSize()));
+        directorPanel.add(directorLabel, BorderLayout.WEST);
+        directorPanel.add(director, BorderLayout.CENTER);
+        directorPanel.setAlignmentX(CENTER_ALIGNMENT);
+
+        // Show the cast
+        castPanel.setLayout(new BorderLayout());
+        castLabel.setFont(new Font(castLabel.getFont().getName(), Font.BOLD,
+                castLabel.getFont().getSize()));
+        castPanel.add(castLabel, BorderLayout.WEST);
+        castPanel.add(cast, BorderLayout.CENTER);
+        castPanel.setAlignmentX(CENTER_ALIGNMENT);
+
+        // Layout everything
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        add(title);
+        add(Box.createRigidArea(new Dimension(0, gapsize)));
+        add(year);
+        add(cover);
+        add(Box.createRigidArea(new Dimension(0, gapsize)));
+        add(plotPanel);
+        add(Box.createRigidArea(new Dimension(0, gapsize)));
+        add(genrePanel);
+        add(Box.createRigidArea(new Dimension(0, gapsize)));
+        add(ratingPanel);
+        add(Box.createRigidArea(new Dimension(0, gapsize)));
+        add(directorPanel);
+        add(Box.createRigidArea(new Dimension(0, gapsize)));
+        add(castPanel);
+
+        // Initialize the info to default values.
+        resetInfo();
+    }
+
     public void resetInfo() {
         title.setText("");
+        title.setToolTipText("");
         year.setText("");
-        genre.setText(Localization.movieGenreLabel);
-        rating.setText(Localization.movieRatingLabel);
-        director.setText(Localization.movieDirectorLabel);
-        cast.setText(Localization.movieCastLabel);
-        plotText.setText("");
         cover.refresh(Localization.movieInfoStandardCover);
+
+        plot.setText(Localization.unknownPlotText);
+        plotScrollPane.getVerticalScrollBar().setValue(0);
+
+        genreLabel.setText(Localization.movieGenreLabel);
+        genre.setText(Localization.unknownGenreText);
+
+        ratingLabel.setText(Localization.movieRatingLabel);
+        rating.setText(Localization.unknownRatingText);
+
+        directorLabel.setText(Localization.movieDirectorLabel);
+        director.setText(Localization.unknownDirectorText);
+
+        castLabel.setText(Localization.movieCastLabel);
+        cast.setText(Localization.unknownCastText);
     }
 
     public void refresh(LocalMovie movie) {
-       // 
-
         try {
             movie = DatabaseManager.getInstance().getMovieDao()
                     .queryForId(movie.getId());
@@ -58,99 +179,60 @@ public class MovieInfoPanel extends JPanel {
             }
 
         }
-        if (info == null) 
+        if (info == null)
             resetInfo();
+
+        // Show the movie title
         title.setText(movie.getName());
+        title.setToolTipText(title.getText());
+
+        // Show year or "Unkown" text
         year.setText((movie.getYear() != 0) ? "" + movie.getYear()
                 : Localization.movieNoYearText);
         if (info != null) {
 
+            // Update the cover image
+            if (!info.getCover().isEmpty()) {
+                cover.refresh(info.getCover());
+            }
+
+            // Update plot
+            plot.setText(info.getPlot());
+            // TODO: This next line doesn't help.. How to scroll to beginning?
+            plotScrollPane.getVerticalScrollBar().setValue(0);
+
+            // Update genres.
             String genreString = info.getGenres();
             if (genreString.isEmpty()) {
-                genreString = Localization.genresUnknownText;
-            } else if (genreString.length() > 30) {
-                genreString = genreString.substring(0, 27) + "...";
+                genreString = Localization.unknownGenreText;
             }
-            genre.setText(Localization.movieGenreLabel + genreString);
-            rating.setText(Localization.movieRatingLabel
-                    + info.getOnlineRating());
+            genre.setText(genreString);
+
+            // Show the online rating of the movie
+            ratingLabel.setText(Localization.movieRatingLabel);
+            if (info.getOnlineRating() > 0) {
+                // Convert to a rating between 0 to 5
+                int onlineRating = Math
+                        .round((float) info.getOnlineRating() / 100 * 5);
+                rating.setText(onlineRating + " / 5");
+            } else {
+                rating.setText(Localization.unknownRatingText);
+            }
+
+            // Update the director info
             String directorString = info.getDirectors();
-            if (directorString.length() > 30) {
-                directorString = directorString.substring(0, 27) + "...";
+            if (directorString.isEmpty()) {
+                directorString = Localization.unknownDirectorText;
             }
-            director.setText(Localization.movieDirectorLabel + directorString);
+            director.setText(directorString);
+
+            // Update the cast info
             String castString = info.getCast();
-            if (castString.length() > 30) {
-                castString = castString.substring(0, 27) + "...";
+            if (info.getCast().isEmpty()) {
+                castString = Localization.unknownCastText;
             }
-            cast.setText(Localization.movieCastLabel + castString);
-
-            plotText.setText(info.getPlot());
-            if (!info.getCover().isEmpty())
-                cover.refresh(info.getCover());
+            cast.setText(castString);
         }
-    }
-
-    public MovieInfoPanel() {
-        cover = new Cover();
-        title = new JLabel();
-        year = new JLabel();
-        plot = new JLabel();
-        genre = new JLabel();
-        rating = new JLabel();
-        director = new JLabel();
-        cast = new JLabel();
-        plotText = new JTextArea();
-
-        plot.setText(Localization.moviePlotLabel);
-
-        setSize(Localization.movieInfoWidth, Localization.movieInfoHeight);
-        setMaximumSize(new Dimension(Localization.movieInfoWidth,
-                Localization.movieInfoHeight));
-        setMinimumSize(new Dimension(Localization.movieInfoWidth,
-                Localization.movieInfoHeight));
-        setPreferredSize(new Dimension(Localization.movieInfoWidth,
-                Localization.movieInfoHeight));
-
-        plotText.setSize(Localization.moviePlotWidth,
-                Localization.moviePlotHeight);
-        plotText.setMaximumSize(new Dimension(Localization.moviePlotWidth,
-                Localization.moviePlotHeight));
-        plotText.setMinimumSize(new Dimension(Localization.moviePlotWidth,
-                Localization.moviePlotHeight));
-        plotText.setPreferredSize(new Dimension(Localization.moviePlotWidth,
-                Localization.moviePlotHeight));
-        plotText.setLineWrap(true);
-        plotText.setWrapStyleWord(true);
-        plotText.setEditable(false);
-        
-
-        title.setAlignmentX(Component.CENTER_ALIGNMENT);
-        cover.setAlignmentX(Component.CENTER_ALIGNMENT);
-        plot.setAlignmentX(Component.CENTER_ALIGNMENT);
-        genre.setAlignmentX(Component.CENTER_ALIGNMENT);
-        rating.setAlignmentX(Component.CENTER_ALIGNMENT);
-        director.setAlignmentX(Component.CENTER_ALIGNMENT);
-        cast.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        add(title);
-        this.add(Box.createRigidArea(new Dimension(0, gapsize)));
-        add(year);
-        this.add(Box.createRigidArea(new Dimension(0, gapsize)));
-        add(cover);
-        this.add(Box.createRigidArea(new Dimension(0, gapsize)));
-        add(plot);
-        this.add(plotText);
-        this.add(Box.createRigidArea(new Dimension(0, gapsize)));
-        this.add(genre);
-        this.add(Box.createRigidArea(new Dimension(0, gapsize)));
-        this.add(rating);
-        this.add(Box.createRigidArea(new Dimension(0, gapsize)));
-        this.add(director);
-        this.add(Box.createRigidArea(new Dimension(0, gapsize)));
-        this.add(cast);
-        resetInfo();
     }
 
     private class Cover extends JLabel {
