@@ -117,8 +117,8 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
                         if (selectedList.getId() == 1) {
                             lastSearchId = MovieSearchProvider.searchByName(
                                     name, resultPanel, getOrderColumn(),
-                                    isOrderAscending(),
-                                    hideSeenMoviesCheckBox.isSelected());
+                                    isOrderAscending(), hideSeenMoviesCheckBox
+                                            .isSelected());
                         } else if (selectedList.getId() == Playlist.SEEN_LIST_ID) {
                             lastSearchId = MovieSearchProvider
                                     .searchByNameSeen(name, resultPanel,
@@ -139,14 +139,7 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
 
         buildPlaylistPanel();
 
-        searchTextField = new JTextField();
-        searchTextField.setPreferredSize(new Dimension(200, 30));
-        searchTextField.setMaximumSize(new Dimension(400, 30));
-
-        titleLabel = new JLabel(Localization.searchFieldLabelText);
-
-        hideSeenMoviesCheckBox = new JCheckBox(
-                Localization.searchHideSeenMoviesText);
+        Box searchBox = buildSearchPanel();
 
         this.setLayout(new BorderLayout());
 
@@ -154,7 +147,8 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
         recommendedMovies = new JButton(
                 Localization.recommendRefreshButtonText,
                 Localization.recommendRefreshButtonIcon);
-        recommendedMovies.setToolTipText(Localization.recommendRefreshButtonToolTip);
+        recommendedMovies
+                .setToolTipText(Localization.recommendRefreshButtonToolTip);
 
         final JPanel listPanel = new JPanel();
         listPanel.setLayout(new BorderLayout());
@@ -178,19 +172,23 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
 
         this.add(listPanel, BorderLayout.WEST);
 
-        Box searchBox = Box.createHorizontalBox();
-        searchBox.add(titleLabel);
-        searchBox.add(searchTextField);
-        searchBox.add(Box.createRigidArea(new Dimension(20, 20)));
-        searchBox.add(hideSeenMoviesCheckBox);
-        searchBox.add(Box.createHorizontalGlue());
-
         centerBox = Box.createVerticalBox();
         centerBox.add(searchBox);
         centerBox.add(resultPanel);
         movieInfoPanel = new MovieInfoPanel();
         this.add(centerBox, BorderLayout.CENTER);
         this.add(movieInfoPanel, BorderLayout.EAST);
+    }
+
+    private Box buildSearchPanel() {
+        searchTextField = new JTextField();
+        searchTextField.setPreferredSize(new Dimension(200, 30));
+        searchTextField.setMaximumSize(new Dimension(400, 30));
+
+        titleLabel = new JLabel(Localization.searchFieldLabelText);
+
+        hideSeenMoviesCheckBox = new JCheckBox(
+                Localization.searchHideSeenMoviesText);
 
         // add a listener to the input field
         searchTextField.getDocument().addDocumentListener(this);
@@ -204,6 +202,13 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
 
         });
 
+        Box searchBox = Box.createHorizontalBox();
+        searchBox.add(titleLabel);
+        searchBox.add(searchTextField);
+        searchBox.add(Box.createRigidArea(new Dimension(20, 20)));
+        searchBox.add(hideSeenMoviesCheckBox);
+        searchBox.add(Box.createHorizontalGlue());
+        return searchBox;
     }
 
     private void buildPlaylistPanel() {
@@ -251,7 +256,7 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
 
                     showsRecommended = false;
                 }
-                
+
             }
         });
 
@@ -275,8 +280,8 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
                         .getDropLocation();
                 int index = dl.getIndex();
 
-                listModel.add(index,
-                        listModel.getElementAt(tmp.getSelectedIndex()));
+                listModel.add(index, listModel.getElementAt(tmp
+                        .getSelectedIndex()));
 
                 listModel.remove(tmp.getSelectedIndex());
                 return true;
