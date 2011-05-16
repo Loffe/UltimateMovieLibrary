@@ -11,6 +11,7 @@ import com.j256.ormlite.dao.RawRowMapper;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.stmt.DeleteBuilder;
+import com.j256.ormlite.stmt.PreparedDelete;
 import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.table.DatabaseTable;
@@ -197,6 +198,17 @@ public class Playlist {
          */
     }
 
+    public void delete() throws SQLException {
+        DatabaseManager db = DatabaseManager.getInstance();
+        Dao<Playlist, Integer> listDao = db.getListDao();
+        Dao<MovieList, Integer> movieListDao = db.getMovieListDao();
+
+        PreparedDelete<MovieList> del = (PreparedDelete<MovieList>) movieListDao
+                .deleteBuilder().where().eq("list_id", this.id).prepare();
+        movieListDao.delete(del);
+        listDao.delete(this);
+    }
+
     public boolean contains(int movie_id) throws SQLException {
         DatabaseManager db = DatabaseManager.getInstance();
         Dao<MovieList, Integer> movieListDao = db.getMovieListDao();
@@ -206,5 +218,6 @@ public class Playlist {
         List<MovieList> result = movieListDao.query(preparedQuery);
         return !result.isEmpty();
     }
+
 
 }

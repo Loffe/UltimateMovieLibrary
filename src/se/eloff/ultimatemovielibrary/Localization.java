@@ -5,6 +5,7 @@ import java.awt.Image;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 
 /**
  * Localization is used to make GUI-strings and Icons independent of the rest of
@@ -17,7 +18,11 @@ public final class Localization {
     public static final int titleFontSize = 24;
     public static final Image icon = new ImageIcon("img/video_16.png")
             .getImage();
-
+    public static final Image loader = new ImageIcon("img/ajax-loader2.gif").getImage();
+    public static JLabel loadingTextLabel = new JLabel("");
+    public static JLabel loadingLabel = new JLabel(new ImageIcon(loader));
+    
+    
     // Watch Folder Manager
     public static final ImageIcon watchFolderIcon = new ImageIcon(
             "img/folder_32.png");
@@ -62,6 +67,7 @@ public final class Localization {
     // Recommended movies
     public static final String recommendTitle = "Rekommendationer";
     public static final String recommendRefreshButtonText = "Rekommendationer";
+    public static final String recommendRefreshButtonToolTip = "Uppdatera och visa rekommenderade filmer";
     public static final ImageIcon recommendRefreshButtonIcon = new ImageIcon(
             "img/Button-Refresh-icon_20.png");
     public static final String recommendRefreshNoMatchText = "Inga filmer i databasen.";
@@ -164,6 +170,7 @@ public final class Localization {
     // Playlists
     public static final String playlistCreateNewMessage = "Namn på ny playlist";
     public static final String playlistCreateNewHeading = "Ny playlist";
+    public static final String playlistDelete = "Ta bort";
     public static final Icon listsWishIcon = new ImageIcon(
             "img/Button-Favorite-icon_16.png");
     public static final Icon listsFavoriteIcon = new ImageIcon(

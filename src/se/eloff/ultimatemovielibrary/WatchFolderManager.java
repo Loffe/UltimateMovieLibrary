@@ -18,7 +18,8 @@ import com.j256.ormlite.stmt.QueryBuilder;
  */
 public class WatchFolderManager {
     private static HashMap<String, DirScanner> runningScans = new HashMap<String, DirScanner>();
-
+    
+    static int folderScanCounter = 0;
     /**
      * Get all WatchFolders that are saved in the db
      * 
@@ -44,6 +45,7 @@ public class WatchFolderManager {
      */
     public static boolean updateLibrary() {
         Dao<WatchFolder, Integer> db;
+        folderScanCounter = 0;
         try {
             db = DatabaseManager.getInstance().getWatchFolderDao();
             List<WatchFolder> folders = db.queryForAll();
@@ -128,6 +130,9 @@ public class WatchFolderManager {
             @Override
             public void run() {
                 System.out.println("Running new dirscanner thread");
+                folderScanCounter++;
+                Localization.loadingTextLabel.setText("scanning folders..");
+                Localization.loadingLabel.setVisible(true);
 
                 try {
                     scanner.ScanFolder(new File(folder.getFolderPath()));
@@ -138,10 +143,17 @@ public class WatchFolderManager {
                 runningScans.remove(folder.toString());
                 System.out.println("Successfully scanned: "
                         + folder.getFolderPath());
+                folderScanCounter--;
+                if (folderScanCounter == 0 && MovieInfoDownloader.updateInProgress == false) {
+                   Localization.loadingTextLabel.setText("");
+                   Localization.loadingLabel.setVisible(false);
+                   
+                }
             }
         });
 
         scanThread.start();
+        
         return true;
     }
 
