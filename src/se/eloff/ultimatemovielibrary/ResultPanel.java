@@ -31,6 +31,10 @@ public abstract class ResultPanel extends JScrollPane implements
     private boolean orderAscending = true;
 
     private ProfilePanel parentPanel;
+    
+    public ProfilePanel getParenPanel(){
+        return parentPanel;
+    }
 
     private int selectedElementPosition = -1;
 

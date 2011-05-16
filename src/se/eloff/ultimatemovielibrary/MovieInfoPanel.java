@@ -55,6 +55,8 @@ public class MovieInfoPanel extends JPanel {
     private JLabel cast = new JLabel();
 
     private final int gapsize = 20;
+    
+    private LocalMovie movie = null;
 
     /**
      * Constructor. Creates a new MovieInfoPanel to show info about a movie.
@@ -161,6 +163,7 @@ public class MovieInfoPanel extends JPanel {
     }
 
     public void resetInfo() {
+        movie = null;
         title.setText("");
         title.setToolTipText("");
         year.setText("");
@@ -189,6 +192,7 @@ public class MovieInfoPanel extends JPanel {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        this.movie = movie;
         MovieInfo info = null;
         if (movie.getInfo_id() != -1) {
             try {
@@ -366,7 +370,7 @@ public class MovieInfoPanel extends JPanel {
 
         @Override
         public void mousePressed(MouseEvent arg0) {
-            // TODO Auto-generated method stub
+            ExternalPlayerLauncher.getInstance().playMovie(movie);
         }
 
         @Override

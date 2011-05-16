@@ -3,13 +3,18 @@ package se.eloff.ultimatemovielibrary;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.GridLayout;
+import java.awt.FlowLayout;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -84,6 +89,8 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
     private JButton recommendedMoviesButton;
     private Box centerBox;
     private RecommendPanel recommendPanel;
+    private JPanel addNewPlaylistPanel;
+    private JLabel addPlaylistLabel;
 
     private boolean showsRecommended = false;
 
@@ -133,17 +140,6 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
 
             @Override
             public void search() {
-                // TODO better search in progress function, maybe some rotating
-                // thingy or so
-                // resultPanel.removeAll();
-                // resultPanel.add(new
-                // JLabel(Localization.searchInProgressText));
-                // jScrollPanel.updateUI();
-
-                // lastSearchId = MovieSearchProvider.searchByNameSeen(
-                // searchTextField.getText(), resultPanel,
-                // getOrderColumn(), isOrderAscending(), true);
-
                 try {
                     Playlist selectedList = (Playlist) lists.getSelectedValue();
                     assert selectedList != null;
@@ -153,8 +149,8 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
                         if (selectedList.getId() == 1) {
                             lastSearchId = MovieSearchProvider.searchByName(
                                     name, resultPanel, getOrderColumn(),
-                                    isOrderAscending(), hideSeenMoviesCheckBox
-                                            .isSelected());
+                                    isOrderAscending(),
+                                    hideSeenMoviesCheckBox.isSelected());
                         } else if (selectedList.getId() == Playlist.SEEN_LIST_ID) {
                             lastSearchId = MovieSearchProvider
                                     .searchByNameSeen(name, resultPanel,
@@ -189,10 +185,38 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
         final JPanel leftPanel = new JPanel();
         leftPanel.setLayout(new BorderLayout());
         leftPanel.add(lists, BorderLayout.NORTH);
-        JPanel centerPanel = new JPanel();
-        centerPanel.add(new JLabel(Localization.playlistCreateNewHeading));
-        centerPanel.setBackground(Color.WHITE);
-        leftPanel.add(centerPanel, BorderLayout.CENTER);
+
+        addNewPlaylistPanel = new JPanel();
+        addNewPlaylistPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+
+        addPlaylistLabel = new JLabel(Localization.playlistCreateNewHeading);
+        addPlaylistLabel.addMouseListener(new MouseListener() {
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                showCreatePlaylist(null);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+            }
+        });
+
+        addNewPlaylistPanel.add(addPlaylistLabel);
+        addNewPlaylistPanel.setBackground(Color.WHITE);
+        leftPanel.add(addNewPlaylistPanel, BorderLayout.CENTER);
         leftPanel.add(recommendedMoviesButton, BorderLayout.SOUTH);
 
         recommendedMoviesButton.addActionListener(new ActionListener() {
@@ -239,7 +263,6 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
             public void actionPerformed(ActionEvent e) {
                 resultPanel.search();
             }
-
         });
 
         Box searchBox = Box.createHorizontalBox();
@@ -263,10 +286,10 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
             e.printStackTrace();
         }
         final JPopupMenu popupMenu = buildPlaylistPopupMenu();
-        lists = new JList(listModel){
+        lists = new JList(listModel) {
             public Dimension getPreferredSize() {
-                
-                return new Dimension(100, 500);
+                // TODO better calculation of the height
+                return new Dimension(100, listModel.getSize() * 16 + 15);
             }
         };
         lists.addMouseListener(new MouseAdapter() {
@@ -302,7 +325,6 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
 
                     showsRecommended = false;
                 }
-
             }
         });
 
@@ -329,6 +351,80 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
             }
         });
         return popupMenu;
+    }
+
+    private void createNewPlaylist(String playlistName, LocalMovie movie) {
+        Dao<MovieList, Integer> movieListDb;
+        try {
+            movieListDb = DatabaseManager.getInstance().getMovieListDao();
+            Playlist playlist = DatabaseManager.getInstance().createPlaylist(
+                    playlistName);
+
+            if (movie != null) {
+                movieListDb.create(new MovieList(movie, playlist));
+            }
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+    }
+
+    public void showCreatePlaylist(final LocalMovie movie) {
+        addNewPlaylistPanel.removeAll();
+        final JTextField newPlaylistInput = new JTextField();
+        newPlaylistInput.setPreferredSize(new Dimension(150, 30));
+
+        // newPlaylistInput.setText(Localization.playlistCreateNewMessage);
+        // newPlaylistInput.setSelectionStart(0);
+        // newPlaylistInput.setSelectionEnd(newPlaylistInput.getText().length());
+
+        addNewPlaylistPanel.add(newPlaylistInput);
+        newPlaylistInput.requestFocus();
+        addNewPlaylistPanel.revalidate();
+        addNewPlaylistPanel.repaint();
+
+        newPlaylistInput.addKeyListener(new KeyListener() {
+
+            @Override
+            public void keyTyped(KeyEvent e) {
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == 10) {
+                    if (!newPlaylistInput.getText().isEmpty()) {
+                        createNewPlaylist(newPlaylistInput.getText(), movie);
+                    }
+                    addNewPlaylistPanel.removeAll();
+                    addNewPlaylistPanel.add(addPlaylistLabel);
+                    addNewPlaylistPanel.revalidate();
+                    addNewPlaylistPanel.repaint();
+                }
+
+            }
+        });
+
+        newPlaylistInput.addFocusListener(new FocusListener() {
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (newPlaylistInput.getText().isEmpty()) {
+                    addNewPlaylistPanel.removeAll();
+                    addNewPlaylistPanel.add(addPlaylistLabel);
+                    addNewPlaylistPanel.revalidate();
+                    addNewPlaylistPanel.repaint();
+                }
+            }
+
+            @Override
+            public void focusGained(FocusEvent e) {
+            }
+        });
     }
 
     private void refreshPlaylists(final DefaultListModel listModel)

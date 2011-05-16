@@ -238,30 +238,7 @@ public class ListElement extends JPanel {
 
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        // TODO Create a new playlist and add this movie
-                        // somehow
-                        try {
-
-                            Dao<MovieList, Integer> movieListDb = DatabaseManager
-                                    .getInstance().getMovieListDao();
-
-                            String playlistname = JOptionPane.showInputDialog(
-                                    null,
-                                    Localization.playlistCreateNewMessage,
-                                    Localization.playlistCreateNewHeading, 1);
-
-                            Playlist playlist = DatabaseManager.getInstance()
-                                    .createPlaylist(playlistname);
-
-                            movieListDb.create(new MovieList(movie, playlist));
-                            // TODO update the profilePanel listview with the
-                            // new playlist!
-
-                        } catch (SQLException e1) {
-                            // TODO Auto-generated catch block
-                            e1.printStackTrace();
-                        }
-
+                            parentPanel.getParenPanel().showCreatePlaylist(movie);
                     }
                 });
 
