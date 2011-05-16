@@ -18,7 +18,7 @@ public class RecommendPanel extends JPanel implements MovieSearchClient {
         outerPanel = new JPanel();
     }
 
-    public  void refresh(final int width) {
+    public void refresh(final int width) {
 
         EventQueue.invokeLater(new Runnable() {
             @Override
@@ -27,16 +27,21 @@ public class RecommendPanel extends JPanel implements MovieSearchClient {
                         .getFeaturedMovies(
                                 (int) ((float) width / (float) Localization.movieInfoWidth),
                                 RecommendPanel.this, "rating", false);
+                // lastSearchId = MovieSearchProvider
+                // lastSearchId =
+                // MovieSearchProvider.getFeaturedMovies(5,RecommendPanel.this,
+                // "rating", false);
             }
         });
     }
 
     @Override
-    public synchronized void searchFinished(List<LocalMovie> movies, int searchKey) {
+    public synchronized void searchFinished(List<LocalMovie> movies,
+            int searchKey) {
         this.removeAll();
         outerPanel.removeAll();
         if (lastSearchId == searchKey) {
-            
+
             outerPanel.setLayout(new GridLayout(1, movies.size()));
             for (LocalMovie localMovie : movies) {
                 MovieInfoPanel panel = new MovieInfoPanel();

@@ -228,8 +228,7 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
             public void actionPerformed(ActionEvent e) {
                 ProfilePanel.this.remove(movieInfoPanel);
                 ProfilePanel.this.remove(centerBox);
-                recommendPanel.refresh(ProfilePanel.this.getWidth()
-                        - lists.getWidth());
+                recommendPanel.refresh(ProfilePanel.this.getWidth());
                 ProfilePanel.this.add(recommendPanel, BorderLayout.CENTER);
                 ProfilePanel.this.revalidate();
                 lists.clearSelection();
