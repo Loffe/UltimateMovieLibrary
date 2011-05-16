@@ -61,7 +61,7 @@ public final class Localization {
 
     // Recommended movies
     public static final String recommendTitle = "Rekommendationer";
-    public static final String recommendRefreshButtonText = "";
+    public static final String recommendRefreshButtonText = "Rekommendationer";
     public static final ImageIcon recommendRefreshButtonIcon = new ImageIcon(
             "img/Button-Refresh-icon_20.png");
     public static final String recommendRefreshNoMatchText = "Inga filmer i databasen.";

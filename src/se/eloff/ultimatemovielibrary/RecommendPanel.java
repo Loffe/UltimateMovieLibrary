@@ -10,26 +10,33 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class RecommendPanel extends JPanel implements MovieSearchClient {
-    int lastSearchId = 0;
+    private int lastSearchId = 0;
+    private JPanel outerPanel;
 
-    public RecommendPanel(final int width) {
+    public RecommendPanel() {
         this.setLayout(new GridLayout(1, 1));
+        outerPanel = new JPanel();
+    }
+
+    public void refresh(final int width) {
+
         EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                int numberOfMovies = (int) ((float) width / (float) Localization.movieInfoWidth);
-                System.out.println("number of recommended movies: " + numberOfMovies + " this w: " + width);
-                lastSearchId = MovieSearchProvider.getFeaturedMovies(numberOfMovies,
-                        RecommendPanel.this, "rating", false);
+                lastSearchId = MovieSearchProvider
+                        .getFeaturedMovies(
+                                (int) ((float) width / (float) Localization.movieInfoWidth),
+                                RecommendPanel.this, "rating", false);
             }
         });
-
     }
 
     @Override
     public void searchFinished(List<LocalMovie> movies, int searchKey) {
+        this.removeAll();
+        outerPanel.removeAll();
         if (lastSearchId == searchKey) {
-            JPanel outerPanel = new JPanel();
+            
             outerPanel.setLayout(new GridLayout(1, movies.size()));
             for (LocalMovie localMovie : movies) {
                 MovieInfoPanel panel = new MovieInfoPanel();
@@ -37,7 +44,6 @@ public class RecommendPanel extends JPanel implements MovieSearchClient {
                 outerPanel.add(panel);
             }
             add(outerPanel);
-            outerPanel.revalidate();
             revalidate();
         }
     }

@@ -43,6 +43,7 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
     private JList lists;
     private JButton recommendedMovies;
     private Box centerBox;
+    private RecommendPanel recommendPanel;
 
     private ListElement selectedElement = null;
 
@@ -199,11 +200,13 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
 
         this.setLayout(new BorderLayout());
 
-        recommendedMovies = new JButton("Rekommenderade");
+        recommendPanel = new RecommendPanel();
+        recommendedMovies = new JButton(Localization.recommendRefreshButtonText,Localization.recommendRefreshButtonIcon);
+
         final JPanel listPanel = new JPanel();
-        listPanel.setLayout(new GridLayout(2,1));
-        listPanel.add(lists);
-        listPanel.add(recommendedMovies);
+        listPanel.setLayout(new BorderLayout());
+        listPanel.add(lists,BorderLayout.CENTER);
+        listPanel.add(recommendedMovies,BorderLayout.SOUTH);
         
         recommendedMovies.addActionListener(new ActionListener() {
             
@@ -211,7 +214,8 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
             public void actionPerformed(ActionEvent e) {
                ProfilePanel.this.remove(movieInfoPanel);
                ProfilePanel.this.remove(centerBox);
-               ProfilePanel.this.add(new RecommendPanel(ProfilePanel.this.getWidth() - listPanel.getWidth()), BorderLayout.CENTER);
+               recommendPanel.refresh(ProfilePanel.this.getWidth() - lists.getWidth());
+               ProfilePanel.this.add(recommendPanel, BorderLayout.CENTER);
                ProfilePanel.this.revalidate();
             }
         });
