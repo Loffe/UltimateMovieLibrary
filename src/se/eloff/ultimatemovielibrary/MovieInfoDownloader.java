@@ -83,9 +83,11 @@ public class MovieInfoDownloader {
 
                     List<LocalMovie> movies = dbMovie.query(queryBuilder
                             .prepare());
-
+                    int i = 1;
                     for (LocalMovie localMovie : movies) {
                         fetchMovieInfo(localMovie);
+                        Localization.loadingTextLabel.setText("Updating movie info... " + i +" of " +movies.size());
+                        i++;
                     }
 
                 } catch (SQLException e) {
