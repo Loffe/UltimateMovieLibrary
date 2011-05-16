@@ -147,8 +147,8 @@ public final class Localization {
     public static final Color selectedListElementColor = new Color(0, 200, 251);
 
     // MovieInfo
-    public static final int movieCoverWidth = 214;
-    public static final int movieCoverHeight = 317;
+    public static final int movieCoverWidth = 154;
+    public static final int movieCoverHeight = 250;
     public static final int moviePlotWidth = 300;
     public static final int moviePlotHeight = 150;
     public static final int movieInfoWidth = 310;

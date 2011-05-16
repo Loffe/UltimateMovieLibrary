@@ -165,7 +165,6 @@ public abstract class ResultPanel extends JScrollPane implements
                     selectedElementPosition = position;
                 position++;
             } catch (Exception e) {
-                System.out.println("fel castning");
             }
         }
     }
