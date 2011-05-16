@@ -18,11 +18,11 @@ public class RecommendPanel extends JPanel implements MovieSearchClient {
         outerPanel = new JPanel();
     }
 
-    public void refresh(final int width) {
+    public  void refresh(final int width) {
 
         EventQueue.invokeLater(new Runnable() {
             @Override
-            public void run() {
+            public synchronized void run() {
                 lastSearchId = MovieSearchProvider
                         .getFeaturedMovies(
                                 (int) ((float) width / (float) Localization.movieInfoWidth),
@@ -32,7 +32,7 @@ public class RecommendPanel extends JPanel implements MovieSearchClient {
     }
 
     @Override
-    public void searchFinished(List<LocalMovie> movies, int searchKey) {
+    public synchronized void searchFinished(List<LocalMovie> movies, int searchKey) {
         this.removeAll();
         outerPanel.removeAll();
         if (lastSearchId == searchKey) {

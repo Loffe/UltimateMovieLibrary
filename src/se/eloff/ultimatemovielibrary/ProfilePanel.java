@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
@@ -214,6 +215,8 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
             }
         });
 
+        addPlaylistLabel.setFont(new Font(getFont().getName(), Font.BOLD,
+                getFont().getSize()));
         addNewPlaylistPanel.add(addPlaylistLabel);
         addNewPlaylistPanel.setBackground(Color.WHITE);
         leftPanel.add(addNewPlaylistPanel, BorderLayout.CENTER);
