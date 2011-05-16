@@ -379,7 +379,7 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
     public void showCreatePlaylist(final LocalMovie movie) {
         addNewPlaylistPanel.removeAll();
         final JTextField newPlaylistInput = new JTextField();
-        newPlaylistInput.setPreferredSize(new Dimension(150, 30));
+        newPlaylistInput.setPreferredSize(new Dimension(142, 30));
 
         // newPlaylistInput.setText(Localization.playlistCreateNewMessage);
         // newPlaylistInput.setSelectionStart(0);
