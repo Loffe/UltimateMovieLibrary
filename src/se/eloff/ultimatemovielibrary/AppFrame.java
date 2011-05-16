@@ -20,6 +20,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JRootPane;
 
 /**
  * AppFrame. The main window of the Ultimate Movie Library.
@@ -199,6 +200,7 @@ public class AppFrame extends JFrame implements ActionListener {
      * Go to fullscreen mode if possible.
      */
     private void initializeFullScreen() {
+        this.getRootPane().setWindowDecorationStyle(JRootPane.NONE);
         this.setUndecorated(true);
 
         GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment()
