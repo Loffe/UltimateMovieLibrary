@@ -5,6 +5,7 @@ import java.awt.Image;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 
 /**
  * Localization is used to make GUI-strings and Icons independent of the rest of
@@ -17,7 +18,11 @@ public final class Localization {
     public static final int titleFontSize = 24;
     public static final Image icon = new ImageIcon("img/video_16.png")
             .getImage();
-
+    public static final Image loader = new ImageIcon("img/ajax-loader2.gif").getImage();
+    public static JLabel loadingTextLabel = new JLabel("");
+    public static JLabel loadingLabel = new JLabel(new ImageIcon(loader));
+    
+    
     // Watch Folder Manager
     public static final ImageIcon watchFolderIcon = new ImageIcon(
             "img/folder_32.png");

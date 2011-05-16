@@ -38,6 +38,7 @@ public class AppFrame extends JFrame implements ActionListener {
     private JPanel topPanel = new JPanel();
     private JPanel infoPanel;
     private JLabel titleLabel;
+    public static JLabel loadingLabel;
 
     // private JLabel breadCrumbLabel;
 
@@ -90,7 +91,8 @@ public class AppFrame extends JFrame implements ActionListener {
         titleLabel = new JLabel(Localization.title);
         titleLabel.setFont(new Font(titleLabel.getFont().getName(), titleLabel
                 .getFont().getStyle(), Localization.titleFontSize));
-
+        
+        
         // breadCrumbLabel = new JLabel();
         // breadCrumbLabel.setFont(new Font(breadCrumbLabel.getFont().getName(),
         // breadCrumbLabel.getFont().getStyle(),
@@ -98,6 +100,15 @@ public class AppFrame extends JFrame implements ActionListener {
 
         infoPanel.add(new JLabel(new ImageIcon(Localization.icon)));
         infoPanel.add(titleLabel);
+        infoPanel.add(new JLabel("   "));
+        infoPanel.add(Localization.loadingLabel);
+        infoPanel.add(Localization.loadingTextLabel); 
+        
+        
+        if (WatchFolderManager.folderScanCounter == 0 && !MovieInfoDownloader.updateInProgress) {
+        Localization.loadingLabel.setVisible(false);
+        }
+        
         // infoPanel.add(breadCrumbLabel);
 
         // Assemble menus

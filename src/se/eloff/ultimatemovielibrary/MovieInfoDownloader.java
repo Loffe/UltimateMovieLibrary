@@ -25,7 +25,7 @@ import com.j256.ormlite.stmt.Where;
 
 public class MovieInfoDownloader {
     private static MovieInfoDownloader instance;
-    private static boolean updateInProgress = false;
+    public static boolean updateInProgress = false;
     private static boolean doNewScan = false;
 
     public MovieInfoDownloader() {
@@ -68,6 +68,10 @@ public class MovieInfoDownloader {
                 try {
                     System.out
                             .println("starting new thread for updateLibraryInfoAsync");
+                    Localization.loadingTextLabel.setText("Updating movie info...");
+                    Localization.loadingLabel.setVisible(true);
+
+                    
                     Dao<LocalMovie, Integer> dbMovie = DatabaseManager
                             .getInstance().getMovieDao();
                     QueryBuilder<LocalMovie, Integer> queryBuilder = dbMovie
@@ -94,6 +98,8 @@ public class MovieInfoDownloader {
                 updateInProgress = false;
 
                 System.out.println("Done updateLibraryInfoAsync");
+                Localization.loadingTextLabel.setText("");
+                Localization.loadingLabel.setVisible(false);
 
             }
 
