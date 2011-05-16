@@ -18,7 +18,7 @@ public final class Localization {
     public static final int titleFontSize = 24;
     public static final Image icon = new ImageIcon("img/video_16.png")
             .getImage();
-    public static final Image loader = new ImageIcon("img/ajax-loader2.gif").getImage();
+    public static final Image loader = new ImageIcon("img/mozilla_blu.gif").getImage();
     public static JLabel loadingTextLabel = new JLabel("");
     public static JLabel loadingLabel = new JLabel(new ImageIcon(loader));
     
