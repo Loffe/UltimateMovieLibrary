@@ -125,6 +125,8 @@ public final class Localization {
     public static final ImageIcon resultPanelArrowDown = new ImageIcon(
             "img/arrow-down.png");
 
+    public static final String toolTipsMoveUpButton = "Flytta upp film";
+    public static final String toolTipsMoveDownButton = "Flytta ner film";
     public static final String toolTipsWishDisable = "Ta bort från önskelista";
     public static final String toolTipsWish = "Lägg till i önskelista";
     public static final String toolTipsFavoriteDisable = "Ta bort från favoriter";
@@ -136,6 +138,7 @@ public final class Localization {
     public static final String toolTipsExit = "Avsluta";
     public static final String toolTipsRefresh = "Nya rekommendationer";
     public static final String toolTipsRating = "Sätt betyg på film";
+    public static final String toolTipsRemoveRating = "Ta bort betyg";
 
     // ProfilePanel
     public static final String profileTitle = "Profil";

@@ -131,7 +131,7 @@ public class WatchFolderManager {
             public void run() {
                 System.out.println("Running new dirscanner thread");
                 folderScanCounter++;
-                Localization.loadingTextLabel.setText("scanning folders..");
+                Localization.loadingTextLabel.setText("scanning folders...");
                 Localization.loadingLabel.setVisible(true);
 
                 try {
