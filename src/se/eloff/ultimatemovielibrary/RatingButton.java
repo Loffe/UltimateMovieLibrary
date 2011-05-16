@@ -62,11 +62,13 @@ public class RatingButton extends JButton implements ActionListener {
         buttons = new RateButton[MAX_RATING + 1];
         buttons[0] = new RemoveRateButton();
         buttons[0].addActionListener(this);
+        buttons[0].setToolTipText(Localization.toolTipsRemoveRating);
         both.add(space);
         both.add(buttons[0]);
         this.add(both);
         for (int i = 1; i <= MAX_RATING; i++) {
             buttons[i] = new RateButton();
+            buttons[i].setToolTipText(Localization.toolTipsRating);
             buttons[i].addActionListener(this);
             this.add(buttons[i]);
         }

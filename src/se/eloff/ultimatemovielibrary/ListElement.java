@@ -126,6 +126,9 @@ public class ListElement extends JPanel {
                 }
             }
         };
+        
+        moveUpButton.setToolTipText(Localization.toolTipsMoveUpButton);
+        
         moveUpButton.addActionListener(new ActionListener() {
 
             @Override
@@ -149,6 +152,8 @@ public class ListElement extends JPanel {
                 }
             }
         };
+        
+        moveDownButton.setToolTipText(Localization.toolTipsMoveDownButton);
 
         moveDownButton.addActionListener(new ActionListener() {
 
@@ -265,7 +270,6 @@ public class ListElement extends JPanel {
         });
 
         rating.setRating(movie.getRating());
-        rating.setToolTipText(Localization.toolTipsRating);
 
         playButton.setIcon(Localization.moviePlayButtonIcon);
         playButton.setToolTipText(Localization.toolTipsPlay);
