@@ -16,7 +16,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.stmt.DeleteBuilder;
 import com.j256.ormlite.stmt.QueryBuilder;
 
 public abstract class ResultPanel extends JScrollPane implements
@@ -95,7 +94,9 @@ public abstract class ResultPanel extends JScrollPane implements
     }
 
     @Override
-    public void searchFinished(List<LocalMovie> movies, int searchKey) {
+    public synchronized void searchFinished(List<LocalMovie> movies,
+            int searchKey) {
+
         if (lastSearchId == searchKey) {
             resultPanel.removeAll();
             if (movies.isEmpty()) {

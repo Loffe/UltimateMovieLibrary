@@ -3,7 +3,9 @@ package se.eloff.ultimatemovielibrary;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.Point;
 import java.sql.SQLException;
 
 import javax.swing.Box;
@@ -164,8 +166,8 @@ public class MovieInfoPanel extends JPanel {
 
     public void refresh(LocalMovie movie) {
         try {
-            movie = DatabaseManager.getInstance().getMovieDao()
-                    .queryForId(movie.getId());
+            movie = DatabaseManager.getInstance().getMovieDao().queryForId(
+                    movie.getId());
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -198,8 +200,13 @@ public class MovieInfoPanel extends JPanel {
 
             // Update plot
             plot.setText(info.getPlot());
-            // TODO: This next line doesn't help.. How to scroll to beginning?
-            plotScrollPane.getVerticalScrollBar().setValue(0);
+            EventQueue.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    plotScrollPane.getViewport().setViewPosition(
+                            new Point(0, 0));
+                }
+            });
 
             // Update genres.
             String genreString = info.getGenres();
