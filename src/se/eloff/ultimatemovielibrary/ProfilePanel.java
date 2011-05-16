@@ -217,11 +217,12 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
 
         addPlaylistLabel.setFont(new Font(getFont().getName(), Font.BOLD,
                 getFont().getSize()));
+        addPlaylistLabel.setIcon(Localization.listsAddIcon);
         addNewPlaylistPanel.add(addPlaylistLabel);
         // If you are trying the black theme, enable this line and comment out
         // the setbackground line!!!
-        //lists.setOpaque(false);
-         addNewPlaylistPanel.setBackground(Color.white);
+        // lists.setOpaque(false);
+        addNewPlaylistPanel.setBackground(Color.white);
         leftPanel.add(addNewPlaylistPanel, BorderLayout.CENTER);
         leftPanel.add(recommendedMoviesButton, BorderLayout.SOUTH);
 
@@ -294,7 +295,7 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
         lists = new JList(listModel) {
             public Dimension getPreferredSize() {
                 // TODO better calculation of the height
-                return new Dimension(100, listModel.getSize() * 16 + 15);
+                return new Dimension(100, (listModel.getSize() * 18) + 10);
             }
         };
         lists.addMouseListener(new MouseAdapter() {

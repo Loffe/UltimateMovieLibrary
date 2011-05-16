@@ -171,13 +171,14 @@ public final class Localization {
 
     // Playlists
     public static final String playlistCreateNewMessage = "Namn på ny spellista";
-    public static final String playlistCreateNewHeading = "+ Ny spellista";
+    public static final String playlistCreateNewHeading = "Ny spellista";
     public static final String playlistDelete = "Ta bort";
     public static final Icon listsWishIcon = new ImageIcon(
             "img/Button-Favorite-icon_16.png");
     public static final Icon listsFavoriteIcon = new ImageIcon(
             "img/Favorite-icon-16.png");
     public static final Icon listsSeenIcon = new ImageIcon("img/eye_16.png");
+    public static final Icon listsAddIcon = new ImageIcon("img/plus_16.png");
     public static final int playlistDefaultTextSize = 12;
     public static final int playlistAllMoviesTextSize = 22;
 
