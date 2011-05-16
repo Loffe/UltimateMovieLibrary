@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.Insets;
 import java.awt.Point;
 import java.sql.SQLException;
 
@@ -82,12 +83,8 @@ public class MovieInfoPanel extends JPanel {
         plot.setLineWrap(true);
         plot.setWrapStyleWord(true);
         plot.setEditable(false);
-        plotPanel.add(plotScrollPane);
-        plotScrollPane.setPreferredSize(new Dimension(
-                Localization.moviePlotWidth, Localization.moviePlotHeight));
-      //  plotPanel.setPreferredSize(new Dimension(Localization.moviePlotWidth,
-      //          Localization.moviePlotHeight + 80 ));
-        plotPanel.setAlignmentX(CENTER_ALIGNMENT);
+        plot.setOpaque(false);
+        plot.setBorder(null);
        
         // Assemble panel to show genres
         genrePanel.setLayout(new BorderLayout());
@@ -126,6 +123,7 @@ public class MovieInfoPanel extends JPanel {
         JPanel topPanel = new JPanel();
         topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.Y_AXIS));
         JScrollPane centerPanel = new JScrollPane(plot);
+        
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
         topPanel.add(title);

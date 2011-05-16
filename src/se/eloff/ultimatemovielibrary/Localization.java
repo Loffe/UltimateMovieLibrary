@@ -168,8 +168,8 @@ public final class Localization {
     public static final String unknownCastText = "Inga skådespelare hittades.";
 
     // Playlists
-    public static final String playlistCreateNewMessage = "Namn på ny playlist";
-    public static final String playlistCreateNewHeading = "Ny playlist";
+    public static final String playlistCreateNewMessage = "Namn på ny spellista";
+    public static final String playlistCreateNewHeading = "Ny spellista";
     public static final String playlistDelete = "Ta bort";
     public static final Icon listsWishIcon = new ImageIcon(
             "img/Button-Favorite-icon_16.png");

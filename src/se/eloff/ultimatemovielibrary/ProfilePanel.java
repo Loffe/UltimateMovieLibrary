@@ -1,6 +1,7 @@
 package se.eloff.ultimatemovielibrary;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.datatransfer.StringSelection;
@@ -80,7 +81,7 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
     private JCheckBox hideSeenMoviesCheckBox;
 
     private JList lists;
-    private JButton recommendedMovies;
+    private JButton recommendedMoviesButton;
     private Box centerBox;
     private RecommendPanel recommendPanel;
 
@@ -179,18 +180,22 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
         this.setLayout(new BorderLayout());
 
         recommendPanel = new RecommendPanel();
-        recommendedMovies = new JButton(
+        recommendedMoviesButton = new JButton(
                 Localization.recommendRefreshButtonText,
                 Localization.recommendRefreshButtonIcon);
-        recommendedMovies
+        recommendedMoviesButton
                 .setToolTipText(Localization.recommendRefreshButtonToolTip);
 
-        final JPanel listPanel = new JPanel();
-        listPanel.setLayout(new BorderLayout());
-        listPanel.add(lists, BorderLayout.CENTER);
-        listPanel.add(recommendedMovies, BorderLayout.SOUTH);
+        final JPanel leftPanel = new JPanel();
+        leftPanel.setLayout(new BorderLayout());
+        leftPanel.add(lists, BorderLayout.NORTH);
+        JPanel centerPanel = new JPanel();
+        centerPanel.add(new JLabel(Localization.playlistCreateNewHeading));
+        centerPanel.setBackground(Color.WHITE);
+        leftPanel.add(centerPanel, BorderLayout.CENTER);
+        leftPanel.add(recommendedMoviesButton, BorderLayout.SOUTH);
 
-        recommendedMovies.addActionListener(new ActionListener() {
+        recommendedMoviesButton.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -205,7 +210,7 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
             }
         });
 
-        this.add(listPanel, BorderLayout.WEST);
+        this.add(leftPanel, BorderLayout.WEST);
 
         centerBox = Box.createVerticalBox();
         centerBox.add(searchBox);
@@ -258,7 +263,12 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
             e.printStackTrace();
         }
         final JPopupMenu popupMenu = buildPlaylistPopupMenu();
-        lists = new JList(listModel);
+        lists = new JList(listModel){
+            public Dimension getPreferredSize() {
+                
+                return new Dimension(100, 500);
+            }
+        };
         lists.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
