@@ -343,7 +343,7 @@ public class ListElement extends JPanel {
                         layout.createSequentialGroup()
                                 .addContainerGap()
                                 .addComponent(movePanel,
-                                        GroupLayout.PREFERRED_SIZE, 52,
+                                        GroupLayout.PREFERRED_SIZE, 32,
                                         GroupLayout.PREFERRED_SIZE)
                                 .addComponent(playButton,
                                         GroupLayout.PREFERRED_SIZE, 52,
@@ -376,7 +376,7 @@ public class ListElement extends JPanel {
                                 .addPreferredGap(
                                         LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(ratingContainer,
-                                        GroupLayout.PREFERRED_SIZE, 300,
+                                        GroupLayout.PREFERRED_SIZE, 245,
                                         GroupLayout.PREFERRED_SIZE)));
         layout.setVerticalGroup(layout
                 .createParallelGroup(GroupLayout.Alignment.LEADING)
