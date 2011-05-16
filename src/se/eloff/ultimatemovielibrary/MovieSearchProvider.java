@@ -47,11 +47,11 @@ public class MovieSearchProvider {
      * @return
      */
     static public int searchByName(String name, MovieSearchClient client,
-            String orderByColumn, boolean ascending) {
+            String orderByColumn, boolean ascending, boolean onlyUnseen) {
         int assignedKey = key;
         key++;
         searchByNameAsync(name, assignedKey, client, orderByColumn, ascending,
-                false, false, false, false, false, false);
+                onlyUnseen, false, false, false, false, false);
         return assignedKey;
     }
 
@@ -138,8 +138,8 @@ public class MovieSearchProvider {
                     }
 
                     String filterSeen = "";
-                    if (useSeen && seen) {
-                        filterSeen = " and seen = 1";
+                    if (useSeen) {
+                        filterSeen = " and seen = " + (seen ? "1" : "0");
                     }
 
                     String sql;

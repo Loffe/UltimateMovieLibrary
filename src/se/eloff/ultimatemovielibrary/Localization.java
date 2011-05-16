@@ -66,7 +66,8 @@ public final class Localization {
 
     // Recommended movies
     public static final String recommendTitle = "Rekommendationer";
-    public static final String recommendRefreshButtonText = "";
+    public static final String recommendRefreshButtonText = "Rekommendationer";
+    public static final String recommendRefreshButtonToolTip = "Uppdatera och visa rekommenderade filmer";
     public static final ImageIcon recommendRefreshButtonIcon = new ImageIcon(
             "img/Button-Refresh-icon_20.png");
     public static final String recommendRefreshNoMatchText = "Inga filmer i databasen.";
@@ -169,6 +170,7 @@ public final class Localization {
     // Playlists
     public static final String playlistCreateNewMessage = "Namn på ny playlist";
     public static final String playlistCreateNewHeading = "Ny playlist";
+    public static final String playlistDelete = "Ta bort";
     public static final Icon listsWishIcon = new ImageIcon(
             "img/Button-Favorite-icon_16.png");
     public static final Icon listsFavoriteIcon = new ImageIcon(

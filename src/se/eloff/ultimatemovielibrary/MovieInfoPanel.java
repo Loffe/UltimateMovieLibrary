@@ -219,8 +219,7 @@ public class MovieInfoPanel extends JPanel {
             ratingLabel.setText(Localization.movieRatingLabel);
             if (info.getOnlineRating() > 0) {
                 // Convert to a rating between 0 to 5
-                int onlineRating = Math
-                        .round((float) info.getOnlineRating() / 100 * 5);
+                int onlineRating = info.getOnlineRating();
                 rating.setText(onlineRating + " / 5");
             } else {
                 rating.setText(Localization.unknownRatingText);

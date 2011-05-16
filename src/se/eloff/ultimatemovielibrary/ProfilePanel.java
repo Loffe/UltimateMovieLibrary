@@ -2,19 +2,30 @@ package se.eloff.ultimatemovielibrary;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.util.List;
 
+import javax.swing.AbstractAction;
 import javax.swing.Box;
 import javax.swing.DefaultListModel;
 import javax.swing.DropMode;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingUtilities;
 import javax.swing.TransferHandler;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -31,8 +42,14 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
 
     private JLabel titleLabel;
     private JTextField searchTextField;
+    private JCheckBox hideSeenMoviesCheckBox;
 
     private JList lists;
+    private JButton recommendedMovies;
+    private Box centerBox;
+    private RecommendPanel recommendPanel;
+
+    private boolean showsRecommended = false;
 
     private ListElement selectedElement = null;
 
@@ -100,7 +117,8 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
                         if (selectedList.getId() == 1) {
                             lastSearchId = MovieSearchProvider.searchByName(
                                     name, resultPanel, getOrderColumn(),
-                                    isOrderAscending());
+                                    isOrderAscending(),
+                                    hideSeenMoviesCheckBox.isSelected());
                         } else if (selectedList.getId() == Playlist.SEEN_LIST_ID) {
                             lastSearchId = MovieSearchProvider
                                     .searchByNameSeen(name, resultPanel,
@@ -128,7 +146,36 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        final JPopupMenu popupMenu = new JPopupMenu();
+        popupMenu.add(new AbstractAction(Localization.playlistDelete) {
+            private static final long serialVersionUID = 3776371380960369970L;
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    Playlist playlist = (Playlist) lists.getSelectedValue();
+                    playlist.delete();
+                    listModel.removeElement(playlist);
+                } catch (SQLException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
         lists = new JList(listModel);
+        lists.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                int index = lists.locationToIndex(e.getPoint());
+                lists.setSelectedIndex(index);
+                if (index < Playlist.fixedPlaylists.length
+                        || index < Playlist.fixedPlaylists.length)
+                    return;
+                if (SwingUtilities.isRightMouseButton(e)
+                        && !lists.isSelectionEmpty()) {
+                    popupMenu.show(lists, e.getX(), e.getY());
+                }
+            }
+        });
         lists.setSelectedIndex(0);
         lists.setCellRenderer(new PlaylistCellRenderer());
         lists.setPreferredSize(new Dimension(200, 10));
@@ -138,6 +185,17 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
             @Override
             public void valueChanged(ListSelectionEvent event) {
                 resultPanel.search();
+                if (showsRecommended) {
+                    ProfilePanel.this.remove(recommendPanel);
+                    ProfilePanel.this.add(centerBox, BorderLayout.CENTER);
+                    ProfilePanel.this.add(movieInfoPanel, BorderLayout.EAST);
+
+                    movieInfoPanel.repaint();
+                    centerBox.repaint();
+
+                    showsRecommended = false;
+                }
+                
             }
         });
 
@@ -184,16 +242,47 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
 
         titleLabel = new JLabel(Localization.searchFieldLabelText);
 
+        hideSeenMoviesCheckBox = new JCheckBox(
+                Localization.searchHideSeenMoviesText);
+
         this.setLayout(new BorderLayout());
 
-        this.add(lists, BorderLayout.WEST);
+        recommendPanel = new RecommendPanel();
+        recommendedMovies = new JButton(
+                Localization.recommendRefreshButtonText,
+                Localization.recommendRefreshButtonIcon);
+        recommendedMovies.setToolTipText(Localization.recommendRefreshButtonToolTip);
+
+        final JPanel listPanel = new JPanel();
+        listPanel.setLayout(new BorderLayout());
+        listPanel.add(lists, BorderLayout.CENTER);
+        listPanel.add(recommendedMovies, BorderLayout.SOUTH);
+
+        recommendedMovies.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ProfilePanel.this.remove(movieInfoPanel);
+                ProfilePanel.this.remove(centerBox);
+                recommendPanel.refresh(ProfilePanel.this.getWidth()
+                        - lists.getWidth());
+                ProfilePanel.this.add(recommendPanel, BorderLayout.CENTER);
+                ProfilePanel.this.revalidate();
+                lists.clearSelection();
+                showsRecommended = true;
+            }
+        });
+
+        this.add(listPanel, BorderLayout.WEST);
 
         Box searchBox = Box.createHorizontalBox();
         searchBox.add(titleLabel);
         searchBox.add(searchTextField);
+        searchBox.add(Box.createRigidArea(new Dimension(20, 20)));
+        searchBox.add(hideSeenMoviesCheckBox);
         searchBox.add(Box.createHorizontalGlue());
 
-        Box centerBox = Box.createVerticalBox();
+        centerBox = Box.createVerticalBox();
         centerBox.add(searchBox);
         centerBox.add(resultPanel);
         movieInfoPanel = new MovieInfoPanel();
@@ -202,6 +291,16 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
 
         // add a listener to the input field
         searchTextField.getDocument().addDocumentListener(this);
+
+        hideSeenMoviesCheckBox.setToolTipText(Localization.toolTipsSearchSeen);
+        hideSeenMoviesCheckBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                resultPanel.search();
+            }
+
+        });
+
     }
 
     private void refreshPlaylists(final DefaultListModel listModel)
