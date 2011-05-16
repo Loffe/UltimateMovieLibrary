@@ -204,13 +204,9 @@ public class MovieInfoDownloader {
                 System.out.println("No movie info found for "
                         + localMovie.getName());
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        } catch (Exception e) {
+            System.out.println("Failed to att movie info, probably info for that moviea already exists");
+        } 
 
     }
 

@@ -210,7 +210,7 @@ public class MovieSearchProvider {
                         dbMovies = DatabaseManager.getInstance().getMovieDao();
                         for (MovieInfo movieInfo : movieInfos) {
                             LocalMovie localMovie = dbMovies.queryForId(movieInfo.getMovieid());
-                            if (!localMovie.isSeen())
+                            if (localMovie != null && !localMovie.isSeen())
                             movies.add(localMovie);
                         }
                         
