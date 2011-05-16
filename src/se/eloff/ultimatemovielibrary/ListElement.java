@@ -364,18 +364,12 @@ public class ListElement extends JPanel {
                                 .addComponent(seenButton,
                                         GroupLayout.PREFERRED_SIZE, 52,
                                         GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(
-                                        LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(wishButton,
                                         GroupLayout.PREFERRED_SIZE, 52,
                                         GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(
-                                        LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(favoriteButton,
                                         GroupLayout.PREFERRED_SIZE, 52,
                                         GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(
-                                        LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(ratingContainer,
                                         GroupLayout.PREFERRED_SIZE, 245,
                                         GroupLayout.PREFERRED_SIZE)));
