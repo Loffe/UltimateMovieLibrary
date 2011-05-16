@@ -78,17 +78,17 @@ public class MovieInfoPanel extends JPanel {
         plotLabel.setText(Localization.moviePlotLabel);
         plotLabel.setFont(new Font(plotLabel.getFont().getName(), Font.BOLD,
                 plotLabel.getFont().getSize()));
-        plotPanel.add(plotLabel);
+        //plotPanel.add(plotLabel);
         plot.setLineWrap(true);
         plot.setWrapStyleWord(true);
         plot.setEditable(false);
         plotPanel.add(plotScrollPane);
         plotScrollPane.setPreferredSize(new Dimension(
                 Localization.moviePlotWidth, Localization.moviePlotHeight));
-        plotPanel.setPreferredSize(new Dimension(Localization.moviePlotWidth,
-                Localization.moviePlotHeight + 40));
+      //  plotPanel.setPreferredSize(new Dimension(Localization.moviePlotWidth,
+      //          Localization.moviePlotHeight + 80 ));
         plotPanel.setAlignmentX(CENTER_ALIGNMENT);
-
+       
         // Assemble panel to show genres
         genrePanel.setLayout(new BorderLayout());
         genreLabel.setFont(new Font(genreLabel.getFont().getName(), Font.BOLD,
@@ -122,22 +122,35 @@ public class MovieInfoPanel extends JPanel {
         castPanel.setAlignmentX(CENTER_ALIGNMENT);
 
         // Layout everything
-        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        add(title);
-        add(Box.createRigidArea(new Dimension(0, gapsize)));
-        add(year);
-        add(cover);
-        add(Box.createRigidArea(new Dimension(0, gapsize)));
-        add(plotPanel);
-        add(Box.createRigidArea(new Dimension(0, gapsize)));
-        add(genrePanel);
-        add(Box.createRigidArea(new Dimension(0, gapsize)));
-        add(ratingPanel);
-        add(Box.createRigidArea(new Dimension(0, gapsize)));
-        add(directorPanel);
-        add(Box.createRigidArea(new Dimension(0, gapsize)));
-        add(castPanel);
+        setLayout(new BorderLayout());
+        JPanel topPanel = new JPanel();
+        topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.Y_AXIS));
+        JScrollPane centerPanel = new JScrollPane(plot);
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
+        topPanel.add(title);
+      //  add(Box.createRigidArea(new Dimension(0, gapsize)));
+        topPanel.add(year);
+        topPanel.add(cover);
+        //add(Box.createRigidArea(new Dimension(0, gapsize)));
+        JPanel plotLabelPanel = new JPanel();
+        plotLabelPanel.setLayout(new BorderLayout());
+        plotLabelPanel.add(plotLabel, BorderLayout.WEST);
+        topPanel.add(plotLabelPanel);
+        //centerPanel.add(plot);
+        buttonPanel.add(Box.createRigidArea(new Dimension(0, gapsize)));
+        buttonPanel.add(genrePanel);
+        buttonPanel.add(Box.createRigidArea(new Dimension(0, gapsize)));
+        buttonPanel.add(ratingPanel);
+        buttonPanel.add(Box.createRigidArea(new Dimension(0, gapsize)));
+        buttonPanel.add(directorPanel);
+        buttonPanel.add(Box.createRigidArea(new Dimension(0, gapsize)));
+        buttonPanel.add(castPanel);
+        buttonPanel.add(Box.createRigidArea(new Dimension(0, gapsize)));
 
+        add(topPanel, BorderLayout.NORTH);
+        add(centerPanel, BorderLayout.CENTER);
+        add(buttonPanel, BorderLayout.SOUTH);
         // Initialize the info to default values.
         resetInfo();
     }
@@ -205,6 +218,7 @@ public class MovieInfoPanel extends JPanel {
                 public void run() {
                     plotScrollPane.getViewport().setViewPosition(
                             new Point(0, 0));
+                    plotScrollPane.revalidate();
                 }
             });
 

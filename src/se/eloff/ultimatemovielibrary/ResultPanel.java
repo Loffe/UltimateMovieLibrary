@@ -80,7 +80,7 @@ public abstract class ResultPanel extends JScrollPane implements
         SortButton ratingSortButton = new SortButton(
                 Localization.searchOrderButtonMovieRating, "rating",
                 SortButton.State.Desc);
-        ratingSortButton.setPreferredSize(new Dimension(300, 20));
+        ratingSortButton.setPreferredSize(new Dimension(250, 20));
         ratingSortButton.addActionListener(this);
         ratingSortButton
                 .setToolTipText(Localization.searchOrderButtonMovieRatingToolTip);
@@ -165,7 +165,6 @@ public abstract class ResultPanel extends JScrollPane implements
                     selectedElementPosition = position;
                 position++;
             } catch (Exception e) {
-                System.out.println("fel castning");
             }
         }
     }
