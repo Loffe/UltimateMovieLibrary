@@ -12,6 +12,7 @@ import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
+import java.awt.image.RescaleOp;
 import java.io.File;
 import java.sql.SQLException;
 
@@ -295,31 +296,15 @@ public class MovieInfoPanel extends JPanel {
         public void refresh(String src) {
             try {  
                 image = ImageIO.read(new File(src)); 
-                imageActive = ImageIO.read(new File(src));
             } catch (Exception e) {
                 e.printStackTrace();  
             }
             
-            int colorDrop = 50;
-            for(int y = 0; y < imageActive.getHeight(); y++) {  
-                for(int x = 0; x < imageActive.getWidth(); x++) {
-                    int color = imageActive.getRGB(x, y);
-                    
-                    int red = (color >> 16) & 0xff;
-                    int green = (color >> 8) & 0xff;
-                    int blue = (color) & 0xff;
-                    Color newColor = new Color(max(red-colorDrop, 0), max(green-colorDrop, 0), max(blue-colorDrop, 0));
-                    
-                    imageActive.setRGB(x, y, newColor.getRGB());
-                }
-            }
+            // Darken the image by 70%
+            float scaleFactor = 0.3f;
+            RescaleOp op = new RescaleOp(scaleFactor, 0, null);
+            imageActive = op.filter(image, null);
             this.repaint();
-        }
-        
-        private int max(int a, int b){
-            if(a>b)
-                return a;
-            return b;
         }
      
         protected void paintComponent(Graphics g) {
