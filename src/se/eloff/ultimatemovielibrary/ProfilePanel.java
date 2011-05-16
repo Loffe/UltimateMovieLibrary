@@ -156,6 +156,7 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
                     Playlist playlist = (Playlist) lists.getSelectedValue();
                     playlist.delete();
                     listModel.removeElement(playlist);
+                    lists.setSelectedIndex(0);
                 } catch (SQLException e1) {
                     e1.printStackTrace();
                 }
