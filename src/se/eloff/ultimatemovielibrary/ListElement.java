@@ -464,6 +464,7 @@ public class ListElement extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 movie.setRating(rating.getRating());
                 try {
+                    DatabaseManager.getInstance().getMovieDao().refresh(movie);
                     DatabaseManager.getInstance().getMovieDao().update(movie);
                 } catch (SQLException e1) {
                     System.out
@@ -555,6 +556,7 @@ public class ListElement extends JPanel {
                 }
 
                 try {
+                    DatabaseManager.getInstance().getMovieDao().refresh(movie);
                     DatabaseManager.getInstance().getMovieDao().update(movie);
                 } catch (SQLException e1) {
                     System.out
