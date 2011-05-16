@@ -279,6 +279,7 @@ public class MovieInfoPanel extends JPanel {
             image = null;
             imageActive = null;
             this.addMouseListener(this);
+            this.setToolTipText(Localization.toolTipsPlay);
         }
         
         public void setActive(boolean bool){
