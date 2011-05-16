@@ -189,23 +189,31 @@ public class MovieSearchProvider {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                Dao<LocalMovie, Integer> dbMovie;
+                Dao<MovieInfo, Integer> dbMovieInfo;
+                Dao<LocalMovie, Integer> dbMovies;
                 try {
                     // TODO nicer random function, maybe get random objects from
                     // the database in the first place... how?
-                    dbMovie = DatabaseManager.getInstance().getMovieDao();
+                    dbMovieInfo = DatabaseManager.getInstance().getMovieInfoDao();
                     ArrayList<LocalMovie> randomMovies = new ArrayList<LocalMovie>();
                     int rating = 5;
                     // get movies until we have as many we need
                     while (randomMovies.size() < numberOfMovies && rating > -1) {
-                        QueryBuilder<LocalMovie, Integer> queryBuilder = dbMovie
+                        QueryBuilder<MovieInfo, Integer> queryBuilder = dbMovieInfo
                                 .queryBuilder();
-                        queryBuilder.where().eq("discnumber", 1).and().eq(
-                                "seen", false).and().eq("rating", rating);
+                        queryBuilder.where().eq("onlineRating", rating);
 
-                        List<LocalMovie> movies = dbMovie.query(queryBuilder
+                        List<MovieInfo> movieInfos = dbMovieInfo.query(queryBuilder
                                 .prepare());
-
+                        
+                        ArrayList<LocalMovie> movies = new ArrayList<LocalMovie>();
+                        dbMovies = DatabaseManager.getInstance().getMovieDao();
+                        for (MovieInfo movieInfo : movieInfos) {
+                            LocalMovie localMovie = dbMovies.queryForId(movieInfo.getMovieid());
+                            if (!localMovie.isSeen())
+                            movies.add(localMovie);
+                        }
+                        
                         // there are more movies with this rating than we need,
                         // pick some random
                         if (movies.size() > numberOfMovies

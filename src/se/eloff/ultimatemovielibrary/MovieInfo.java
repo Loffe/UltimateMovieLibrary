@@ -27,9 +27,20 @@ public class MovieInfo {
 
     @DatabaseField
     private int onlineRating = 0;
+    
+    @DatabaseField
+    private int movieid = -1;
+
+    public int getMovieid() {
+        return movieid;
+    }
+
+    public void setMovieid(int movieid) {
+        this.movieid = movieid;
+    }
 
     public MovieInfo(String cast, String directors, String cover, String plot,
-            String genres, int onlineRating) {
+            String genres, int onlineRating, int movieid) {
         super();
         this.setCast(cast);
         this.directors = directors;
@@ -37,6 +48,7 @@ public class MovieInfo {
         this.plot = plot;
         this.genres = genres;
         this.onlineRating = onlineRating;
+        this.movieid = movieid;
     }
 
     public MovieInfo() {

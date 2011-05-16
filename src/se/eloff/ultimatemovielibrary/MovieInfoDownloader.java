@@ -182,7 +182,7 @@ public class MovieInfoDownloader {
                         .getMovieInfoDao();
                 MovieInfo info = new MovieInfo(cast, directors, thumbPath,
                         translatedPlot, genres, Math.round((float) movie
-                                .getRating() / 100 * 5));
+                                .getRating() / 2), localMovie.getId());
 
                 dbInfo.create(info);
 
