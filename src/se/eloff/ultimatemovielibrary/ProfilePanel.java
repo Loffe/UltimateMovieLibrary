@@ -218,6 +218,7 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
         recommendedMovies = new JButton(
                 Localization.recommendRefreshButtonText,
                 Localization.recommendRefreshButtonIcon);
+        recommendedMovies.setToolTipText(Localization.recommendRefreshButtonToolTip);
 
         final JPanel listPanel = new JPanel();
         listPanel.setLayout(new BorderLayout());
