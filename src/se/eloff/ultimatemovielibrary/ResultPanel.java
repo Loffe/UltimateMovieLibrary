@@ -113,7 +113,6 @@ public abstract class ResultPanel extends JScrollPane implements
                 }
                 setSelectedElement((ListElement) resultPanel.getComponent(0));
             }
-
             revalidate();
         }
     }

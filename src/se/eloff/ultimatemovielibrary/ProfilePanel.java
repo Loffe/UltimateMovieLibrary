@@ -221,8 +221,8 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
         addNewPlaylistPanel.add(addPlaylistLabel);
         // If you are trying the black theme, enable this line and comment out
         // the setbackground line!!!
-        // lists.setOpaque(false);
-        addNewPlaylistPanel.setBackground(Color.white);
+        lists.setOpaque(false);
+        // addNewPlaylistPanel.setBackground(Color.white);
         leftPanel.add(addNewPlaylistPanel, BorderLayout.CENTER);
         leftPanel.add(recommendedMoviesButton, BorderLayout.SOUTH);
 

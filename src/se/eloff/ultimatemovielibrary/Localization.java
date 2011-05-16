@@ -147,7 +147,8 @@ public final class Localization {
     public static final String profileSeenList = "Sedda filmer";
     public static final String profileWishList = "Önskelista";
 
-    public static final Color selectedListElementColor = new Color(0, 200, 251);
+    public static final Color selectedListElementColor = Color.DARK_GRAY;
+        //new Color(0, 200, 251);
 
     // MovieInfo
     public static final int movieCoverWidth = 154;

@@ -17,15 +17,14 @@ public class Main {
     public static void main(String[] args) throws SQLException,
             ClassNotFoundException {
         try {
-         // UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            UIManager
-                    .setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
+            // UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            // UIManager
+            // .setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
             // UIManager.setLookAndFeel(new SyntheticaStandardLookAndFeel());
             // UIManager.setLookAndFeel(new SyntheticaClassyLookAndFeel());
-            
-            //Try this!!!
-            // UIManager.setLookAndFeel(new SyntheticaBlackEyeLookAndFeel());
-            
+
+            // Try this!!!
+            UIManager.setLookAndFeel(new SyntheticaBlackEyeLookAndFeel());
 
         } catch (Exception e) {
             e.printStackTrace();
