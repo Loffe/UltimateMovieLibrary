@@ -6,6 +6,7 @@ import java.awt.Font;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
+import javax.swing.border.EmptyBorder;
 
 public class PlaylistCellRenderer extends JLabel implements ListCellRenderer {
 
@@ -46,6 +47,7 @@ public class PlaylistCellRenderer extends JLabel implements ListCellRenderer {
         } else {
             setOpaque(false);
         }
+        this.setBorder(new EmptyBorder(0, 6, 0, 0));
         return this;
     }
 }
