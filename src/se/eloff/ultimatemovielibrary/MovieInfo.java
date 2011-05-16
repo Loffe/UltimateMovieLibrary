@@ -28,7 +28,7 @@ public class MovieInfo {
     @DatabaseField
     private int onlineRating = 0;
     
-    @DatabaseField
+    @DatabaseField(unique = true)
     private int movieid = -1;
 
     public int getMovieid() {
