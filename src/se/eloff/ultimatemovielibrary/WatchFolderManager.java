@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.stmt.DeleteBuilder;
 import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
 
@@ -18,8 +19,9 @@ import com.j256.ormlite.stmt.QueryBuilder;
  */
 public class WatchFolderManager {
     private static HashMap<String, DirScanner> runningScans = new HashMap<String, DirScanner>();
-    
+
     static int folderScanCounter = 0;
+
     /**
      * Get all WatchFolders that are saved in the db
      * 
@@ -73,7 +75,8 @@ public class WatchFolderManager {
 
         Dao<WatchFolder, Integer> dbWatchFolder;
         Dao<LocalMovie, Integer> dbMovie;
-        Dao<MovieInfo, Integer>dbMovieInfo;
+        Dao<MovieInfo, Integer> dbMovieInfo;
+        Dao<MovieList, Integer> dbMovieList;
         try {
             // remove the watchFolder
             dbWatchFolder = DatabaseManager.getInstance().getWatchFolderDao();
@@ -85,14 +88,23 @@ public class WatchFolderManager {
             // should be watched are removed. Maybe solve with a new scan on all
             // enabled watchfolders after the deletion is done.
             dbMovie = DatabaseManager.getInstance().getMovieDao();
-            QueryBuilder<LocalMovie, Integer> queryBuilder = dbMovie.queryBuilder();
+            QueryBuilder<LocalMovie, Integer> queryBuilder = dbMovie
+                    .queryBuilder();
             queryBuilder.where().like("filepath", folder.getFolderPath() + "%");
             List<LocalMovie> movies = dbMovie.query(queryBuilder.prepare());
-            
+
             dbMovieInfo = DatabaseManager.getInstance().getMovieInfoDao();
+            dbMovieList = DatabaseManager.getInstance().getMovieListDao();
             for (LocalMovie localMovie : movies) {
-                dbMovieInfo.delete(dbMovieInfo.queryForId(localMovie.getInfo_id()));
+                // remove all movie info
+                dbMovieInfo.delete(dbMovieInfo.queryForId(localMovie
+                        .getInfo_id()));
                 dbMovie.delete(localMovie);
+
+                // remove the movie from any playlist it might be in
+                DeleteBuilder deleteLists = dbMovieList.deleteBuilder();
+                deleteLists.where().eq("movie_id", localMovie.getId());
+                dbMovieList.delete(deleteLists.prepare());
             }
             return true;
 
@@ -119,7 +131,7 @@ public class WatchFolderManager {
             return true;
 
         } catch (SQLException e) {
-            //e.printStackTrace();
+            // e.printStackTrace();
             System.out
 
                     .println("Failed to save to db, maybe the watchfolder is allready watched");
@@ -150,16 +162,17 @@ public class WatchFolderManager {
                 System.out.println("Successfully scanned: "
                         + folder.getFolderPath());
                 folderScanCounter--;
-                if (folderScanCounter == 0 && MovieInfoDownloader.updateInProgress == false) {
-                   Localization.loadingTextLabel.setText("");
-                   Localization.loadingLabel.setVisible(false);
-                   
+                if (folderScanCounter == 0
+                        && MovieInfoDownloader.updateInProgress == false) {
+                    Localization.loadingTextLabel.setText("");
+                    Localization.loadingLabel.setVisible(false);
+
                 }
             }
         });
 
         scanThread.start();
-        
+
         return true;
     }
 
