@@ -164,9 +164,9 @@ public class MovieInfoPanel extends JPanel {
 
     public void resetInfo() {
         movie = null;
-        title.setText("");
+        title.setText(" ");
         title.setToolTipText("");
-        year.setText("");
+        year.setText(" ");
         cover.refresh(Localization.movieInfoStandardCover);
 
         plot.setText(Localization.unknownPlotText);
