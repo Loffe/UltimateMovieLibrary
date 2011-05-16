@@ -55,7 +55,6 @@ public class ExternalPlayerLauncher {
             System.out.println("Failed to play the movie: " + movie.getName());
             // maybe its because of error in file association with vlc, let
             // the user select witch player to use
-            e.printStackTrace();
             if (selectPlayer())
                 playMovie(movie);
         }
