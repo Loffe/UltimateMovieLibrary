@@ -45,6 +45,8 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
     private Box centerBox;
     private RecommendPanel recommendPanel;
 
+    private boolean showsRecommended = false;
+
     private ListElement selectedElement = null;
 
     public void setSelectedElement(ListElement element) {
@@ -111,7 +113,8 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
                         if (selectedList.getId() == 1) {
                             lastSearchId = MovieSearchProvider.searchByName(
                                     name, resultPanel, getOrderColumn(),
-                                    isOrderAscending(), hideSeenMoviesCheckBox.isSelected());
+                                    isOrderAscending(),
+                                    hideSeenMoviesCheckBox.isSelected());
                         } else if (selectedList.getId() == Playlist.SEEN_LIST_ID) {
                             lastSearchId = MovieSearchProvider
                                     .searchByNameSeen(name, resultPanel,
@@ -149,6 +152,17 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
             @Override
             public void valueChanged(ListSelectionEvent event) {
                 resultPanel.search();
+                if (showsRecommended) {
+                    ProfilePanel.this.remove(recommendPanel);
+                    ProfilePanel.this.add(centerBox, BorderLayout.CENTER);
+                    ProfilePanel.this.add(movieInfoPanel, BorderLayout.EAST);
+
+                    movieInfoPanel.repaint();
+                    centerBox.repaint();
+
+                    showsRecommended = false;
+                }
+                
             }
         });
 
@@ -172,8 +186,8 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
                         .getDropLocation();
                 int index = dl.getIndex();
 
-                listModel.add(index, listModel.getElementAt(tmp
-                        .getSelectedIndex()));
+                listModel.add(index,
+                        listModel.getElementAt(tmp.getSelectedIndex()));
 
                 listModel.remove(tmp.getSelectedIndex());
                 return true;
@@ -201,25 +215,30 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
         this.setLayout(new BorderLayout());
 
         recommendPanel = new RecommendPanel();
-        recommendedMovies = new JButton(Localization.recommendRefreshButtonText,Localization.recommendRefreshButtonIcon);
+        recommendedMovies = new JButton(
+                Localization.recommendRefreshButtonText,
+                Localization.recommendRefreshButtonIcon);
 
         final JPanel listPanel = new JPanel();
         listPanel.setLayout(new BorderLayout());
-        listPanel.add(lists,BorderLayout.CENTER);
-        listPanel.add(recommendedMovies,BorderLayout.SOUTH);
-        
+        listPanel.add(lists, BorderLayout.CENTER);
+        listPanel.add(recommendedMovies, BorderLayout.SOUTH);
+
         recommendedMovies.addActionListener(new ActionListener() {
-            
+
             @Override
             public void actionPerformed(ActionEvent e) {
-               ProfilePanel.this.remove(movieInfoPanel);
-               ProfilePanel.this.remove(centerBox);
-               recommendPanel.refresh(ProfilePanel.this.getWidth() - lists.getWidth());
-               ProfilePanel.this.add(recommendPanel, BorderLayout.CENTER);
-               ProfilePanel.this.revalidate();
+                ProfilePanel.this.remove(movieInfoPanel);
+                ProfilePanel.this.remove(centerBox);
+                recommendPanel.refresh(ProfilePanel.this.getWidth()
+                        - lists.getWidth());
+                ProfilePanel.this.add(recommendPanel, BorderLayout.CENTER);
+                ProfilePanel.this.revalidate();
+                lists.clearSelection();
+                showsRecommended = true;
             }
         });
-       
+
         this.add(listPanel, BorderLayout.WEST);
 
         Box searchBox = Box.createHorizontalBox();
