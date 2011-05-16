@@ -2,17 +2,23 @@ package se.eloff.ultimatemovielibrary;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.List;
 
 import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.DropMode;
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.TransferHandler;
@@ -33,6 +39,8 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
     private JTextField searchTextField;
 
     private JList lists;
+    private JButton recommendedMovies;
+    private Box centerBox;
 
     private ListElement selectedElement = null;
 
@@ -186,14 +194,31 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
 
         this.setLayout(new BorderLayout());
 
-        this.add(lists, BorderLayout.WEST);
+        recommendedMovies = new JButton("Rekommenderade");
+        final JPanel listPanel = new JPanel();
+        listPanel.setLayout(new GridLayout(2,1));
+        listPanel.add(lists);
+        listPanel.add(recommendedMovies);
+        
+        recommendedMovies.addActionListener(new ActionListener() {
+            
+            @Override
+            public void actionPerformed(ActionEvent e) {
+               ProfilePanel.this.remove(movieInfoPanel);
+               ProfilePanel.this.remove(centerBox);
+               ProfilePanel.this.add(new RecommendPanel(ProfilePanel.this.getWidth() - listPanel.getWidth()), BorderLayout.CENTER);
+               ProfilePanel.this.revalidate();
+            }
+        });
+       
+        this.add(listPanel, BorderLayout.WEST);
 
         Box searchBox = Box.createHorizontalBox();
         searchBox.add(titleLabel);
         searchBox.add(searchTextField);
         searchBox.add(Box.createHorizontalGlue());
 
-        Box centerBox = Box.createVerticalBox();
+        centerBox = Box.createVerticalBox();
         centerBox.add(searchBox);
         centerBox.add(resultPanel);
         movieInfoPanel = new MovieInfoPanel();
