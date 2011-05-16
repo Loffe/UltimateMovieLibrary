@@ -4,12 +4,15 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.List;
 
 import javax.swing.Box;
 import javax.swing.DefaultListModel;
 import javax.swing.DropMode;
+import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -31,6 +34,7 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
 
     private JLabel titleLabel;
     private JTextField searchTextField;
+    private JCheckBox hideSeenMoviesCheckBox;
 
     private JList lists;
 
@@ -100,7 +104,7 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
                         if (selectedList.getId() == 1) {
                             lastSearchId = MovieSearchProvider.searchByName(
                                     name, resultPanel, getOrderColumn(),
-                                    isOrderAscending());
+                                    isOrderAscending(), hideSeenMoviesCheckBox.isSelected());
                         } else if (selectedList.getId() == Playlist.SEEN_LIST_ID) {
                             lastSearchId = MovieSearchProvider
                                     .searchByNameSeen(name, resultPanel,
@@ -161,8 +165,8 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
                         .getDropLocation();
                 int index = dl.getIndex();
 
-                listModel.add(index,
-                        listModel.getElementAt(tmp.getSelectedIndex()));
+                listModel.add(index, listModel.getElementAt(tmp
+                        .getSelectedIndex()));
 
                 listModel.remove(tmp.getSelectedIndex());
                 return true;
@@ -184,6 +188,9 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
 
         titleLabel = new JLabel(Localization.searchFieldLabelText);
 
+        hideSeenMoviesCheckBox = new JCheckBox(
+                Localization.searchHideSeenMoviesText);
+
         this.setLayout(new BorderLayout());
 
         this.add(lists, BorderLayout.WEST);
@@ -191,6 +198,8 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
         Box searchBox = Box.createHorizontalBox();
         searchBox.add(titleLabel);
         searchBox.add(searchTextField);
+        searchBox.add(Box.createRigidArea(new Dimension(20, 20)));
+        searchBox.add(hideSeenMoviesCheckBox);
         searchBox.add(Box.createHorizontalGlue());
 
         Box centerBox = Box.createVerticalBox();
@@ -202,6 +211,16 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
 
         // add a listener to the input field
         searchTextField.getDocument().addDocumentListener(this);
+
+        hideSeenMoviesCheckBox.setToolTipText(Localization.toolTipsSearchSeen);
+        hideSeenMoviesCheckBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                resultPanel.search();
+            }
+
+        });
+
     }
 
     private void refreshPlaylists(final DefaultListModel listModel)
