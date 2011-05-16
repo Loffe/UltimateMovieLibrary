@@ -23,6 +23,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.border.EmptyBorder;
 
 public class MovieInfoPanel extends JPanel {
 
@@ -94,6 +95,7 @@ public class MovieInfoPanel extends JPanel {
         plot.setEditable(false);
         plot.setOpaque(false);
         plot.setBorder(null);
+        plot.setBorder(new EmptyBorder(8, 8, 8, 8));
        
         // Assemble panel to show genres
         genrePanel.setLayout(new BorderLayout());
