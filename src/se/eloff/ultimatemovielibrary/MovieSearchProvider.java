@@ -28,11 +28,15 @@ public class MovieSearchProvider {
             int disc = Integer.parseInt(resultColumns[4]);
             int rating = Integer.parseInt(resultColumns[5]);
             boolean seen = resultColumns[6].equals("1");
+            boolean favorite = resultColumns[7].equals("1"); 
+            boolean wish = resultColumns[8].equals("1"); 
 
             LocalMovie m = new LocalMovie(name, year, filepath, disc, rating);
 
             m.setId(Integer.parseInt(resultColumns[0]));
             m.setSeen(seen);
+            m.setWish(wish);
+            m.setFavorite(favorite);
             return m;
         }
     };
@@ -147,7 +151,7 @@ public class MovieSearchProvider {
                     if (list != null) {
                         list_id = String.valueOf(list.getId());
 
-                        sql = "select m.id, name, year, filepath, discnumber, rating, seen"
+                        sql = "select m.id, name, year, filepath, discnumber, rating, seen, favorite, wish"
                                 + " from movies_lists ml"
                                 + " left join movies m on ml.movie_id = m.id"
                                 + " where discnumber = 1"
@@ -161,7 +165,7 @@ public class MovieSearchProvider {
                             order_clause = "name";
                             order_clause += " ASC";
                         }
-                        sql = "select id, name, year, filepath, discnumber, rating, seen"
+                        sql = "select id, name, year, filepath, discnumber, rating, seen, favorite, wish"
                                 + " from movies"
                                 + " where discnumber = 1"
                                 + " and name like '%%%s%%'    "

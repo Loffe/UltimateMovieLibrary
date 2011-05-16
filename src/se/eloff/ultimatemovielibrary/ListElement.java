@@ -494,14 +494,16 @@ public class ListElement extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
+                    DatabaseManager.getInstance().getMovieDao().refresh(movie);
+                    movie.setWish(wishButton.isSelected());
+                    DatabaseManager.getInstance().getMovieDao().update(movie);
                     if (wishButton.isSelected()) {
                         Playlist.getWishlist().add(movie);
                     } else {
                         Playlist.getWishlist().remove(movie);
                     }
                 } catch (SQLException e1) {
-                    System.out
-                            .println("Failed to update movie with new rating");
+                    System.out.println("Failed to update movie with wish");
                 }
 
                 if (movie.isWish()) {
@@ -521,6 +523,10 @@ public class ListElement extends JPanel {
             public void actionPerformed(ActionEvent e) {
 
                 try {
+                    DatabaseManager.getInstance().getMovieDao().refresh(movie);
+                    movie.setFavorite(favoriteButton.isSelected());
+                    DatabaseManager.getInstance().getMovieDao().update(movie);
+
                     if (favoriteButton.isSelected()) {
                         Playlist.getFavoriteList().add(movie);
                     } else {
@@ -528,8 +534,7 @@ public class ListElement extends JPanel {
                     }
 
                 } catch (SQLException e1) {
-                    System.out
-                            .println("Failed to update movie with new rating");
+                    System.out.println("Failed to update movie with favorite");
                 }
                 if (movie.isFavorite()) {
                     favoriteButton

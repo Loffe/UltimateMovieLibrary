@@ -86,8 +86,7 @@ public class MovieInfoDownloader {
                     int i = 1;
                     for (LocalMovie localMovie : movies) {
                         fetchMovieInfo(localMovie);
-                        Localization.loadingTextLabel.setText("Updating movie info... " + i +" of " +movies.size());
-                        i++;
+                        Localization.loadingTextLabel.setText("Updating movie info... " + i++ +" of " +movies.size());
                     }
 
                 } catch (SQLException e) {
