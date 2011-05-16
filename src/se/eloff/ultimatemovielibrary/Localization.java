@@ -19,7 +19,7 @@ public final class Localization {
     public static final Image icon = new ImageIcon("img/video_16.png")
             .getImage();
 
-    public static final ImageIcon loader = new ImageIcon("img/ajax-loader2.gif");
+    public static final ImageIcon loader = new ImageIcon("img/mozilla_blu.gif");
     public static JLabel loadingTextLabel = new JLabel();
     public static JLabel loadingLabel = new JLabel(loader);
     public static String scanningFoldersText = "Söker efter filmer i bevakade kataloger...";
