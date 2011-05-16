@@ -181,7 +181,8 @@ public class MovieInfoDownloader {
                 Dao<MovieInfo, Integer> dbInfo = DatabaseManager.getInstance()
                         .getMovieInfoDao();
                 MovieInfo info = new MovieInfo(cast, directors, thumbPath,
-                        translatedPlot, genres, (int) (movie.getRating() * 10));
+                        translatedPlot, genres, Math.round((float) movie
+                                .getRating() / 100 * 5));
 
                 dbInfo.create(info);
 
