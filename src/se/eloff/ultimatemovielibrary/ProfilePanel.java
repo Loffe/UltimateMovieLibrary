@@ -215,16 +215,19 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
     // input field actions
     @Override
     public void changedUpdate(DocumentEvent arg0) {
+        lists.setSelectedIndex(0);
         resultPanel.search();
     }
 
     @Override
     public void insertUpdate(DocumentEvent arg0) {
+        lists.setSelectedIndex(0);
         resultPanel.search();
     }
 
     @Override
     public void removeUpdate(DocumentEvent arg0) {
+        lists.setSelectedIndex(0);
         resultPanel.search();
     }
 
