@@ -356,7 +356,8 @@ public class ListElement extends JPanel {
                                                 .addComponent(yearLabel)
                                                 .addComponent(titleLabel, 50,
                                                         50, Short.MAX_VALUE))
-                                .addGap(57, 57, 57)
+                                .addPreferredGap(
+                                        LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(playlistButton,
                                         GroupLayout.PREFERRED_SIZE, 52,
                                         GroupLayout.PREFERRED_SIZE)
