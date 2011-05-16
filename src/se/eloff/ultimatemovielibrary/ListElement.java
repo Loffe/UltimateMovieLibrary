@@ -126,9 +126,9 @@ public class ListElement extends JPanel {
                 }
             }
         };
-        
+
         moveUpButton.setToolTipText(Localization.toolTipsMoveUpButton);
-        
+
         moveUpButton.addActionListener(new ActionListener() {
 
             @Override
@@ -152,7 +152,7 @@ public class ListElement extends JPanel {
                 }
             }
         };
-        
+
         moveDownButton.setToolTipText(Localization.toolTipsMoveDownButton);
 
         moveDownButton.addActionListener(new ActionListener() {
@@ -167,19 +167,22 @@ public class ListElement extends JPanel {
         moveUpButton.setVisible(false);
         moveDownButton.setVisible(false);
 
-        playlistButton.setToolTipText(Localization.managePlaylistsButtonToolTipText);
+        playlistButton
+                .setToolTipText(Localization.managePlaylistsButtonToolTipText);
         playlistButton.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Build the playlist Menu.
-                playlistMenu = new JPopupMenu(Localization.managePlaylistsMenuTitle);
+                playlistMenu = new JPopupMenu(
+                        Localization.managePlaylistsMenuTitle);
                 FlowLayout flowLayout = new FlowLayout();
                 flowLayout.setHgap(8);
                 flowLayout.setVgap(8);
                 JPanel labelPanel = new JPanel();
                 labelPanel.setLayout(flowLayout);
-                JLabel label = new JLabel(Localization.managePlaylistsMenuDescriptionText);
+                JLabel label = new JLabel(
+                        Localization.managePlaylistsMenuDescriptionText);
                 labelPanel.add(label);
                 labelPanel.setOpaque(false);
                 playlistMenu.add(labelPanel);
@@ -238,7 +241,7 @@ public class ListElement extends JPanel {
 
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                            parentPanel.getParenPanel().showCreatePlaylist(movie);
+                        parentPanel.getParenPanel().showCreatePlaylist(movie);
                     }
                 });
 
@@ -462,9 +465,9 @@ public class ListElement extends JPanel {
         rating.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                movie.setRating(rating.getRating());
                 try {
                     DatabaseManager.getInstance().getMovieDao().refresh(movie);
+                    movie.setRating(rating.getRating());
                     DatabaseManager.getInstance().getMovieDao().update(movie);
                 } catch (SQLException e1) {
                     System.out
@@ -545,18 +548,19 @@ public class ListElement extends JPanel {
         seenButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                movie.setSeen(seenButton.isSelected());
-                if (movie.isSeen()) {
-                    seenButton.setIcon(Localization.movieSeenButtonIcon);
-                    seenButton.setToolTipText(Localization.toolTipsSeenDisable);
-                } else {
-                    seenButton
-                            .setIcon(Localization.movieSeenButtonIconDisabled);
-                    seenButton.setToolTipText(Localization.toolTipsSeen);
-                }
-
                 try {
                     DatabaseManager.getInstance().getMovieDao().refresh(movie);
+                    movie.setSeen(seenButton.isSelected());
+                    if (movie.isSeen()) {
+                        seenButton.setIcon(Localization.movieSeenButtonIcon);
+                        seenButton
+                                .setToolTipText(Localization.toolTipsSeenDisable);
+                    } else {
+                        seenButton
+                                .setIcon(Localization.movieSeenButtonIconDisabled);
+                        seenButton.setToolTipText(Localization.toolTipsSeen);
+                    }
+
                     DatabaseManager.getInstance().getMovieDao().update(movie);
                 } catch (SQLException e1) {
                     System.out
