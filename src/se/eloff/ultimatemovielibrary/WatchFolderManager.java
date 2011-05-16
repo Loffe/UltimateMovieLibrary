@@ -7,7 +7,6 @@ import java.util.List;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.DeleteBuilder;
-import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
 
 /**
@@ -18,9 +17,10 @@ import com.j256.ormlite.stmt.QueryBuilder;
  * 
  */
 public class WatchFolderManager {
+
     private static HashMap<String, DirScanner> runningScans = new HashMap<String, DirScanner>();
 
-    static int folderScanCounter = 0;
+    private static boolean scanInProgress = false;
 
     /**
      * Get all WatchFolders that are saved in the db
@@ -47,7 +47,6 @@ public class WatchFolderManager {
      */
     public static boolean updateLibrary() {
         Dao<WatchFolder, Integer> db;
-        folderScanCounter = 0;
         try {
             db = DatabaseManager.getInstance().getWatchFolderDao();
             List<WatchFolder> folders = db.queryForAll();
@@ -102,7 +101,8 @@ public class WatchFolderManager {
                 dbMovie.delete(localMovie);
 
                 // remove the movie from any playlist it might be in
-                DeleteBuilder deleteLists = dbMovieList.deleteBuilder();
+                DeleteBuilder<MovieList, Integer> deleteLists = dbMovieList
+                        .deleteBuilder();
                 deleteLists.where().eq("movie_id", localMovie.getId());
                 dbMovieList.delete(deleteLists.prepare());
             }
@@ -131,10 +131,8 @@ public class WatchFolderManager {
             return true;
 
         } catch (SQLException e) {
-            // e.printStackTrace();
-            System.out
-
-                    .println("Failed to save to db, maybe the watchfolder is allready watched");
+            System.out.println("Failed to save to db, maybe the watchfolder "
+                    + "is allready watched");
             return false;
         }
     }
@@ -143,31 +141,39 @@ public class WatchFolderManager {
 
         final DirScanner scanner = new DirScanner();
         runningScans.put(folder.getFolderPath(), scanner);
+        scanInProgress = true;
         Thread scanThread = new Thread(new Runnable() {
 
             @Override
             public void run() {
                 System.out.println("Running new dirscanner thread");
-                folderScanCounter++;
-                Localization.loadingTextLabel.setText("scanning folders...");
+
+                // Show loadingLabels
+                Localization.loadingTextLabel
+                        .setText(Localization.scanningFoldersText);
+                Localization.loadingTextLabel.setVisible(true);
                 Localization.loadingLabel.setVisible(true);
 
                 try {
-                    scanner.ScanFolder(new File(folder.getFolderPath()));
+                    scanner.scanFolder(new File(folder.getFolderPath()));
                     MovieInfoDownloader.getInstance().updateLibraryInfo();
                 } catch (Exception e) {
                     System.out.println("Failed to convert path to File type");
                 }
                 runningScans.remove(folder.toString());
-                System.out.println("Successfully scanned: "
-                        + folder.getFolderPath());
-                folderScanCounter--;
-                if (folderScanCounter == 0
-                        && MovieInfoDownloader.updateInProgress == false) {
+
+                scanInProgress = false;
+
+                // Hide loadingLabels, if not to be hidden by the
+                // MovieInfoDownloader later on
+                if (!isScanInProgress()
+                        && !MovieInfoDownloader.isUpdateInProgress()) {
                     Localization.loadingTextLabel.setText("");
                     Localization.loadingLabel.setVisible(false);
-
                 }
+
+                System.out.println("Successfully scanned: "
+                        + folder.getFolderPath());
             }
         });
 
@@ -182,5 +188,11 @@ public class WatchFolderManager {
             runningScans.remove(folder.getFolderPath());
         } catch (Exception e) {
         }
+    }
+
+    public static boolean isScanInProgress() {
+        // TODO: Do something smarter, count threads or something.
+        // Is this really thread safe?
+        return scanInProgress;
     }
 }

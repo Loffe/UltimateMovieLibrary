@@ -140,6 +140,7 @@ public class MovieInfoPanel extends JPanel {
         topPanel.add(title);
       //  add(Box.createRigidArea(new Dimension(0, gapsize)));
         topPanel.add(year);
+        topPanel.add(Box.createRigidArea(new Dimension(0, gapsize)));
         topPanel.add(cover);
         //add(Box.createRigidArea(new Dimension(0, gapsize)));
         JPanel plotLabelPanel = new JPanel();
@@ -354,31 +355,29 @@ public class MovieInfoPanel extends JPanel {
 
         @Override
         public void mouseClicked(MouseEvent arg0) {
-            // TODO Auto-generated method stub
         }
 
         @Override
         public void mouseEntered(MouseEvent arg0) {
-            // TODO Auto-generated method stub
             setActive(true);
             repaint();
         }
 
         @Override
         public void mouseExited(MouseEvent arg0) {
-            // TODO Auto-generated method stub
             setActive(false);
             repaint();
         }
 
         @Override
         public void mousePressed(MouseEvent arg0) {
+            if (movie == null)
+                return;
             ExternalPlayerLauncher.getInstance().playMovie(movie);
         }
 
         @Override
         public void mouseReleased(MouseEvent arg0) {
-            // TODO Auto-generated method stub
         }
     }
 

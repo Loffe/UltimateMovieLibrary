@@ -1,7 +1,6 @@
 package se.eloff.ultimatemovielibrary;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -46,6 +45,9 @@ import com.j256.ormlite.dao.Dao;
 public class ProfilePanel extends ViewPanel implements DocumentListener {
 
     private final class PlaylistTransferHandler extends TransferHandler {
+
+        private static final long serialVersionUID = -7206124317179587726L;
+
         public boolean canImport(TransferHandler.TransferSupport support) {
             JList tmp = (JList) support.getComponent();
             JList.DropLocation dl = (JList.DropLocation) support
@@ -139,6 +141,8 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
     private void initComponents() {
         resultPanel = new ResultPanel(this) {
 
+            private static final long serialVersionUID = 8984741396097575708L;
+
             @Override
             public void search() {
                 try {
@@ -219,10 +223,37 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
                 getFont().getSize()));
         addPlaylistLabel.setIcon(Localization.listsAddIcon);
         addNewPlaylistPanel.add(addPlaylistLabel);
-        // If you are trying the black theme, enable this line and comment out
-        // the setbackground line!!!
+
         lists.setOpaque(false);
-        // addNewPlaylistPanel.setBackground(Color.white);
+
+        // Hax to make focus leave the newPlaylistInput when this panel is
+        // pressed.
+        // TODO: Although, the user could click anywhere. Fix needed supporting
+        // all panels...
+        addNewPlaylistPanel.addMouseListener(new MouseListener() {
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                requestFocus();
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+            }
+        });
+
         leftPanel.add(addNewPlaylistPanel, BorderLayout.CENTER);
         leftPanel.add(recommendedMoviesButton, BorderLayout.SOUTH);
 
@@ -294,6 +325,9 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
         }
         final JPopupMenu popupMenu = buildPlaylistPopupMenu();
         lists = new JList(listModel) {
+
+            private static final long serialVersionUID = 6784382107114083176L;
+
             public Dimension getPreferredSize() {
                 // TODO better calculation of the height
                 return new Dimension(100, (listModel.getSize() * 18) + 10);
@@ -371,7 +405,6 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
                 movieListDb.create(new MovieList(movie, playlist));
             }
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
@@ -403,7 +436,7 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
 
             @Override
             public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == 10) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                     if (!newPlaylistInput.getText().isEmpty()) {
                         createNewPlaylist(newPlaylistInput.getText(), movie);
                     }
@@ -411,8 +444,12 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
                     addNewPlaylistPanel.add(addPlaylistLabel);
                     addNewPlaylistPanel.revalidate();
                     addNewPlaylistPanel.repaint();
+                } else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                    addNewPlaylistPanel.removeAll();
+                    addNewPlaylistPanel.add(addPlaylistLabel);
+                    addNewPlaylistPanel.revalidate();
+                    addNewPlaylistPanel.repaint();
                 }
-
             }
         });
 

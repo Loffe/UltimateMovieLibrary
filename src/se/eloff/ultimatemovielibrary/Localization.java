@@ -18,15 +18,17 @@ public final class Localization {
     public static final int titleFontSize = 24;
     public static final Image icon = new ImageIcon("img/video_16.png")
             .getImage();
-    public static final Image loader = new ImageIcon("img/ajax-loader2.gif").getImage();
-    public static JLabel loadingTextLabel = new JLabel("");
-    public static JLabel loadingLabel = new JLabel(new ImageIcon(loader));
-    
-    
+
+    public static final ImageIcon loader = new ImageIcon("img/ajax-loader2.gif");
+    public static JLabel loadingTextLabel = new JLabel();
+    public static JLabel loadingLabel = new JLabel(loader);
+    public static String scanningFoldersText = "Söker efter filmer i bevakade kataloger...";
+    public static String updatingMoviesInfoText = "Hämtar och uppdaterar information för film";
+
     // Watch Folder Manager
     public static final ImageIcon watchFolderIcon = new ImageIcon(
             "img/folder_32.png");
-    public static final String manageWatchFolderHeading = "Hantera bevakade mappar";
+    public static final String manageWatchFolderHeading = "Hantera bevakade kataloger";
     public static final int manageWatchFolderHeadingFontSize = 20;
     public static final String manageWatchFolderDescription = "Här kan du välja att lägga till eller ta bort bevakade kataloger.";
 
@@ -148,7 +150,7 @@ public final class Localization {
     public static final String profileWishList = "Önskelista";
 
     public static final Color selectedListElementColor = Color.DARK_GRAY;
-        //new Color(0, 200, 251);
+    // new Color(0, 200, 251);
 
     // MovieInfo
     public static final int movieCoverWidth = 154;
@@ -160,13 +162,13 @@ public final class Localization {
     public static final String moviePlotLabel = "Handling: ";
     public static final String movieGenreLabel = "Genre: ";
     public static final String movieRatingLabel = "Online-betyg: ";
-    public static final String movieDirectorLabel = "Regisör: ";
+    public static final String movieDirectorLabel = "Regissör: ";
     public static final String movieCastLabel = "Skådespelare: ";
     public static final String movieInfoStandardCover = "img/no-poster.png";
     public static final String translationFailedText = "Översättningen misslyckades! Engelsk version: ";
     public static final String unknownPlotText = "Ingen handling hittades.";
-    public static final String unknownGenreText = "Okänd";
-    public static final String unknownRatingText = "Okänt";
+    public static final String unknownGenreText = "Inga genrer hittades.";
+    public static final String unknownRatingText = "Inget betyg hittades.";
     public static final String unknownDirectorText = "Ingen regissör hittades.";
     public static final String unknownCastText = "Inga skådespelare hittades.";
 

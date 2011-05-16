@@ -1,7 +1,6 @@
 package se.eloff.ultimatemovielibrary;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 
 import javax.swing.JButton;
@@ -34,7 +33,6 @@ public class WatchFolderPanel extends JPanel {
 
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(595, 35));
-        setBackground(Color.WHITE);
 
         // Add a folder icon.
         add(new JLabel(Localization.watchFolderIcon), BorderLayout.WEST);
@@ -47,7 +45,6 @@ public class WatchFolderPanel extends JPanel {
         removeButton
                 .setToolTipText(Localization.removeWatchFolderButtonToolTip);
         buttonPanel.add(removeButton);
-        buttonPanel.setBackground(Color.WHITE);
         add(buttonPanel, BorderLayout.EAST);
 
     }

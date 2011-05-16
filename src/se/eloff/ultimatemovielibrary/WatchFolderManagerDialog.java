@@ -1,7 +1,6 @@
 package se.eloff.ultimatemovielibrary;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -82,24 +81,22 @@ public class WatchFolderManagerDialog extends JDialog {
         // Make folders position along Y-axis.
         watchFoldersPanel.setLayout(new BoxLayout(watchFoldersPanel,
                 BoxLayout.Y_AXIS));
-        watchFoldersPanel.setBackground(Color.WHITE);
 
         // Create inner and outer panel to achieve TOP-LEFT alignment.
         JPanel innerPanel = new JPanel(new BorderLayout());
-        innerPanel.setBackground(Color.WHITE);
         innerPanel.add(watchFoldersPanel, BorderLayout.WEST);
 
         JPanel outerPanel = new JPanel(new BorderLayout());
-        outerPanel.setBackground(Color.WHITE);
         outerPanel.add(innerPanel, BorderLayout.NORTH);
 
         // Make the list of folders scrollable
         JScrollPane scrollPane = new JScrollPane(outerPanel);
         scrollPane.setPreferredSize(new Dimension(600, 400));
         add(scrollPane, BorderLayout.CENTER);
-        
-        //Make done button
-        JButton closeButton = new JButton(Localization.closeWatchFolderButtonText);
+
+        // Make done button
+        JButton closeButton = new JButton(
+                Localization.closeWatchFolderButtonText);
         closeButton.addActionListener(new ActionListener() {
 
             @Override
@@ -113,10 +110,7 @@ public class WatchFolderManagerDialog extends JDialog {
         bottomPanel.setAlignmentX(CENTER_ALIGNMENT);
         bottomPanel.add(closeButton);
         add(bottomPanel, BorderLayout.SOUTH);
-        
-        
-        
-        
+
         // Add all the currently watched folders from database.
         for (WatchFolder watchFolder : WatchFolderManager.getAllWatchFolders()) {
             addFolderToList(watchFolder);

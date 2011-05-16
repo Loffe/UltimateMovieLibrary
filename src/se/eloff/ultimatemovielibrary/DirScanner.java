@@ -33,10 +33,10 @@ public class DirScanner {
             "part" };
     private static final String[] discWords = { "cd", "disc" };
 
-    private Boolean StopScanning = false;
+    private Boolean stopScanning = false;
 
     protected void stopScanning() {
-        StopScanning = true;
+        stopScanning = true;
     }
 
     /**
@@ -44,21 +44,21 @@ public class DirScanner {
      * 
      * @param folder
      */
-    public void ScanFolder(File folder) {
+    public void scanFolder(File folder) {
         for (final File file : folder.listFiles()) {
-            if (!StopScanning && file.isDirectory() && notOnIgnoreList(file)) {
-                ScanFolder(file);
-            } else if (!StopScanning && hasValidExtension(file)) {
+            if (!stopScanning && file.isDirectory() && notOnIgnoreList(file)) {
+                scanFolder(file);
+            } else if (!stopScanning && hasValidExtension(file)) {
                 LocalMovie movie = movieFromPath(file);
-                if (!StopScanning && movie != null) {
+                if (!stopScanning && movie != null) {
                     // movies.add(movie);
                     Dao<LocalMovie, Integer> db;
                     try {
                         db = DatabaseManager.getInstance().getMovieDao();
                         db.create(movie);
                     } catch (SQLException e) {
-                        System.out
-                                .println("Failed to save to db, maybe the movie is allready saved once");
+                        System.out.println("Failed to save to db, maybe the "
+                                + "movie is allready saved once");
                     }
                     System.out.println("Adding Movie: '" + movie.getName()
                             + "' year: " + movie.getYear() + " disc: "

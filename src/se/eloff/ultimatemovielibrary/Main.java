@@ -1,11 +1,10 @@
 package se.eloff.ultimatemovielibrary;
 
 import java.sql.SQLException;
-import de.javasoft.plaf.synthetica.SyntheticaStandardLookAndFeel;
-import de.javasoft.plaf.synthetica.SyntheticaClassyLookAndFeel;
-import de.javasoft.plaf.synthetica.SyntheticaBlackEyeLookAndFeel;
 
 import javax.swing.UIManager;
+
+import de.javasoft.plaf.synthetica.SyntheticaBlackEyeLookAndFeel;
 
 public class Main {
 

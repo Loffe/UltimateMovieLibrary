@@ -15,7 +15,6 @@ import net.sf.jtmdb.MovieImages;
 import net.sf.jtmdb.MoviePoster;
 
 import org.apache.commons.io.FileUtils;
-import org.json.JSONException;
 
 import com.google.api.translate.Language;
 import com.google.api.translate.Translate;
@@ -24,9 +23,10 @@ import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.Where;
 
 public class MovieInfoDownloader {
+
     private static MovieInfoDownloader instance;
-    public static boolean updateInProgress = false;
-    private static boolean doNewScan = false;
+
+    private static boolean updateInProgress = false;
 
     public MovieInfoDownloader() {
         // Set the API Key in order
@@ -47,11 +47,10 @@ public class MovieInfoDownloader {
 
     public void updateLibraryInfo() {
         System.out.println("starting updateLibraryInfo()");
-        if (!updateInProgress) {
+        if (!isUpdateInProgress()) {
             updateInProgress = true;
             updateLibraryInfoAsync();
-        } else
-            doNewScan = true;
+        }
     }
 
     // call when you want to display the info panel but info is not fetched yet
@@ -65,13 +64,11 @@ public class MovieInfoDownloader {
         new Thread(new Runnable() {
             @Override
             public void run() {
+
                 try {
                     System.out
-                            .println("starting new thread for updateLibraryInfoAsync");
-                    Localization.loadingTextLabel.setText("Updating movie info...");
-                    Localization.loadingLabel.setVisible(true);
+                            .println("Thread started! updateLibraryInfoAsync");
 
-                    
                     Dao<LocalMovie, Integer> dbMovie = DatabaseManager
                             .getInstance().getMovieDao();
                     QueryBuilder<LocalMovie, Integer> queryBuilder = dbMovie
@@ -85,23 +82,26 @@ public class MovieInfoDownloader {
                             .prepare());
                     int i = 1;
                     for (LocalMovie localMovie : movies) {
+                        Localization.loadingTextLabel
+                                .setText(Localization.updatingMoviesInfoText
+                                        + " " + i++ + " av " + movies.size()
+                                        + " ...");
                         fetchMovieInfo(localMovie);
-                        Localization.loadingTextLabel.setText("Updating movie info... " + i++ +" of " +movies.size());
                     }
 
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
-                if (doNewScan) {
-                    doNewScan = false;
-                    updateLibraryInfoAsync();
-                }
+
                 updateInProgress = false;
 
-                System.out.println("Done updateLibraryInfoAsync");
-                Localization.loadingTextLabel.setText("");
-                Localization.loadingLabel.setVisible(false);
+                // Hide the loadingLabels
+                if (!WatchFolderManager.isScanInProgress()) {
+                    Localization.loadingTextLabel.setText("");
+                    Localization.loadingLabel.setVisible(false);
+                }
 
+                System.out.println("Thread done! updateLibraryInfoAsync");
             }
 
         }).start();
@@ -114,12 +114,7 @@ public class MovieInfoDownloader {
      *            the movie to get info for.
      */
     private void fetchMovieInfo(LocalMovie localMovie) {
-        String yearString = "";
-        if (localMovie.getYear() != 0)
-            yearString = Integer.toString(localMovie.getYear());
-
-        System.out.println("Trying to fetch info for " + localMovie.getName()
-                + " " + yearString);
+        System.out.println("Trying to fetch info for " + localMovie.getName());
         List<Movie> reducedMovies = null;
         try {
             // Search for the Movie
@@ -206,8 +201,9 @@ public class MovieInfoDownloader {
                         + localMovie.getName());
             }
         } catch (Exception e) {
-            System.out.println("Failed to att movie info, probably info for that moviea already exists");
-        } 
+            System.out
+                    .println("Failed to att movie info, probably info for that moviea already exists");
+        }
 
     }
 
@@ -215,9 +211,13 @@ public class MovieInfoDownloader {
         try {
             FileUtils.copyURLToFile(url, new File(imagePath));
         } catch (IOException e) {
-            System.out.println("krashing when trying to download image");
+            System.out.println("Crashed while trying to download image");
             e.printStackTrace();
         }
         return true;
+    }
+
+    public static boolean isUpdateInProgress() {
+        return updateInProgress;
     }
 }

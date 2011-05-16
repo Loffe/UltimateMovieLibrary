@@ -8,7 +8,8 @@ public abstract class ViewPanel extends JPanel {
 
     private static final long serialVersionUID = 7489639404248359628L;
 
-    protected ResultPanel resultPanel;
+    // TODO: Fix this ugly hack, pls! Refactoring needed indeed ;P
+    public ResultPanel resultPanel;
     protected MovieInfoPanel movieInfoPanel;
     
     private String title;

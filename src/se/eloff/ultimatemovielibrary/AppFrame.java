@@ -12,6 +12,8 @@ import java.awt.HeadlessException;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.HierarchyEvent;
+import java.awt.event.HierarchyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -66,6 +68,14 @@ public class AppFrame extends JFrame implements ActionListener {
                 updateCurrentPanel();
             }
         });
+        watchFolderManagerPanel.addHierarchyListener(new HierarchyListener() {
+            @Override
+            public void hierarchyChanged(HierarchyEvent e) {
+                if(!watchFolderManagerPanel.isShowing()) {
+                    updateCurrentPanel();
+                }
+            }
+        });
 
         this.addWindowListener(new WindowAdapter() {
             @Override
@@ -106,7 +116,7 @@ public class AppFrame extends JFrame implements ActionListener {
         infoPanel.add(Localization.loadingTextLabel); 
         
         
-        if (WatchFolderManager.folderScanCounter == 0 && !MovieInfoDownloader.updateInProgress) {
+        if (!WatchFolderManager.isScanInProgress() && !MovieInfoDownloader.isUpdateInProgress()) {
         Localization.loadingLabel.setVisible(false);
         }
         
@@ -156,7 +166,7 @@ public class AppFrame extends JFrame implements ActionListener {
     public void updateCurrentPanel() {
         // searchPanel.update();
         // recomendPanel.update();
-        profilePanel.update();
+        profilePanel.resultPanel.search();
     }
 
     /**
