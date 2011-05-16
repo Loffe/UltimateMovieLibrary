@@ -18,14 +18,16 @@ public class Main {
             ClassNotFoundException {
         try {
             // UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            // UIManager
-            // .setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
             // UIManager.setLookAndFeel(new SyntheticaStandardLookAndFeel());
             // UIManager.setLookAndFeel(new SyntheticaClassyLookAndFeel());
 
-            // Try this!!!
-            UIManager.setLookAndFeel(new SyntheticaBlackEyeLookAndFeel());
-
+            try {
+                Class.forName("com.sun.awt.AWTUtilities");
+                UIManager.setLookAndFeel(new SyntheticaBlackEyeLookAndFeel());
+            } catch (ClassNotFoundException e) {
+                UIManager
+                        .setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
