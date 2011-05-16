@@ -38,7 +38,7 @@ public class RatingButton extends JButton implements ActionListener {
         JPanel space = new JPanel() {
             private static final long serialVersionUID = -8145780491377236643L;
 
-            private int space = 22;
+            private int space = 12;
 
             @Override
             public Dimension getPreferredSize() {
@@ -136,8 +136,8 @@ public class RatingButton extends JButton implements ActionListener {
     private class RateButton extends JButton {
 
         private static final long serialVersionUID = 6739554426559038970L;
-        private static final int width = 50;
-        private static final int height = 50;
+        private static final int width = 40;
+        private static final int height = 40;
 
         private final Color fillColorActive = new Color(255, 200, 0);
         private final Color fillColorHigh = new Color(255, 230, 40);
@@ -185,8 +185,8 @@ public class RatingButton extends JButton implements ActionListener {
                 g.fillRect(0, 0, this.getWidth(), this.getHeight());
             }
 
-            int cross_w = 10;
-            int cross_h = 40;
+            int cross_w = 7;
+            int cross_h = 30;
             int border = 2;
 
             if (this.getModel().isRollover())
