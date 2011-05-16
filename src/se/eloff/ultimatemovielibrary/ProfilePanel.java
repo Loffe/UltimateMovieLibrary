@@ -241,8 +241,9 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
         searchBox.add(titleLabel);
         searchBox.add(searchTextField);
         searchBox.add(Box.createRigidArea(new Dimension(20, 20)));
-        searchBox.add(hideSeenMoviesCheckBox);
         searchBox.add(Box.createHorizontalGlue());
+        searchBox.add(hideSeenMoviesCheckBox);
+        searchBox.add(Box.createRigidArea(new Dimension(280, 0)));
         return searchBox;
     }
 
