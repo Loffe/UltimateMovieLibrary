@@ -5,10 +5,17 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Insets;
 import java.awt.Point;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.sql.SQLException;
 
+import javax.imageio.ImageIO;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -253,20 +260,71 @@ public class MovieInfoPanel extends JPanel {
         }
     }
 
-    private class Cover extends JLabel {
+    private class Cover extends JLabel implements MouseListener {
 
         private static final long serialVersionUID = 4247095294118428348L;
+        
+        BufferedImage image;
+        BufferedImage imageActive;
+        
+        boolean active;
 
         public Cover() {
             this.setBackground(Color.green);
+            this.setActive(false);
+            image = null;
+            imageActive = null;
+            this.addMouseListener(this);
+        }
+        
+        public void setActive(boolean bool){
+            active = bool;
+        }
+        
+        public boolean isActive(){
+            return active;
         }
 
         public void refresh(String src) {
-            this.refresh(new ImageIcon(src));
+            try {  
+                image = ImageIO.read(new File(src)); 
+                imageActive = ImageIO.read(new File(src));
+            } catch (Exception e) {
+                e.printStackTrace();  
+            }
+            
+            int colorDrop = 50;
+            for(int y = 0; y < imageActive.getHeight(); y++) {  
+                for(int x = 0; x < imageActive.getWidth(); x++) {
+                    int color = imageActive.getRGB(x, y);
+                    
+                    int red = (color >> 16) & 0xff;
+                    int green = (color >> 8) & 0xff;
+                    int blue = (color) & 0xff;
+                    Color newColor = new Color(max(red-colorDrop, 0), max(green-colorDrop, 0), max(blue-colorDrop, 0));
+                    
+                    imageActive.setRGB(x, y, newColor.getRGB());
+                }
+            }
+            this.repaint();
         }
-
-        public void refresh(ImageIcon icon) {
-            this.setIcon(icon);
+        
+        private int max(int a, int b){
+            if(a>b)
+                return a;
+            return b;
+        }
+     
+        protected void paintComponent(Graphics g) {
+            Graphics2D g2 = (Graphics2D)g;
+            if(isActive()){
+                g2.drawImage(imageActive, null, 0, 0);
+                int xPos = image.getWidth()/2-Localization.moviePlayButtonIcon.getIconWidth()/2;
+                int yPos = image.getHeight()/2-Localization.moviePlayButtonIcon.getIconHeight()/2;
+                g2.drawImage(Localization.moviePlayButtonIcon.getImage(), xPos, yPos, null);
+            }
+            else
+                g2.drawImage(image, null, 0, 0);
         }
 
         @Override
@@ -285,6 +343,35 @@ public class MovieInfoPanel extends JPanel {
         public Dimension getMaximumSize() {
             return new Dimension(Localization.movieCoverWidth,
                     Localization.movieCoverHeight);
+        }
+
+        @Override
+        public void mouseClicked(MouseEvent arg0) {
+            // TODO Auto-generated method stub
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent arg0) {
+            // TODO Auto-generated method stub
+            setActive(true);
+            repaint();
+        }
+
+        @Override
+        public void mouseExited(MouseEvent arg0) {
+            // TODO Auto-generated method stub
+            setActive(false);
+            repaint();
+        }
+
+        @Override
+        public void mousePressed(MouseEvent arg0) {
+            // TODO Auto-generated method stub
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent arg0) {
+            // TODO Auto-generated method stub
         }
     }
 

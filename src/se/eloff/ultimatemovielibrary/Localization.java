@@ -161,8 +161,7 @@ public final class Localization {
     public static final String movieRatingLabel = "Online-betyg: ";
     public static final String movieDirectorLabel = "Regisör: ";
     public static final String movieCastLabel = "Skådespelare: ";
-    public static final ImageIcon movieInfoStandardCover = new ImageIcon(
-            "img/no-poster.png");
+    public static final String movieInfoStandardCover = "img/no-poster.png";
     public static final String translationFailedText = "Översättningen misslyckades! Engelsk version: ";
     public static final String unknownPlotText = "Ingen handling hittades.";
     public static final String unknownGenreText = "Okänd";
