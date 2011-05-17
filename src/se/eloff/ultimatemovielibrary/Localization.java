@@ -172,6 +172,9 @@ public final class Localization {
     public static final String unknownRatingText = "Inget betyg hittades.";
     public static final String unknownDirectorText = "Ingen regissör hittades.";
     public static final String unknownCastText = "Inga skådespelare hittades.";
+    public static final int minimumCoverLight = -30;
+    public static final int animationDelayMs = 16;
+    public static final int preDelayDarken = 15;
 
     // Playlists
     public static final String playlistCreateNewMessage = "Namn på ny spellista";
@@ -185,5 +188,4 @@ public final class Localization {
     public static final Icon listsAddIcon = new ImageIcon("img/plus_16.png");
     public static final int playlistDefaultTextSize = 12;
     public static final int playlistAllMoviesTextSize = 22;
-
 }

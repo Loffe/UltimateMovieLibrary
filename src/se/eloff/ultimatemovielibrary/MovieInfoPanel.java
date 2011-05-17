@@ -267,12 +267,28 @@ public class MovieInfoPanel extends JPanel {
         }
     }
 
-    private class Cover extends JLabel implements MouseListener {
+    private class Cover extends JLabel implements MouseListener, Runnable {
 
         private static final long serialVersionUID = 4247095294118428348L;
         
         BufferedImage image;
         BufferedImage imageActive;
+        
+        CoverState state;
+        int light;
+        
+        Thread animator;
+        
+        public void setState(CoverState state){
+            this.state = state;
+        }
+        public void setLight(int light){
+            this.light = light;
+            repaint();
+        }
+        public int getLight(){
+            return light;
+        }
         
         boolean active;
 
@@ -283,6 +299,10 @@ public class MovieInfoPanel extends JPanel {
             imageActive = null;
             this.addMouseListener(this);
             this.setToolTipText(Localization.toolTipsPlay);
+            state = new LightState(this);
+            light = 0;
+            animator = new Thread(this);
+            animator.start();
         }
         
         public void setActive(boolean bool){
@@ -299,24 +319,24 @@ public class MovieInfoPanel extends JPanel {
             } catch (Exception e) {
                 e.printStackTrace();  
             }
-            
-            // Darken the image by 70%
-            float scaleFactor = 0.3f;
-            RescaleOp op = new RescaleOp(scaleFactor, 0, null);
-            imageActive = op.filter(image, null);
             this.repaint();
         }
      
         protected void paintComponent(Graphics g) {
             Graphics2D g2 = (Graphics2D)g;
+            
+            // Darken the image by 70%
+            float x = -Localization.minimumCoverLight*3.0f/7.0f;
+            float scaleFactor = x/(x-(float)(light));
+            RescaleOp op = new RescaleOp(scaleFactor, 0, null);
+            imageActive = op.filter(image, null);
+            g2.drawImage(imageActive, null, 0, 0);
+            
             if(isActive()){
-                g2.drawImage(imageActive, null, 0, 0);
                 int xPos = image.getWidth()/2-Localization.moviePlayButtonIcon.getIconWidth()/2;
                 int yPos = image.getHeight()/2-Localization.moviePlayButtonIcon.getIconHeight()/2;
                 g2.drawImage(Localization.moviePlayButtonIcon.getImage(), xPos, yPos, null);
             }
-            else
-                g2.drawImage(image, null, 0, 0);
         }
 
         @Override
@@ -343,14 +363,12 @@ public class MovieInfoPanel extends JPanel {
 
         @Override
         public void mouseEntered(MouseEvent arg0) {
-            setActive(true);
-            repaint();
+            state.mouseEntered();
         }
 
         @Override
         public void mouseExited(MouseEvent arg0) {
-            setActive(false);
-            repaint();
+            state.mouseExited();
         }
 
         @Override
@@ -363,6 +381,99 @@ public class MovieInfoPanel extends JPanel {
         @Override
         public void mouseReleased(MouseEvent arg0) {
         }
+        @Override
+        public void run() {
+            // Remember the starting time
+            long tm = System.currentTimeMillis();
+            while (Thread.currentThread() == animator) {
+                // Delay depending on how far we are behind.
+                try {
+                    tm += Localization.animationDelayMs;
+                    Thread.sleep(Math.max(0, tm - System.currentTimeMillis()));
+                } catch (InterruptedException e) {
+                    break;
+                }
+                state.update();
+            }
+       }
     }
+    private abstract class CoverState {
+        Cover stateContext;
+        public CoverState(Cover context){
+            this.stateContext = context;
+        }
+        public void mouseExited(){
+        }
+        public void mouseEntered(){
+        }
+        public void update(){
+        }
+    }
+    private class PreDarkenState extends CoverState{
+        int countDown = Localization.preDelayDarken;
+        public PreDarkenState(Cover context) {
+            super(context);
+        }
+        public void mouseExited() {
+            stateContext.setActive(false);
+            stateContext.setState(new LightState(stateContext));
+        }
+        public void update(){
+            countDown--;
+            if(countDown==0){
+                stateContext.setState(new DarkenState(stateContext));
+            }
+        }
+    }
+    private class DarkenState extends CoverState{
+        public DarkenState(Cover context) {
+            super(context);
+        }
+        public void mouseExited() {
+            stateContext.setActive(false);
+            stateContext.setState(new EnlightState(stateContext));
+        }
+        public void update(){
+            int light = stateContext.getLight()-1;
+            stateContext.setLight(light);
+            if(light<=Localization.minimumCoverLight){
+                stateContext.setState(new DarkState(stateContext));
+            }
+        }
+    }
+    private class DarkState extends CoverState{
+        public DarkState(Cover context) {
+            super(context);
+        }
+        public void mouseExited() {
+            stateContext.setActive(false);
+            stateContext.setState(new EnlightState(stateContext));
+        }
+    }
+    private class EnlightState extends CoverState{
+        public EnlightState(Cover context) {
+            super(context);
+        }
+        public void mouseEntered() {
+            stateContext.setActive(true);
+            stateContext.setState(new DarkenState(stateContext));
+        }
+        public void update(){
+            int light = stateContext.getLight()+1;
+            stateContext.setLight(light);
+            if(light>=0){
+                stateContext.setState(new LightState(stateContext));
+            }
+        }
+    }
+    private class LightState extends CoverState{
+        public LightState(Cover context) {
+            super(context);
+        }
 
+        public void mouseEntered() {
+            stateContext.setActive(true);
+            stateContext.setState(new PreDarkenState(stateContext));
+        }
+    }
 }
