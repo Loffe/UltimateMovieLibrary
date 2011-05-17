@@ -15,6 +15,7 @@ import net.sf.jtmdb.MovieImages;
 import net.sf.jtmdb.MoviePoster;
 
 import org.apache.commons.io.FileUtils;
+import org.json.JSONException;
 
 import com.google.api.translate.Language;
 import com.google.api.translate.Translate;
@@ -114,74 +115,108 @@ public class MovieInfoDownloader {
      *            the movie to get info for.
      */
     private void fetchMovieInfo(LocalMovie localMovie) {
-        System.out.println("Trying to fetch info for " + localMovie.getName());
+        System.out.println("Search (name=" + localMovie.getName() + ")");
         List<Movie> reducedMovies = null;
+        // Search for the Movie
         try {
-            // Search for the Movie
             reducedMovies = Movie.search(localMovie.getName());
-            if (reducedMovies != null && reducedMovies.size() > 0) {
-                // Use the first movie from the search hits
-                Movie movie = reducedMovies.get(0);
-                System.out.println("Got reduced info for movie with ID="
-                        + movie.getID());
-                // Get the complete info of the movie (currently only has
-                // reduced info like ID, Name etc)
-                System.out.println("Fetching all info for " + movie.getName());
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        } catch (JSONException e1) {
+            e1.printStackTrace();
+        }
+        if (reducedMovies != null && reducedMovies.size() > 0) {
+            // Use the first movie from the search hits
+            Movie movie = reducedMovies.get(0);
+
+            // Or... try to find a movie with the correct year.
+            for (Movie reducedMovie : reducedMovies) {
+                // Just pick the first one here as well...
+                if (reducedMovie.getReleasedDate() != null
+                        && (reducedMovie.getReleasedDate().getYear() + 1900 == localMovie
+                                .getYear())) {
+                    // Replace the movie with this one, since it's probably
+                    // more correct
+                    movie = reducedMovie;
+                    // We're done!
+                    break;
+                }
+            }
+            System.out.println(" - Found reduced info (id=" + movie.getID()
+                    + ")");
+            // Get the complete info of the movie (currently only has
+            // reduced info like ID, Name etc)
+            System.out.println(" - Fetching all info");
+            try {
                 movie = Movie.getInfo(movie.getID());
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            } catch (JSONException e1) {
+                e1.printStackTrace();
+            }
 
-                String thumbPath = "thumbs/" + movie.getID() + ".jpg";
+            String thumbPath = "thumbs/" + movie.getID() + ".jpg";
 
-                // get the thumb
-                MovieImages images = Movie.getImages(movie.getID());
-                if (!images.posters.isEmpty()) {
-                    Iterator<MoviePoster> poster = images.posters.iterator();
-                    if (poster.hasNext())
-                        if (!downloadImage(poster.next().getLargestImage(),
-                                thumbPath))
-                            thumbPath = "";
+            // get the thumb
+            MovieImages images = null;
+            try {
+                images = Movie.getImages(movie.getID());
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            } catch (JSONException e1) {
+                e1.printStackTrace();
+            }
+            if (images != null && !images.posters.isEmpty()) {
+                Iterator<MoviePoster> poster = images.posters.iterator();
+                if (poster.hasNext())
+                    if (!downloadImage(poster.next().getLargestImage(),
+                            thumbPath))
+                        thumbPath = "";
+            }
+
+            // extract info
+            String genres = "";
+            String cast = "";
+            String directors = "";
+            String plot = movie.getOverview();
+
+            // Translate the overview (plot?!)
+            String translatedPlot = Localization.translationFailedText + " "
+                    + plot;
+            try {
+                translatedPlot = Translate.execute(plot, Language.ENGLISH,
+                        Language.SWEDISH);
+                if (translatedPlot.toLowerCase().contains(
+                        "ingen överblick hittades")) {
+                    translatedPlot = Localization.unknownPlotText;
                 }
+            } catch (Exception e) {
+                // Translation failed.
+                System.out.println("Plot translation failed!");
+            }
 
-                // extract info
-                String genres = "";
-                String cast = "";
-                String directors = "";
-                String plot = movie.getOverview();
+            for (Genre genre : movie.getGenres())
+                genres += genre.getName() + ", ";
 
-                // Translate the overview (plot?!)
-                String translatedPlot = Localization.translationFailedText
-                        + " " + plot;
-                try {
-                    translatedPlot = Translate.execute(plot, Language.ENGLISH,
-                            Language.SWEDISH);
-                    if (translatedPlot.toLowerCase().contains(
-                            "ingen överblick hittades")) {
-                        translatedPlot = Localization.unknownPlotText;
-                    }
-                } catch (Exception e) {
-                    // Translation failed.
-                    System.out.println("Plot translation failed!");
-                }
+            for (CastInfo castInfo : movie.getCast()) {
+                if (castInfo.getJob().toLowerCase().equals("director"))
+                    directors += castInfo.getName() + ", ";
+                else
+                    cast += castInfo.getName() + ", ";
+            }
 
-                for (Genre genre : movie.getGenres())
-                    genres += genre.getName() + ", ";
+            if (!genres.isEmpty())
+                genres = genres.substring(0, genres.length() - 2);
+            if (!cast.isEmpty())
+                cast = cast.substring(0, cast.length() - 2);
+            if (!directors.isEmpty())
+                directors = directors.substring(0, directors.length() - 2);
 
-                for (CastInfo castInfo : movie.getCast()) {
-                    if (castInfo.getJob().toLowerCase().equals("director"))
-                        directors += castInfo.getName() + ", ";
-                    else
-                        cast += castInfo.getName() + ", ";
-                }
+            // Save the info
+            Dao<MovieInfo, Integer> dbInfo;
+            try {
+                dbInfo = DatabaseManager.getInstance().getMovieInfoDao();
 
-                if (!genres.isEmpty())
-                    genres = genres.substring(0, genres.length() - 2);
-                if (!cast.isEmpty())
-                    cast = cast.substring(0, cast.length() - 2);
-                if (!directors.isEmpty())
-                    directors = directors.substring(0, directors.length() - 2);
-
-                // Save the info
-                Dao<MovieInfo, Integer> dbInfo = DatabaseManager.getInstance()
-                        .getMovieInfoDao();
                 MovieInfo info = new MovieInfo(cast, directors, thumbPath,
                         translatedPlot, genres, Math.round((float) movie
                                 .getRating() / 2), localMovie.getId());
@@ -196,13 +231,12 @@ public class MovieInfoDownloader {
                 localMovie.setYear(movie.getReleasedDate().getYear() + 1900);
                 localMovie.setInfo_id(info.getId());
                 dbMovie.update(localMovie);
-            } else {
-                System.out.println("No movie info found for "
-                        + localMovie.getName());
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            System.out
-                    .println("Failed to att movie info, probably info for that moviea already exists");
+        } else {
+            System.out.println(" - No info found!");
         }
 
     }
