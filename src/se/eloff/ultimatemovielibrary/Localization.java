@@ -78,7 +78,7 @@ public final class Localization {
 
     // MovieElement
     public static final ImageIcon moviePlayButtonIcon = new ImageIcon(
-            "img/Button-Play-icon_50.png");
+            "img/Button-Play-icon_40.png");
     public static final ImageIcon movieSeenButtonIcon = new ImageIcon(
             "img/eye_50.png");
     public static final ImageIcon movieFavoriteButtonIcon = new ImageIcon(
@@ -89,11 +89,11 @@ public final class Localization {
     public static final String movieMoveDownButtonIcon = "img/navigate-down-icon.png";
 
     public static final ImageIcon movieSeenButtonIconDisabled = new ImageIcon(
-            "img/eye_50_disabled.png");
+            "img/eye_40_disabled.png");
     public static final ImageIcon movieFavoriteButtonIconDisabled = new ImageIcon(
-            "img/Favorite-icon_50_disabled.png");
+            "img/Favorite-icon_40_disabled.png");
     public static final ImageIcon movieStarButtonIconDisabled = new ImageIcon(
-            "img/Button-Favorite-icon_50_disabled.png");
+            "img/Button-Favorite-icon_40_disabled.png");
 
     public static final String movieNoYearText = "Okänt";
 

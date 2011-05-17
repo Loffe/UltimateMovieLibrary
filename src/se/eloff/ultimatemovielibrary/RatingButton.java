@@ -143,11 +143,11 @@ public class RatingButton extends JButton implements ActionListener {
 
         private final Color fillColorActive = new Color(255, 200, 0);
         private final Color fillColorHigh = new Color(255, 230, 40);
-        private final Color fillColorInactive = new Color(230, 230, 192);
+        private final Color fillColorInactive = new Color(100, 100, 100);
 
         private final Color borderColorActive = new Color(230, 128, 80);
         private final Color borderColorHigh = new Color(255, 150, 80);
-        private final Color borderColorInactive = new Color(220, 220, 180);
+        private final Color borderColorInactive = new Color(80, 80, 80);
 
         private boolean active = false;
 

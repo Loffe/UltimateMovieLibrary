@@ -191,8 +191,7 @@ public class MovieInfoPanel extends JPanel {
 
     public void refresh(LocalMovie movie) {
         try {
-            movie = DatabaseManager.getInstance().getMovieDao().queryForId(
-                    movie.getId());
+           DatabaseManager.getInstance().getMovieDao().refresh(movie);
         } catch (SQLException e) {
             e.printStackTrace();
         }
