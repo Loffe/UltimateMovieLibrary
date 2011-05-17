@@ -5,15 +5,20 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.sql.SQLException;
 import java.util.List;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
+import javax.swing.KeyStroke;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.QueryBuilder;
@@ -31,8 +36,8 @@ public abstract class ResultPanel extends JScrollPane implements
     private boolean orderAscending = true;
 
     private ProfilePanel parentPanel;
-    
-    public ProfilePanel getParenPanel(){
+
+    public ProfilePanel getParenPanel() {
         return parentPanel;
     }
 
@@ -50,7 +55,43 @@ public abstract class ResultPanel extends JScrollPane implements
         setViewportView(outerPanel);
 
         setColumnHeaderView(createHeader());
+
+        this.setInputMap(WHEN_IN_FOCUSED_WINDOW, null);
+
         getVerticalScrollBar().setUnitIncrement(20);
+
+        this.addKeyListener(new KeyListener() {
+
+            @Override
+            public void keyTyped(KeyEvent arg0) {
+            }
+
+            @Override
+            public void keyReleased(KeyEvent arg0) {
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == 38) {
+
+                    if (selectedElementPosition != 0
+                            && resultPanel.getComponentCount() > 1) {
+                        setSelectedElement((ListElement) resultPanel
+                                .getComponent(selectedElementPosition - 1));
+                    }
+                    // selectedElementPosition = selectedElementPosition - 1;
+                } else if (e.getKeyCode() == 40) {
+                    if (selectedElementPosition != resultPanel
+                            .getComponentCount() - 1
+                            && resultPanel.getComponentCount() > 1) {
+                        setSelectedElement((ListElement) resultPanel
+                                .getComponent(selectedElementPosition + 1));
+                    }
+                }
+                // dont allow the scollpane to scroll
+                e.consume();
+            }
+        });
     }
 
     private JComponent createHeader() {
@@ -132,7 +173,6 @@ public abstract class ResultPanel extends JScrollPane implements
             orderColumn = "position";
             orderAscending = true;
         }
-
         search();
     }
 
@@ -147,7 +187,6 @@ public abstract class ResultPanel extends JScrollPane implements
     public abstract void search();
 
     public void setSelectedElement(ListElement element) {
-        parentPanel.setSelectedElement(element);
 
         // Tell the selected element that it is selected
         int selectedListId = parentPanel.getSelecteListId();
@@ -157,19 +196,36 @@ public abstract class ResultPanel extends JScrollPane implements
                     && selectedListId != Playlist.SEEN_LIST_ID);
 
         // deselect all other
-        int position = 0;
-        for (Component elementL : resultPanel.getComponents()) {
+        Component components[] =  resultPanel.getComponents();
+        for (int i = 0; i < components.length; i++) {
+            // for (Component elementL : resultPanel.getComponents()) {
             try {
-                ListElement listElement = (ListElement) elementL;
-
-                if (listElement != element)
-                    listElement.deSelect();
+                ListElement elementCast = (ListElement) components[i];
+                if (elementCast != element)
+                    elementCast.deSelect();
                 else
-                    selectedElementPosition = position;
-                position++;
+                    selectedElementPosition = i;
             } catch (Exception e) {
             }
         }
+
+        // make sure the selected element is on screen
+        if ((selectedElementPosition) * element.getHeight() < getVerticalScrollBar()
+                .getValue()) {
+            this.getVerticalScrollBar().setValue(
+                    (selectedElementPosition) * element.getHeight());
+            // revalidate();
+            // repaint();
+        } else if ((selectedElementPosition + 1) * element.getHeight()
+                - getVerticalScrollBar().getValue() > getHeight() - 35) {
+            this.getVerticalScrollBar().setValue(
+                    (selectedElementPosition + 1) * element.getHeight()
+                            - getHeight() + 35);
+            // revalidate();
+            // repaint();
+        }
+
+        parentPanel.setSelectedElement(element);
     }
 
     private void switchPositions(ListElement moveUpElement,
@@ -223,7 +279,6 @@ public abstract class ResultPanel extends JScrollPane implements
     }
 
     public void moveSelectedElementUp() {
-        System.out.println("moving up, selpos :" + selectedElementPosition);
         if (selectedElementPosition != 0 && resultPanel.getComponentCount() > 1) {
             switchPositions(
                     (ListElement) resultPanel
@@ -237,7 +292,6 @@ public abstract class ResultPanel extends JScrollPane implements
     }
 
     public void moveSelectedElementDown() {
-        System.out.println("moving donw, selpos :" + selectedElementPosition);
         if (selectedElementPosition != resultPanel.getComponentCount() - 1
                 && resultPanel.getComponentCount() > 1) {
             switchPositions(

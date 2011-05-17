@@ -150,6 +150,7 @@ public final class Localization {
     public static final String profileWishList = "Önskelista";
 
     public static final Color selectedListElementColor = Color.DARK_GRAY;
+    public static final Color HoverListElementColor = new Color(50, 50, 50);
     // new Color(0, 200, 251);
 
     // MovieInfo

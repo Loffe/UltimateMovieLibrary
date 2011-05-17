@@ -19,6 +19,10 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
@@ -66,6 +70,8 @@ public class ListElement extends JPanel {
     private final ResultPanel parentPanel;
     private LocalMovie movie;
 
+    private boolean isSelected = false;
+
     public ListElement(LocalMovie movie, ResultPanel parentPanel) {
         this.parentPanel = parentPanel;
         this.movie = movie;
@@ -77,7 +83,7 @@ public class ListElement extends JPanel {
     }
 
     private void initComponents() {
-
+        setFocusable(true);
         playButton = new JButton();
         titleLabel = new JLabel();
         yearLabel = new JLabel();
@@ -435,25 +441,30 @@ public class ListElement extends JPanel {
 
             @Override
             public void mouseReleased(MouseEvent e) {
-                // TODO Auto-generated method stub
-
             }
 
             @Override
             public void mousePressed(MouseEvent e) {
-                // select();
+                parentPanel.requestFocusInWindow();
                 parentPanel.setSelectedElement(ListElement.this);
-
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-
+                if (!isSelected) {
+                    setOpaque(false);
+                    setBackground(Localization.HoverListElementColor);
+                    repaint();
+                }
             }
 
             @Override
             public void mouseEntered(MouseEvent e) {
-
+                if (!isSelected) {
+                    setOpaque(true);
+                    setBackground(Localization.HoverListElementColor);
+                    repaint();
+                }
             }
 
             @Override
@@ -461,6 +472,7 @@ public class ListElement extends JPanel {
 
             }
         });
+       
 
         rating.addActionListener(new ActionListener() {
             @Override
@@ -576,6 +588,7 @@ public class ListElement extends JPanel {
     }
 
     public void select(boolean showMoveArrows) {
+        isSelected = true;
         this.setOpaque(true);
         this.setBackground(Localization.selectedListElementColor);
         moveUpButton.setVisible(showMoveArrows);
@@ -583,6 +596,7 @@ public class ListElement extends JPanel {
     }
 
     public void deSelect() {
+        isSelected = false;
         this.setOpaque(false);
         this.setBackground(Color.black);
         moveUpButton.setVisible(false);
