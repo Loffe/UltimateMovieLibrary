@@ -195,39 +195,40 @@ public abstract class ResultPanel extends JScrollPane implements
 
         // Tell the selected element that it is selected
         int selectedListId = parentPanel.getSelecteListId();
-        if (element != null)
+        if (element != null) {
             element.select(orderColumn.equals("position")
                     && selectedListId != 1
                     && selectedListId != Playlist.SEEN_LIST_ID);
 
-        // deselect all other
-        Component components[] = resultPanel.getComponents();
-        for (int i = 0; i < components.length; i++) {
-            // for (Component elementL : resultPanel.getComponents()) {
-            try {
-                ListElement elementCast = (ListElement) components[i];
-                if (elementCast != element)
-                    elementCast.deSelect();
-                else
-                    selectedElementPosition = i;
-            } catch (Exception e) {
+            // deselect all other
+            Component components[] = resultPanel.getComponents();
+            for (int i = 0; i < components.length; i++) {
+                // for (Component elementL : resultPanel.getComponents()) {
+                try {
+                    ListElement elementCast = (ListElement) components[i];
+                    if (elementCast != element)
+                        elementCast.deSelect();
+                    else
+                        selectedElementPosition = i;
+                } catch (Exception e) {
+                }
             }
-        }
 
-        // make sure the selected element is on screen
-        if ((selectedElementPosition) * element.getHeight() < getVerticalScrollBar()
-                .getValue()) {
-            this.getVerticalScrollBar().setValue(
-                    (selectedElementPosition) * element.getHeight());
-            // revalidate();
-            // repaint();
-        } else if ((selectedElementPosition + 1) * element.getHeight()
-                - getVerticalScrollBar().getValue() > getHeight() - 35) {
-            this.getVerticalScrollBar().setValue(
-                    (selectedElementPosition + 1) * element.getHeight()
-                            - getHeight() + 35);
-            // revalidate();
-            // repaint();
+            // make sure the selected element is on screen
+            if ((selectedElementPosition) * element.getHeight() < getVerticalScrollBar()
+                    .getValue()) {
+                this.getVerticalScrollBar().setValue(
+                        (selectedElementPosition) * element.getHeight());
+                // revalidate();
+                // repaint();
+            } else if ((selectedElementPosition + 1) * element.getHeight()
+                    - getVerticalScrollBar().getValue() > getHeight() - 35) {
+                this.getVerticalScrollBar().setValue(
+                        (selectedElementPosition + 1) * element.getHeight()
+                                - getHeight() + 35);
+                // revalidate();
+                // repaint();
+            }
         }
 
         parentPanel.setSelectedElement(element);
