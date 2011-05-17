@@ -87,6 +87,11 @@ public abstract class ResultPanel extends JScrollPane implements
                         setSelectedElement((ListElement) resultPanel
                                 .getComponent(selectedElementPosition + 1));
                     }
+                } else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    ListElement element = (ListElement) resultPanel
+                            .getComponent(selectedElementPosition);
+                    ExternalPlayerLauncher.getInstance().playMovie(
+                            element.getMovie());
                 }
                 // dont allow the scollpane to scroll
                 e.consume();
@@ -196,7 +201,7 @@ public abstract class ResultPanel extends JScrollPane implements
                     && selectedListId != Playlist.SEEN_LIST_ID);
 
         // deselect all other
-        Component components[] =  resultPanel.getComponents();
+        Component components[] = resultPanel.getComponents();
         for (int i = 0; i < components.length; i++) {
             // for (Component elementL : resultPanel.getComponents()) {
             try {

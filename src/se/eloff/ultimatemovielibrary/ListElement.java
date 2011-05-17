@@ -472,7 +472,6 @@ public class ListElement extends JPanel {
 
             }
         });
-       
 
         rating.addActionListener(new ActionListener() {
             @Override
