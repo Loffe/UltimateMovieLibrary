@@ -72,7 +72,7 @@ public abstract class ResultPanel extends JScrollPane implements
 
             @Override
             public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == 38) {
+                if (e.getKeyCode() == KeyEvent.VK_UP) {
 
                     if (selectedElementPosition != 0
                             && resultPanel.getComponentCount() > 1) {
@@ -80,7 +80,7 @@ public abstract class ResultPanel extends JScrollPane implements
                                 .getComponent(selectedElementPosition - 1));
                     }
                     // selectedElementPosition = selectedElementPosition - 1;
-                } else if (e.getKeyCode() == 40) {
+                } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
                     if (selectedElementPosition != resultPanel
                             .getComponentCount() - 1
                             && resultPanel.getComponentCount() > 1) {
