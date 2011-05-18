@@ -335,7 +335,7 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
 
             public Dimension getPreferredSize() {
                 // TODO better calculation of the height
-                return new Dimension(100, (listModel.getSize() * 18) + 10);
+                return new Dimension(100, (listModel.getSize() * 22) + 10);
             }
         };
         lists.addMouseListener(new MouseAdapter() {
