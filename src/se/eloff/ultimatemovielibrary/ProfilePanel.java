@@ -166,11 +166,10 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
                                             getOrderColumn(),
                                             isOrderAscending(), true);
                         } else {
-                            hideSeenMoviesCheckBox.setSelected(false);
-                            hideSeenMoviesCheckBox.setEnabled(false);
+                            hideSeenMoviesCheckBox.setEnabled(true);
                             lastSearchId = MovieSearchProvider.searchByList(
                                     name, resultPanel, getOrderColumn(),
-                                    isOrderAscending(), selectedList);
+                                    isOrderAscending(), selectedList, hideSeenMoviesCheckBox.isSelected());
                         }
                     }
                 } catch (ClassCastException e) {

@@ -247,11 +247,11 @@ public class MovieSearchProvider {
 
     public static int searchByList(String name, MovieSearchClient client,
             String orderByColumn, boolean ascending,
-            se.eloff.ultimatemovielibrary.Playlist list) {
+            se.eloff.ultimatemovielibrary.Playlist list, boolean hideSeenMovies) {
         int assignedKey = key;
         key++;
         searchByNameAsync(name, assignedKey, client, orderByColumn, ascending,
-                false, false, false, false, false, false, list);
+                hideSeenMovies, false, false, false, false, false, list);
         return assignedKey;
     }
 }
