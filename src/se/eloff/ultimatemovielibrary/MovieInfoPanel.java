@@ -327,6 +327,19 @@ public class MovieInfoPanel extends JPanel {
             } catch (Exception e) {
                 e.printStackTrace();  
             }
+            //Adds black border
+            for(int y = 0; y < image.getHeight(); y++) {  
+                image.setRGB(0, y, Color.black.getRGB());
+                image.setRGB(1, y, Color.black.getRGB());
+                image.setRGB(image.getWidth()-1, y, Color.black.getRGB());
+                image.setRGB(image.getWidth()-2, y, Color.black.getRGB());
+            }
+            for(int x = 0; x < image.getWidth(); x++) {  
+                image.setRGB(x, 0, Color.black.getRGB());
+                image.setRGB(x, 1, Color.black.getRGB());
+                image.setRGB(x, image.getHeight()-1, Color.black.getRGB());
+                image.setRGB(x, image.getHeight()-2, Color.black.getRGB());
+            }
             this.repaint();
         }
      
