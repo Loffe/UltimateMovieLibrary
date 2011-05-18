@@ -71,11 +71,13 @@ public class ListElement extends JPanel {
     private LocalMovie movie;
 
     private boolean isSelected = false;
+    private int position;
 
-    public ListElement(LocalMovie movie, ResultPanel parentPanel) {
+    public ListElement(LocalMovie movie, ResultPanel parentPanel, int position) {
         this.parentPanel = parentPanel;
         this.movie = movie;
         initComponents();
+        this.position = position;
     }
 
     public LocalMovie getMovie() {
@@ -586,19 +588,20 @@ public class ListElement extends JPanel {
         });
     }
 
-    public void select(boolean showMoveArrows) {
-        isSelected = true;
-        this.setOpaque(true);
-        this.setBackground(Localization.selectedListElementColor);
-        moveUpButton.setVisible(showMoveArrows);
-        moveDownButton.setVisible(showMoveArrows);
+    public void setSelected(boolean selected, boolean showMoveArrows) {
+        isSelected = selected;
+        this.setOpaque(selected);
+        this.setBackground(selected ? Localization.selectedListElementColor
+                : Color.black);
+        moveUpButton.setVisible(showMoveArrows && selected);
+        moveDownButton.setVisible(showMoveArrows && selected);
     }
 
-    public void deSelect() {
-        isSelected = false;
-        this.setOpaque(false);
-        this.setBackground(Color.black);
-        moveUpButton.setVisible(false);
-        moveDownButton.setVisible(false);
+    public void setPosition(int position) {
+        this.position = position;
+    }
+
+    public int getPosition() {
+        return position;
     }
 }

@@ -154,8 +154,9 @@ public abstract class ResultPanel extends JScrollPane implements
                 setSelectedElement(null);
                 repaint();
             } else {
+                int i = 0;
                 for (LocalMovie movie : movies) {
-                    resultPanel.add(new ListElement(movie, this));
+                    resultPanel.add(new ListElement(movie, this, i++));
                 }
                 setSelectedElement((ListElement) resultPanel.getComponent(0));
             }
@@ -193,42 +194,37 @@ public abstract class ResultPanel extends JScrollPane implements
 
     public void setSelectedElement(ListElement element) {
 
-        // Tell the selected element that it is selected
-        int selectedListId = parentPanel.getSelecteListId();
-        if (element != null) {
-            element.select(orderColumn.equals("position")
-                    && selectedListId != 1
-                    && selectedListId != Playlist.SEEN_LIST_ID);
-
-            // deselect all other
-            Component components[] = resultPanel.getComponents();
-            for (int i = 0; i < components.length; i++) {
-                // for (Component elementL : resultPanel.getComponents()) {
-                try {
-                    ListElement elementCast = (ListElement) components[i];
-                    if (elementCast != element)
-                        elementCast.deSelect();
-                    else
-                        selectedElementPosition = i;
-                } catch (Exception e) {
-                }
+        // deselect the previously selected element
+        if (selectedElementPosition != -1) {
+            try {
+                ListElement oldSelected = (ListElement) resultPanel
+                        .getComponent(selectedElementPosition);
+                if (oldSelected != null)
+                    oldSelected.setSelected(false, false);
+            } catch (Exception e) {
             }
+        }
+
+        if (element != null) {
+            selectedElementPosition = element.getPosition();
 
             // make sure the selected element is on screen
             if ((selectedElementPosition) * element.getHeight() < getVerticalScrollBar()
                     .getValue()) {
                 this.getVerticalScrollBar().setValue(
                         (selectedElementPosition) * element.getHeight());
-                // revalidate();
-                // repaint();
             } else if ((selectedElementPosition + 1) * element.getHeight()
                     - getVerticalScrollBar().getValue() > getHeight() - 35) {
                 this.getVerticalScrollBar().setValue(
                         (selectedElementPosition + 1) * element.getHeight()
                                 - getHeight() + 35);
-                // revalidate();
-                // repaint();
             }
+
+            // Select the actual element
+            int selectedListId = parentPanel.getSelecteListId();
+            element.setSelected(true, orderColumn.equals("position")
+                    && selectedListId != 1
+                    && selectedListId != Playlist.SEEN_LIST_ID);
         }
 
         parentPanel.setSelectedElement(element);
