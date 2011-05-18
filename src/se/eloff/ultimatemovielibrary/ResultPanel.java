@@ -150,7 +150,13 @@ public abstract class ResultPanel extends JScrollPane implements
         if (lastSearchId == searchKey) {
             resultPanel.removeAll();
             if (movies.isEmpty()) {
-                resultPanel.add(new JLabel(Localization.searchNoMatchText));
+                if (parentPanel.getSelecteListId() == 1){
+                    resultPanel.add(new JLabel(Localization.searchNoMatchText));
+                }
+                else
+                {
+                    resultPanel.add(new JLabel(Localization.searchInListNoMatch));
+                }
                 setSelectedElement(null);
                 repaint();
             } else {

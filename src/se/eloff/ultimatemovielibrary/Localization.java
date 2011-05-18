@@ -56,6 +56,7 @@ public final class Localization {
     public static final int searchFieldLabelTextSize = 14;
     public static final String searchHideSeenMoviesText = "Dölj sedda filmer";
     public static final String searchNoMatchText = "Din sökning matchade inte någon film.";
+    public static final String searchInListNoMatch = "Din lista är tom";
     public static final String searchInProgressText = "Laddar filmer...";
 
     public static final String searchOrderButtonMovieTitle = "Filmtitel";
