@@ -188,6 +188,6 @@ public final class Localization {
             "img/Favorite-icon-16.png");
     public static final Icon listsSeenIcon = new ImageIcon("img/eye_16.png");
     public static final Icon listsAddIcon = new ImageIcon("img/plus_16.png");
-    public static final int playlistDefaultTextSize = 12;
+    public static final int playlistDefaultTextSize = 14;
     public static final int playlistAllMoviesTextSize = 22;
 }
