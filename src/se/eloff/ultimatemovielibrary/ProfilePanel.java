@@ -266,7 +266,7 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
         centerBox = Box.createVerticalBox();
         centerBox.add(searchBox);
         centerBox.add(resultPanel);
-        movieInfoPanel = new MovieInfoPanel(this);
+        movieInfoPanel = new MovieInfoPanel(this, false);
         this.add(centerBox, BorderLayout.CENTER);
         this.add(movieInfoPanel, BorderLayout.EAST);
     }

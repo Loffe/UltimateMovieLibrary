@@ -57,19 +57,22 @@ public class MovieInfoPanel extends JPanel {
     private JLabel cast = new JLabel();
 
     private final int gapsize = 20;
-    
+
     private LocalMovie movie = null;
-    
+
     private ListElementButtons elementButtons;
     private JPanel buttonPanel = new JPanel();
-    
+
     private final ProfilePanel parentPanel;
+
+    private boolean showButtons = false;
 
     /**
      * Constructor. Creates a new MovieInfoPanel to show info about a movie.
      */
-    public MovieInfoPanel(ProfilePanel parentPanel) {
+    public MovieInfoPanel(ProfilePanel parentPanel, boolean showButtons) {
         this.parentPanel = parentPanel;
+        this.showButtons = showButtons;
         // Set fix size
         setSize(Localization.movieInfoWidth, Localization.movieInfoHeight);
         setMaximumSize(new Dimension(Localization.movieInfoWidth,
@@ -96,7 +99,7 @@ public class MovieInfoPanel extends JPanel {
         plotLabel.setText(Localization.moviePlotLabel);
         plotLabel.setFont(new Font(plotLabel.getFont().getName(), Font.BOLD,
                 plotLabel.getFont().getSize()));
-        //plotPanel.add(plotLabel);
+        // plotPanel.add(plotLabel);
         plot.setLineWrap(true);
         plot.setWrapStyleWord(true);
         plot.setEditable(false);
@@ -104,7 +107,7 @@ public class MovieInfoPanel extends JPanel {
         plot.setBorder(null);
         plot.setBorder(new EmptyBorder(8, 8, 8, 8));
         plot.setFocusable(false);
-       
+
         // Assemble panel to show genres
         genrePanel.setLayout(new BorderLayout());
         genreLabel.setFont(new Font(genreLabel.getFont().getName(), Font.BOLD,
@@ -142,7 +145,7 @@ public class MovieInfoPanel extends JPanel {
         JPanel topPanel = new JPanel();
         topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.Y_AXIS));
         JScrollPane centerPanel = new JScrollPane(plot);
-        
+
         JPanel bottomPanel = new JPanel();
         bottomPanel.setLayout(new BoxLayout(bottomPanel, BoxLayout.Y_AXIS));
         topPanel.add(title);
@@ -200,15 +203,17 @@ public class MovieInfoPanel extends JPanel {
 
     public void refresh(LocalMovie movie) {
         try {
-           DatabaseManager.getInstance().getMovieDao().refresh(movie);
+            DatabaseManager.getInstance().getMovieDao().refresh(movie);
         } catch (SQLException e) {
             e.printStackTrace();
         }
         this.movie = movie;
         elementButtons = new ListElementButtons(movie, parentPanel);
-        buttonPanel.removeAll();
-        buttonPanel.add(elementButtons);
-        buttonPanel.revalidate();
+        if (showButtons) {
+            buttonPanel.removeAll();
+            buttonPanel.add(elementButtons);
+            buttonPanel.revalidate();
+        }
         MovieInfo info = null;
         if (movie.getInfo_id() != -1) {
             try {
@@ -283,35 +288,39 @@ public class MovieInfoPanel extends JPanel {
     private class Cover extends JLabel implements MouseListener, Runnable {
 
         private static final long serialVersionUID = 4247095294118428348L;
-        
+
         BufferedImage image;
         BufferedImage imageActive;
-        
+
         CoverState state;
         int light;
-        
-        Thread animator=null;
-        
-        public void setState(CoverState state){
+
+        Thread animator = null;
+
+        public void setState(CoverState state) {
             this.state = state;
         }
-        public void setLight(int light){
+
+        public void setLight(int light) {
             this.light = light;
             repaint();
         }
-        public int getLight(){
+
+        public int getLight() {
             return light;
         }
-        public void startTread(){
-            if(animator==null){
+
+        public void startTread() {
+            if (animator == null) {
                 animator = new Thread(this);
                 animator.start();
             }
         }
-        public void stopThread(){
+
+        public void stopThread() {
             animator = null;
         }
-        
+
         boolean active;
 
         public Cover() {
@@ -323,73 +332,76 @@ public class MovieInfoPanel extends JPanel {
             this.setToolTipText(Localization.toolTipsPlay);
             state = new LightState(this);
             light = 0;
-            
+
             // Stop the thread if ancestors are changed, hope this will work ;O
             this.addAncestorListener(new AncestorListener() {
 
                 @Override
                 public void ancestorAdded(AncestorEvent event) {
-                    stopThread();                    
+                    stopThread();
                 }
 
                 @Override
                 public void ancestorMoved(AncestorEvent event) {
-                    stopThread();  
+                    stopThread();
                 }
 
                 @Override
                 public void ancestorRemoved(AncestorEvent event) {
                     stopThread();
                 }
-                
+
             });
         }
-        
-        public void setActive(boolean bool){
+
+        public void setActive(boolean bool) {
             active = bool;
         }
-        
-        public boolean isActive(){
+
+        public boolean isActive() {
             return active;
         }
 
         public void refresh(String src) {
-            try {  
-                image = ImageIO.read(new File(src)); 
+            try {
+                image = ImageIO.read(new File(src));
             } catch (Exception e) {
-                e.printStackTrace();  
+                e.printStackTrace();
             }
-            //Adds black border
+            // Adds black border
             Color color = Localization.coverBorderColor;
-            for(int y = 0; y < image.getHeight(); y++) { 
+            for (int y = 0; y < image.getHeight(); y++) {
                 image.setRGB(0, y, color.getRGB());
                 image.setRGB(1, y, color.getRGB());
-                image.setRGB(image.getWidth()-1, y, color.getRGB());
-                image.setRGB(image.getWidth()-2, y, color.getRGB());
+                image.setRGB(image.getWidth() - 1, y, color.getRGB());
+                image.setRGB(image.getWidth() - 2, y, color.getRGB());
             }
-            for(int x = 0; x < image.getWidth(); x++) {  
+            for (int x = 0; x < image.getWidth(); x++) {
                 image.setRGB(x, 0, color.getRGB());
                 image.setRGB(x, 1, color.getRGB());
-                image.setRGB(x, image.getHeight()-1, color.getRGB());
-                image.setRGB(x, image.getHeight()-2, color.getRGB());
+                image.setRGB(x, image.getHeight() - 1, color.getRGB());
+                image.setRGB(x, image.getHeight() - 2, color.getRGB());
             }
             this.repaint();
         }
-     
+
         protected void paintComponent(Graphics g) {
-            Graphics2D g2 = (Graphics2D)g;
-            
+            Graphics2D g2 = (Graphics2D) g;
+
             // Darken the image by 70%
-            float x = -Localization.minimumCoverLight*3.0f/7.0f;
-            float scaleFactor = x/(x-(float)(light));
+            float x = -Localization.minimumCoverLight * 3.0f / 7.0f;
+            float scaleFactor = x / (x - (float) (light));
             RescaleOp op = new RescaleOp(scaleFactor, 0, null);
             imageActive = op.filter(image, null);
             g2.drawImage(imageActive, null, 0, 0);
-            
-            if(isActive()){
-                int xPos = image.getWidth()/2-Localization.moviePlayButtonIcon.getIconWidth()/2;
-                int yPos = image.getHeight()/2-Localization.moviePlayButtonIcon.getIconHeight()/2;
-                g2.drawImage(Localization.moviePlayButtonIcon.getImage(), xPos, yPos, null);
+
+            if (isActive()) {
+                int xPos = image.getWidth() / 2
+                        - Localization.moviePlayButtonIcon.getIconWidth() / 2;
+                int yPos = image.getHeight() / 2
+                        - Localization.moviePlayButtonIcon.getIconHeight() / 2;
+                g2.drawImage(Localization.moviePlayButtonIcon.getImage(), xPos,
+                        yPos, null);
             }
         }
 
@@ -435,6 +447,7 @@ public class MovieInfoPanel extends JPanel {
         @Override
         public void mouseReleased(MouseEvent arg0) {
         }
+
         @Override
         public void run() {
             // Remember the starting time
@@ -449,79 +462,97 @@ public class MovieInfoPanel extends JPanel {
                 }
                 state.update();
             }
-       }
+        }
     }
+
     private abstract class CoverState {
         Cover stateContext;
-        public CoverState(Cover context){
+
+        public CoverState(Cover context) {
             this.stateContext = context;
         }
-        public void mouseExited(){
+
+        public void mouseExited() {
         }
-        public void mouseEntered(){
+
+        public void mouseEntered() {
         }
-        public void update(){
+
+        public void update() {
         }
     }
-    private class PreDarkenState extends CoverState{
+
+    private class PreDarkenState extends CoverState {
         int countDown = Localization.preDelayDarken;
+
         public PreDarkenState(Cover context) {
             super(context);
         }
+
         public void mouseExited() {
             stateContext.setActive(false);
             stateContext.setState(new LightState(stateContext));
         }
-        public void update(){
+
+        public void update() {
             countDown--;
-            if(countDown==0){
+            if (countDown == 0) {
                 stateContext.setState(new DarkenState(stateContext));
             }
         }
     }
-    private class DarkenState extends CoverState{
+
+    private class DarkenState extends CoverState {
         public DarkenState(Cover context) {
             super(context);
         }
+
         public void mouseExited() {
             stateContext.setActive(false);
             stateContext.setState(new EnlightState(stateContext));
         }
-        public void update(){
-            int light = stateContext.getLight()-1;
+
+        public void update() {
+            int light = stateContext.getLight() - 1;
             stateContext.setLight(light);
-            if(light<=Localization.minimumCoverLight){
+            if (light <= Localization.minimumCoverLight) {
                 stateContext.setState(new DarkState(stateContext));
             }
         }
     }
-    private class DarkState extends CoverState{
+
+    private class DarkState extends CoverState {
         public DarkState(Cover context) {
             super(context);
         }
+
         public void mouseExited() {
             stateContext.setActive(false);
             stateContext.setState(new EnlightState(stateContext));
         }
     }
-    private class EnlightState extends CoverState{
+
+    private class EnlightState extends CoverState {
         public EnlightState(Cover context) {
             super(context);
         }
+
         public void mouseEntered() {
             stateContext.setActive(true);
             stateContext.setState(new DarkenState(stateContext));
         }
-        public void update(){
-            int light = stateContext.getLight()+1;
+
+        public void update() {
+            int light = stateContext.getLight() + 1;
             stateContext.setLight(light);
-            if(light>=0){
+            if (light >= 0) {
                 stateContext.stopThread();
                 stateContext.setState(new LightState(stateContext));
             }
         }
     }
-    private class LightState extends CoverState{
+
+    private class LightState extends CoverState {
         public LightState(Cover context) {
             super(context);
         }

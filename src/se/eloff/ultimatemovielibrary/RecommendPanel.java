@@ -40,16 +40,19 @@ public class RecommendPanel extends JPanel implements MovieSearchClient {
             int searchKey) {
         this.removeAll();
         outerPanel.removeAll();
-        if (lastSearchId == searchKey) {
+        if (movies.size() != 0) {
+            if (lastSearchId == searchKey) {
 
-            outerPanel.setLayout(new GridLayout(1, movies.size()));
-            for (LocalMovie localMovie : movies) {
-                MovieInfoPanel panel = new MovieInfoPanel((ProfilePanel)this.getParent());
-                panel.refresh(localMovie);
-                outerPanel.add(panel);
+                outerPanel.setLayout(new GridLayout(1, movies.size()));
+                for (LocalMovie localMovie : movies) {
+                    MovieInfoPanel panel = new MovieInfoPanel(
+                            (ProfilePanel) this.getParent(),true);
+                    panel.refresh(localMovie);
+                    outerPanel.add(panel);
+                }
+                add(outerPanel);
+                revalidate();
             }
-            add(outerPanel);
-            revalidate();
         }
     }
 }
