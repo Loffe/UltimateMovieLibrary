@@ -171,11 +171,10 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
                                             getOrderColumn(),
                                             isOrderAscending(), true);
                         } else {
-                            hideSeenMoviesCheckBox.setSelected(false);
-                            hideSeenMoviesCheckBox.setEnabled(false);
+                            hideSeenMoviesCheckBox.setEnabled(true);
                             lastSearchId = MovieSearchProvider.searchByList(
                                     name, resultPanel, getOrderColumn(),
-                                    isOrderAscending(), selectedList);
+                                    isOrderAscending(), selectedList, hideSeenMoviesCheckBox.isSelected());
                         }
                     }
                 } catch (ClassCastException e) {
@@ -206,28 +205,12 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
         addNewPlaylistPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 
         addPlaylistLabel = new JLabel(Localization.playlistCreateNewHeading);
-        addPlaylistLabel.addMouseListener(new MouseListener() {
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-            }
-
+        addPlaylistLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 showCreatePlaylist(null);
             }
 
-            @Override
-            public void mouseExited(MouseEvent e) {
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-            }
-
-            @Override
-            public void mouseClicked(MouseEvent e) {
-            }
         });
 
         addPlaylistLabel.setFont(new Font(getFont().getName(), Font.BOLD,
@@ -241,27 +224,10 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
         // pressed.
         // TODO: Although, the user could click anywhere. Fix needed supporting
         // all panels...
-        addNewPlaylistPanel.addMouseListener(new MouseListener() {
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-            }
-
+        addNewPlaylistPanel.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 requestFocus();
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-            }
-
-            @Override
-            public void mouseClicked(MouseEvent e) {
             }
         });
 
