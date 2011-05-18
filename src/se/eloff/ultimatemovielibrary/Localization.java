@@ -32,6 +32,7 @@ public final class Localization {
     // Watch Folder Manager
     public static final ImageIcon watchFolderIcon = new ImageIcon(
             "img/folder_32.png");
+    public static final int watchFolderTextSize = 14;
     public static final String manageWatchFolderHeading = "Hantera bevakade kataloger";
     public static final int manageWatchFolderHeadingFontSize = 20;
     public static final String manageWatchFolderDescription = "Här kan du välja att lägga till eller ta bort bevakade kataloger.";
@@ -208,4 +209,5 @@ public final class Localization {
     public static final Icon listsAddIcon = new ImageIcon("img/plus_16.png");
     public static final int playlistDefaultTextSize = 14;
     public static final int playlistAllMoviesTextSize = 22;
+    
 }

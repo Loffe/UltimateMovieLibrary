@@ -2,6 +2,7 @@ package se.eloff.ultimatemovielibrary;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Font;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -38,7 +39,13 @@ public class WatchFolderPanel extends JPanel {
         add(new JLabel(Localization.watchFolderIcon), BorderLayout.WEST);
 
         // Add a label with the actual folder path.
-        add(new JLabel(folder.getFolderPath()), BorderLayout.CENTER);
+        JPanel folderPathPanel = new JPanel();
+        JLabel folderPathLabel = new JLabel(folder.getFolderPath());
+        folderPathLabel.setFont(new Font(folderPathLabel.getFont().getName(),
+                folderPathLabel.getFont().getStyle(),
+                Localization.watchFolderTextSize));
+        folderPathPanel.add(folderPathLabel);
+        add(folderPathPanel, BorderLayout.CENTER);
 
         // Add a remove button (Note: listeners rather added from parent).
         JPanel buttonPanel = new JPanel();
