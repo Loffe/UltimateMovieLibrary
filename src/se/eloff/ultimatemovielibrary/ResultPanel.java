@@ -233,7 +233,9 @@ public abstract class ResultPanel extends JScrollPane implements
     private void switchPositions(ListElement moveUpElement,
             ListElement moveDownElement, int moveDownElementPos) {
         resultPanel.add(moveUpElement, moveDownElementPos);
+        moveUpElement.setPosition(moveUpElement.getPosition() -1);
         resultPanel.add(moveDownElement, moveDownElementPos + 1);
+        moveDownElement.setPosition(moveDownElement.getPosition() +1);
 
         // save the new positions to the db
         try {
@@ -289,7 +291,8 @@ public abstract class ResultPanel extends JScrollPane implements
                             .getComponent(selectedElementPosition - 1),
                     selectedElementPosition - 1);
             revalidate();
-            selectedElementPosition = selectedElementPosition - 1;
+            setSelectedElement((ListElement) resultPanel
+                            .getComponent(selectedElementPosition - 1));
         }
     }
 
@@ -304,7 +307,8 @@ public abstract class ResultPanel extends JScrollPane implements
                     selectedElementPosition);
 
             revalidate();
-            selectedElementPosition = selectedElementPosition + 1;
+            setSelectedElement((ListElement) resultPanel
+                    .getComponent(selectedElementPosition + 1));
         }
     }
 }
