@@ -59,11 +59,17 @@ public class MovieInfoPanel extends JPanel {
     private final int gapsize = 20;
     
     private LocalMovie movie = null;
+    
+    private ListElementButtons elementButtons;
+    private JPanel buttonPanel = new JPanel();
+    
+    private final ProfilePanel parentPanel;
 
     /**
      * Constructor. Creates a new MovieInfoPanel to show info about a movie.
      */
-    public MovieInfoPanel() {
+    public MovieInfoPanel(ProfilePanel parentPanel) {
+        this.parentPanel = parentPanel;
         // Set fix size
         setSize(Localization.movieInfoWidth, Localization.movieInfoHeight);
         setMaximumSize(new Dimension(Localization.movieInfoWidth,
@@ -137,37 +143,39 @@ public class MovieInfoPanel extends JPanel {
         topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.Y_AXIS));
         JScrollPane centerPanel = new JScrollPane(plot);
         
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
+        JPanel bottomPanel = new JPanel();
+        bottomPanel.setLayout(new BoxLayout(bottomPanel, BoxLayout.Y_AXIS));
         topPanel.add(title);
-      //  add(Box.createRigidArea(new Dimension(0, gapsize)));
+
         topPanel.add(year);
         topPanel.add(Box.createRigidArea(new Dimension(0, gapsize)));
         topPanel.add(cover);
-        //add(Box.createRigidArea(new Dimension(0, gapsize)));
+
+        topPanel.add(buttonPanel);
         JPanel plotLabelPanel = new JPanel();
         plotLabelPanel.setLayout(new BorderLayout());
         plotLabelPanel.add(plotLabel, BorderLayout.WEST);
         topPanel.add(plotLabelPanel);
-        //centerPanel.add(plot);
-        buttonPanel.add(Box.createRigidArea(new Dimension(0, gapsize)));
-        buttonPanel.add(genrePanel);
-        buttonPanel.add(Box.createRigidArea(new Dimension(0, gapsize)));
-        buttonPanel.add(ratingPanel);
-        buttonPanel.add(Box.createRigidArea(new Dimension(0, gapsize)));
-        buttonPanel.add(directorPanel);
-        buttonPanel.add(Box.createRigidArea(new Dimension(0, gapsize)));
-        buttonPanel.add(castPanel);
-        buttonPanel.add(Box.createRigidArea(new Dimension(0, gapsize)));
+
+        bottomPanel.add(Box.createRigidArea(new Dimension(0, gapsize)));
+        bottomPanel.add(genrePanel);
+        bottomPanel.add(Box.createRigidArea(new Dimension(0, gapsize)));
+        bottomPanel.add(ratingPanel);
+        bottomPanel.add(Box.createRigidArea(new Dimension(0, gapsize)));
+        bottomPanel.add(directorPanel);
+        bottomPanel.add(Box.createRigidArea(new Dimension(0, gapsize)));
+        bottomPanel.add(castPanel);
+        bottomPanel.add(Box.createRigidArea(new Dimension(0, gapsize)));
 
         add(topPanel, BorderLayout.NORTH);
         add(centerPanel, BorderLayout.CENTER);
-        add(buttonPanel, BorderLayout.SOUTH);
+        add(bottomPanel, BorderLayout.SOUTH);
         // Initialize the info to default values.
         resetInfo();
     }
 
     public void resetInfo() {
+        elementButtons = null;
         movie = null;
         title.setText(" ");
         title.setToolTipText("");
@@ -197,6 +205,10 @@ public class MovieInfoPanel extends JPanel {
             e.printStackTrace();
         }
         this.movie = movie;
+        elementButtons = new ListElementButtons(movie, parentPanel);
+        buttonPanel.removeAll();
+        buttonPanel.add(elementButtons);
+        buttonPanel.revalidate();
         MovieInfo info = null;
         if (movie.getInfo_id() != -1) {
             try {
