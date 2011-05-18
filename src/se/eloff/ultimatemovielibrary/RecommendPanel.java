@@ -55,6 +55,7 @@ public class RecommendPanel extends JPanel implements MovieSearchClient {
             }
         }
         revalidate();
-        repaint();
+        if (movies.size() == 0)
+            repaint();
     }
 }
