@@ -174,7 +174,8 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
                             hideSeenMoviesCheckBox.setEnabled(true);
                             lastSearchId = MovieSearchProvider.searchByList(
                                     name, resultPanel, getOrderColumn(),
-                                    isOrderAscending(), selectedList, hideSeenMoviesCheckBox.isSelected());
+                                    isOrderAscending(), selectedList,
+                                    hideSeenMoviesCheckBox.isSelected());
                         }
                     }
                 } catch (ClassCastException e) {
@@ -233,9 +234,10 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
 
         leftPanel.add(addNewPlaylistPanel, BorderLayout.CENTER);
         JPanel recommendButtonPanel = new JPanel();
-        recommendButtonPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+        recommendButtonPanel.setSize(200, 10);
+        recommendButtonPanel.add(Box.createRigidArea(new Dimension(0, 7)));
         recommendButtonPanel.add(recommendedMoviesButton, BorderLayout.SOUTH);
-        recommendButtonPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+        recommendButtonPanel.add(Box.createRigidArea(new Dimension(0, 7)));
         leftPanel.add(recommendButtonPanel);
         recommendedMoviesButton.addItemListener(new ItemListener() {
 
@@ -243,16 +245,19 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
             public void itemStateChanged(ItemEvent e) {
                 // TODO Auto-generated method stub
                 if (e.getStateChange() == ItemEvent.SELECTED) {
-                    ProfilePanel.this.remove(movieInfoPanel);
-                    ProfilePanel.this.remove(centerBox);
+                    if (!showsRecommended) {
+                        ProfilePanel.this.remove(movieInfoPanel);
+                        ProfilePanel.this.remove(centerBox);
+
+                        ProfilePanel.this.add(recommendPanel,
+                                BorderLayout.CENTER);
+                        ProfilePanel.this.revalidate();
+                        lists.clearSelection();
+                    }
                     recommendPanel.refresh(ProfilePanel.this.getWidth());
-                    ProfilePanel.this.add(recommendPanel, BorderLayout.CENTER);
-                    ProfilePanel.this.revalidate();
-                    lists.clearSelection();
                     showsRecommended = true;
                 } else {
-                    lists.setSelectedIndex(0);
-                    lists.requestFocus();
+                    recommendedMoviesButton.setSelected(true);
                 }
             }
         });
@@ -405,10 +410,6 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
         addNewPlaylistPanel.removeAll();
         final JTextField newPlaylistInput = new JTextField();
         newPlaylistInput.setPreferredSize(new Dimension(142, 30));
-
-        // newPlaylistInput.setText(Localization.playlistCreateNewMessage);
-        // newPlaylistInput.setSelectionStart(0);
-        // newPlaylistInput.setSelectionEnd(newPlaylistInput.getText().length());
 
         addNewPlaylistPanel.add(newPlaylistInput);
         newPlaylistInput.requestFocus();
