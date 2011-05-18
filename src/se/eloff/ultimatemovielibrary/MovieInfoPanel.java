@@ -310,8 +310,6 @@ public class MovieInfoPanel extends JPanel {
             this.setToolTipText(Localization.toolTipsPlay);
             state = new LightState(this);
             light = 0;
-            animator = new Thread(this);
-            animator.start();
         }
         
         public void setActive(boolean bool){
@@ -403,6 +401,7 @@ public class MovieInfoPanel extends JPanel {
                     break;
                 }
                 state.update();
+                System.out.println("Running: "+Thread.currentThread().getId());
             }
        }
     }
