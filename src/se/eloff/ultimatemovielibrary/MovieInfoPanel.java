@@ -348,17 +348,18 @@ public class MovieInfoPanel extends JPanel {
                 e.printStackTrace();  
             }
             //Adds black border
-            for(int y = 0; y < image.getHeight(); y++) {  
-                image.setRGB(0, y, Color.black.getRGB());
-                image.setRGB(1, y, Color.black.getRGB());
-                image.setRGB(image.getWidth()-1, y, Color.black.getRGB());
-                image.setRGB(image.getWidth()-2, y, Color.black.getRGB());
+            Color color = Localization.coverBorderColor;
+            for(int y = 0; y < image.getHeight(); y++) { 
+                image.setRGB(0, y, color.getRGB());
+                image.setRGB(1, y, color.getRGB());
+                image.setRGB(image.getWidth()-1, y, color.getRGB());
+                image.setRGB(image.getWidth()-2, y, color.getRGB());
             }
             for(int x = 0; x < image.getWidth(); x++) {  
-                image.setRGB(x, 0, Color.black.getRGB());
-                image.setRGB(x, 1, Color.black.getRGB());
-                image.setRGB(x, image.getHeight()-1, Color.black.getRGB());
-                image.setRGB(x, image.getHeight()-2, Color.black.getRGB());
+                image.setRGB(x, 0, color.getRGB());
+                image.setRGB(x, 1, color.getRGB());
+                image.setRGB(x, image.getHeight()-1, color.getRGB());
+                image.setRGB(x, image.getHeight()-2, color.getRGB());
             }
             this.repaint();
         }
@@ -435,7 +436,6 @@ public class MovieInfoPanel extends JPanel {
                     break;
                 }
                 state.update();
-                System.out.println("Running: "+Thread.currentThread().getId());
             }
        }
     }
