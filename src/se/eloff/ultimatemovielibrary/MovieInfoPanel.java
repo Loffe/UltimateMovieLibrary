@@ -97,6 +97,7 @@ public class MovieInfoPanel extends JPanel {
         plot.setOpaque(false);
         plot.setBorder(null);
         plot.setBorder(new EmptyBorder(8, 8, 8, 8));
+        plot.setFocusable(false);
        
         // Assemble panel to show genres
         genrePanel.setLayout(new BorderLayout());

@@ -11,6 +11,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
@@ -31,9 +33,12 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
+import javax.swing.JToggleButton;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import javax.swing.TransferHandler;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.ListDataEvent;
@@ -90,7 +95,7 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
     private JCheckBox hideSeenMoviesCheckBox;
 
     private JList lists;
-    private JButton recommendedMoviesButton;
+    private JToggleButton recommendedMoviesButton;
     private Box centerBox;
     private RecommendPanel recommendPanel;
     private JPanel addNewPlaylistPanel;
@@ -187,7 +192,7 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
         this.setLayout(new BorderLayout());
 
         recommendPanel = new RecommendPanel();
-        recommendedMoviesButton = new JButton(
+        recommendedMoviesButton = new JToggleButton(
                 Localization.recommendRefreshButtonText,
                 Localization.recommendRefreshButtonIcon);
         recommendedMoviesButton
@@ -261,19 +266,28 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
         });
 
         leftPanel.add(addNewPlaylistPanel, BorderLayout.CENTER);
-        leftPanel.add(recommendedMoviesButton, BorderLayout.SOUTH);
-
-        recommendedMoviesButton.addActionListener(new ActionListener() {
+        JPanel recommendButtonPanel = new JPanel();
+        recommendButtonPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+        recommendButtonPanel.add(recommendedMoviesButton, BorderLayout.SOUTH);
+        recommendButtonPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+        leftPanel.add(recommendButtonPanel);
+        recommendedMoviesButton.addItemListener(new ItemListener() {
 
             @Override
-            public void actionPerformed(ActionEvent e) {
-                ProfilePanel.this.remove(movieInfoPanel);
-                ProfilePanel.this.remove(centerBox);
-                recommendPanel.refresh(ProfilePanel.this.getWidth());
-                ProfilePanel.this.add(recommendPanel, BorderLayout.CENTER);
-                ProfilePanel.this.revalidate();
-                lists.clearSelection();
-                showsRecommended = true;
+            public void itemStateChanged(ItemEvent e) {
+                // TODO Auto-generated method stub
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+                    ProfilePanel.this.remove(movieInfoPanel);
+                    ProfilePanel.this.remove(centerBox);
+                    recommendPanel.refresh(ProfilePanel.this.getWidth());
+                    ProfilePanel.this.add(recommendPanel, BorderLayout.CENTER);
+                    ProfilePanel.this.revalidate();
+                    lists.clearSelection();
+                    showsRecommended = true;
+                } else {
+                    lists.setSelectedIndex(0);
+                    lists.requestFocus();
+                }
             }
         });
 
@@ -374,7 +388,7 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
 
                     movieInfoPanel.repaint();
                     centerBox.repaint();
-
+                    recommendedMoviesButton.setSelected(false);
                     showsRecommended = false;
                 }
             }
