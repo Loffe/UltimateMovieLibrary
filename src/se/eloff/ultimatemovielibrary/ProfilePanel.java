@@ -448,12 +448,10 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
 
             @Override
             public void focusLost(FocusEvent e) {
-                if (newPlaylistInput.getText().isEmpty()) {
-                    addNewPlaylistPanel.removeAll();
-                    addNewPlaylistPanel.add(addPlaylistLabel);
-                    addNewPlaylistPanel.revalidate();
-                    addNewPlaylistPanel.repaint();
-                }
+                addNewPlaylistPanel.removeAll();
+                addNewPlaylistPanel.add(addPlaylistLabel);
+                addNewPlaylistPanel.revalidate();
+                addNewPlaylistPanel.repaint();
             }
 
             @Override
