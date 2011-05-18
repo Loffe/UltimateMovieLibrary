@@ -174,7 +174,7 @@ public final class Localization {
     public static final String unknownRatingText = "Inget betyg hittades.";
     public static final String unknownDirectorText = "Ingen regissör hittades.";
     public static final String unknownCastText = "Inga skådespelare hittades.";
-    public static final int minimumCoverLight = -30;
+    public static final int minimumCoverLight = -15;
     public static final int animationDelayMs = 16;
     public static final int preDelayDarken = 15;
 

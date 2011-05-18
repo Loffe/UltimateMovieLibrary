@@ -395,7 +395,6 @@ public class MovieInfoPanel extends JPanel {
             // Remember the starting time
             long tm = System.currentTimeMillis();
             while (Thread.currentThread() == animator) {
-                System.out.println("Running..");
                 // Delay depending on how far we are behind.
                 try {
                     tm += Localization.animationDelayMs;

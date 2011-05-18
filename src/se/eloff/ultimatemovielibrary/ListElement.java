@@ -87,9 +87,6 @@ public class ListElement extends JPanel {
     private void initComponents() {
         setFocusable(true);
         playButton = new JButton();
-       // playButton.setBorderPainted(false);
-       // playButton.setOpaque(false);
-       // playButton.setFocusPainted( false );
         
         playButton.setContentAreaFilled(false);
 
