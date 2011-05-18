@@ -7,7 +7,6 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Insets;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -19,12 +18,13 @@ import java.sql.SQLException;
 import javax.imageio.ImageIO;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.AncestorEvent;
+import javax.swing.event.AncestorListener;
 
 public class MovieInfoPanel extends JPanel {
 
@@ -311,6 +311,26 @@ public class MovieInfoPanel extends JPanel {
             this.setToolTipText(Localization.toolTipsPlay);
             state = new LightState(this);
             light = 0;
+            
+            // Stop the thread if ancestors are changed, hope this will work ;O
+            this.addAncestorListener(new AncestorListener() {
+
+                @Override
+                public void ancestorAdded(AncestorEvent event) {
+                    stopThread();                    
+                }
+
+                @Override
+                public void ancestorMoved(AncestorEvent event) {
+                    stopThread();  
+                }
+
+                @Override
+                public void ancestorRemoved(AncestorEvent event) {
+                    stopThread();
+                }
+                
+            });
         }
         
         public void setActive(boolean bool){
