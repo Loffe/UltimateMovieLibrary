@@ -1,6 +1,7 @@
 package se.eloff.ultimatemovielibrary;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -334,8 +335,13 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
             private static final long serialVersionUID = 6784382107114083176L;
 
             public Dimension getPreferredSize() {
-                // TODO better calculation of the height
-                return new Dimension(100, (listModel.getSize() * 22) + 10);
+                // Try to find the dimension of the list
+                Dimension dim = lists.getMinimumSize();
+                if (lists.getSize().getHeight() >= dim.getHeight())
+                    dim = lists.getSize();
+                if (lists.getMaximumSize().getHeight() >= dim.getHeight())
+                    dim = lists.getMaximumSize();
+                return new Dimension(lists.getMaximumSize());
             }
         };
         lists.addMouseListener(new MouseAdapter() {
