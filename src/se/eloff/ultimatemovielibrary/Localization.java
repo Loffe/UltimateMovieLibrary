@@ -211,5 +211,6 @@ public final class Localization {
     public static final Icon listsAddIcon = new ImageIcon("img/plus_16.png");
     public static final int playlistDefaultTextSize = 14;
     public static final int playlistAllMoviesTextSize = 22;
+    public static final int playlistCreateNewTextSize = playlistDefaultTextSize;
     
 }

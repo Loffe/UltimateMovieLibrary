@@ -206,6 +206,9 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
         addNewPlaylistPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 
         addPlaylistLabel = new JLabel(Localization.playlistCreateNewHeading);
+        addPlaylistLabel.setFont(new Font(addPlaylistLabel.getFont().getName(),
+                Font.BOLD,
+                Localization.playlistCreateNewTextSize));
         addPlaylistLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -213,9 +216,6 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
             }
 
         });
-
-        addPlaylistLabel.setFont(new Font(getFont().getName(), Font.BOLD,
-                getFont().getSize()));
         addPlaylistLabel.setIcon(Localization.listsAddIcon);
         addNewPlaylistPanel.add(addPlaylistLabel);
 
@@ -405,6 +405,9 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
     public void showCreatePlaylist(final LocalMovie movie) {
         addNewPlaylistPanel.removeAll();
         final JTextField newPlaylistInput = new JTextField();
+        newPlaylistInput.setFont(new Font(newPlaylistInput.getFont().getName(),
+                newPlaylistInput.getFont().getStyle(),
+                Localization.playlistDefaultTextSize));
         newPlaylistInput.setPreferredSize(new Dimension(142, 30));
 
         addNewPlaylistPanel.add(newPlaylistInput);
