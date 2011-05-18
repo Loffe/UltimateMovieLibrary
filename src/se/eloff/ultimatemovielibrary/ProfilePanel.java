@@ -325,7 +325,7 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
                     dim = lists.getSize();
                 if (lists.getMaximumSize().getHeight() >= dim.getHeight())
                     dim = lists.getMaximumSize();
-                return new Dimension(lists.getMaximumSize());
+                return new Dimension(100, (int)dim.getHeight());
             }
         };
         lists.addMouseListener(new MouseAdapter() {
