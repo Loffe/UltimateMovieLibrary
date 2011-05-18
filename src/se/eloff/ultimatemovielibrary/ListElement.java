@@ -13,6 +13,7 @@ package se.eloff.ultimatemovielibrary;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Event;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -25,6 +26,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -87,9 +89,6 @@ public class ListElement extends JPanel {
     private void initComponents() {
         setFocusable(true);
         playButton = new JButton();
-       // playButton.setBorderPainted(false);
-       // playButton.setOpaque(false);
-       // playButton.setFocusPainted( false );
         
         playButton.setContentAreaFilled(false);
 
@@ -131,13 +130,10 @@ public class ListElement extends JPanel {
                 // Make sure no button is painted
                 Graphics2D g2 = (Graphics2D) g;
                 g2.scale(1.0, 1.0);
-                try {
-                    g2.drawImage(ImageIO.read(new File(
-                            Localization.movieMoveUpButtonIcon)), 0, 0, null);
-                } catch (IOException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
+                if (getModel().isRollover())
+                    g2.drawImage(Localization.movieMoveUpButtonHoverIcon, 0, 0, null);
+                else
+                    g2.drawImage(Localization.movieMoveUpButtonIcon, 0, 0, null);
             }
         };
 
@@ -157,13 +153,10 @@ public class ListElement extends JPanel {
                 // Make sure no button is painted
                 Graphics2D g2 = (Graphics2D) g;
                 g2.scale(1.0, 1.0);
-                try {
-                    g2.drawImage(ImageIO.read(new File(
-                            Localization.movieMoveDownButtonIcon)), 0, 0, null);
-                } catch (IOException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
+                if (getModel().isRollover())
+                    g2.drawImage(Localization.movieMoveDownButtonHoverIcon, 0, 0, null);
+                else
+                    g2.drawImage(Localization.movieMoveDownButtonIcon, 0, 0, null);
             }
         };
 

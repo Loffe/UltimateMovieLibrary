@@ -2,7 +2,11 @@ package se.eloff.ultimatemovielibrary;
 
 import java.awt.Color;
 import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -87,8 +91,6 @@ public final class Localization {
             "img/Favorite-icon_40.png");
     public static final ImageIcon movieStarButtonIcon = new ImageIcon(
             "img/Button-Favorite-icon_40.png");
-    public static final String movieMoveUpButtonIcon = "img/navigate-up-icon.png";
-    public static final String movieMoveDownButtonIcon = "img/navigate-down-icon.png";
 
     public static final ImageIcon movieSeenButtonIconDisabled = new ImageIcon(
             "img/eye_40_disabled.png");
@@ -96,6 +98,22 @@ public final class Localization {
             "img/Favorite-icon_40_disabled.png");
     public static final ImageIcon movieStarButtonIconDisabled = new ImageIcon(
             "img/Button-Favorite-icon_40_disabled.png");
+    
+    public static BufferedImage movieMoveDownButtonIcon;
+    public static BufferedImage movieMoveDownButtonHoverIcon;
+    public static BufferedImage movieMoveUpButtonIcon;
+    public static BufferedImage movieMoveUpButtonHoverIcon;
+    static {
+        try {
+            System.out.println("read image icons");
+            movieMoveDownButtonIcon = ImageIO.read(new File("img/navigate-down-icon.png"));
+            movieMoveDownButtonHoverIcon = ImageIO.read(new File("img/navigate-down-hover-icon.png"));
+            movieMoveUpButtonIcon = ImageIO.read(new File("img/navigate-up-icon.png"));
+            movieMoveUpButtonHoverIcon = ImageIO.read(new File("img/navigate-up-hover-icon.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     public static final String movieNoYearText = "Okänt";
 
@@ -174,7 +192,7 @@ public final class Localization {
     public static final String unknownRatingText = "Inget betyg hittades.";
     public static final String unknownDirectorText = "Ingen regissör hittades.";
     public static final String unknownCastText = "Inga skådespelare hittades.";
-    public static final int minimumCoverLight = -30;
+    public static final int minimumCoverLight = -15;
     public static final int animationDelayMs = 16;
     public static final int preDelayDarken = 15;
 
