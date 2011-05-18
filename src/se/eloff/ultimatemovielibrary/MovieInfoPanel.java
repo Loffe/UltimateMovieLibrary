@@ -202,6 +202,8 @@ public class MovieInfoPanel extends JPanel {
     }
 
     public void refresh(LocalMovie movie) {
+        if (movie == null)
+            return;
         try {
             DatabaseManager.getInstance().getMovieDao().refresh(movie);
         } catch (SQLException e) {

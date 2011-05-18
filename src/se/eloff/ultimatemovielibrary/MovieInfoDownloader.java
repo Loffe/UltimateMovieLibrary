@@ -227,6 +227,7 @@ public class MovieInfoDownloader {
                 Dao<LocalMovie, Integer> dbMovie = DatabaseManager
                         .getInstance().getMovieDao();
 
+                localMovie.setRating(Math.round((float) movie.getRating() / 2));
                 localMovie.setName(movie.getName());
                 localMovie.setYear(movie.getReleasedDate().getYear() + 1900);
                 localMovie.setInfo_id(info.getId());
