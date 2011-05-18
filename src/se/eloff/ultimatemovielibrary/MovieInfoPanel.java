@@ -214,7 +214,7 @@ public class MovieInfoPanel extends JPanel {
         if (showButtons) {
             buttonPanel.removeAll();
             buttonPanel.add(elementButtons);
-            buttonPanel.revalidate();
+          //  buttonPanel.revalidate();
         }
         MovieInfo info = null;
         if (movie.getInfo_id() != -1) {
