@@ -234,11 +234,10 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
 
         leftPanel.add(addNewPlaylistPanel, BorderLayout.CENTER);
         JPanel recommendButtonPanel = new JPanel();
-        recommendButtonPanel.setSize(200, 10);
         recommendButtonPanel.add(Box.createRigidArea(new Dimension(0, 7)));
         recommendButtonPanel.add(recommendedMoviesButton, BorderLayout.SOUTH);
         recommendButtonPanel.add(Box.createRigidArea(new Dimension(0, 7)));
-        leftPanel.add(recommendButtonPanel);
+        leftPanel.add(recommendButtonPanel, BorderLayout.SOUTH);
         recommendedMoviesButton.addItemListener(new ItemListener() {
 
             @Override
@@ -256,7 +255,7 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
                     }
                     recommendPanel.refresh(ProfilePanel.this.getWidth());
                     showsRecommended = true;
-                } else {
+                } else if (showsRecommended) {
                     recommendedMoviesButton.setSelected(true);
                 }
             }
@@ -359,8 +358,9 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
 
                     movieInfoPanel.repaint();
                     centerBox.repaint();
-                    recommendedMoviesButton.setSelected(false);
+
                     showsRecommended = false;
+                    recommendedMoviesButton.setSelected(false);
                 }
             }
         });
