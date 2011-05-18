@@ -87,6 +87,12 @@ public class ListElement extends JPanel {
     private void initComponents() {
         setFocusable(true);
         playButton = new JButton();
+       // playButton.setBorderPainted(false);
+       // playButton.setOpaque(false);
+       // playButton.setFocusPainted( false );
+        
+        playButton.setContentAreaFilled(false);
+
         titleLabel = new JLabel();
         yearLabel = new JLabel();
         playlistButton = new JButton(Localization.managePlaylistsButtonIcon);
@@ -261,6 +267,7 @@ public class ListElement extends JPanel {
 
         playButton.setIcon(Localization.moviePlayButtonIcon);
         playButton.setToolTipText(Localization.toolTipsPlay);
+        playButton.setRolloverIcon(Localization.moviePlayButtonHoverIcon);
 
         if (movie.isWish()) {
             wishButton.setIcon(Localization.movieStarButtonIcon);

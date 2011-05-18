@@ -79,12 +79,14 @@ public final class Localization {
     // MovieElement
     public static final ImageIcon moviePlayButtonIcon = new ImageIcon(
             "img/Button-Play-icon_40.png");
+    public static final ImageIcon moviePlayButtonHoverIcon = new ImageIcon(
+    "img/Button-Play-icon-hover_40.png");
     public static final ImageIcon movieSeenButtonIcon = new ImageIcon(
-            "img/eye_50.png");
+            "img/eye_40.png");
     public static final ImageIcon movieFavoriteButtonIcon = new ImageIcon(
-            "img/Favorite-icon_50.png");
+            "img/Favorite-icon_40.png");
     public static final ImageIcon movieStarButtonIcon = new ImageIcon(
-            "img/Button-Favorite-icon_50.png");
+            "img/Button-Favorite-icon_40.png");
     public static final String movieMoveUpButtonIcon = "img/navigate-up-icon.png";
     public static final String movieMoveDownButtonIcon = "img/navigate-down-icon.png";
 
