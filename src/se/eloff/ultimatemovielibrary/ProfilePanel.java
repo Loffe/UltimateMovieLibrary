@@ -277,6 +277,7 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
         searchTextField.setMaximumSize(new Dimension(400, 30));
 
         titleLabel = new JLabel(Localization.searchFieldLabelText);
+        titleLabel.setFont(new Font(titleLabel.getFont().getName(), titleLabel.getFont().getStyle(), Localization.searchFieldLabelTextSize));
 
         hideSeenMoviesCheckBox = new JCheckBox(
                 Localization.searchHideSeenMoviesText);
@@ -320,12 +321,7 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
 
             public Dimension getPreferredSize() {
                 // Try to find the dimension of the list
-                Dimension dim = lists.getMinimumSize();
-                if (lists.getSize().getHeight() >= dim.getHeight())
-                    dim = lists.getSize();
-                if (lists.getMaximumSize().getHeight() >= dim.getHeight())
-                    dim = lists.getMaximumSize();
-                return new Dimension(100, (int)dim.getHeight());
+                return new Dimension(100, (int)lists.getMinimumSize().getHeight());
             }
         };
         lists.addMouseListener(new MouseAdapter() {
