@@ -277,7 +277,7 @@ public class MovieInfoPanel extends JPanel {
         CoverState state;
         int light;
         
-        Thread animator;
+        Thread animator=null;
         
         public void setState(CoverState state){
             this.state = state;
@@ -288,6 +288,15 @@ public class MovieInfoPanel extends JPanel {
         }
         public int getLight(){
             return light;
+        }
+        public void startTread(){
+            if(animator==null){
+                animator = new Thread(this);
+                animator.start();
+            }
+        }
+        public void stopThread(){
+            animator = null;
         }
         
         boolean active;
@@ -462,6 +471,7 @@ public class MovieInfoPanel extends JPanel {
             int light = stateContext.getLight()+1;
             stateContext.setLight(light);
             if(light>=0){
+                stateContext.stopThread();
                 stateContext.setState(new LightState(stateContext));
             }
         }
@@ -472,6 +482,7 @@ public class MovieInfoPanel extends JPanel {
         }
 
         public void mouseEntered() {
+            stateContext.startTread();
             stateContext.setActive(true);
             stateContext.setState(new PreDarkenState(stateContext));
         }

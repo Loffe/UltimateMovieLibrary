@@ -83,12 +83,21 @@ public final class Localization {
     // MovieElement
     public static final ImageIcon moviePlayButtonIcon = new ImageIcon(
             "img/Button-Play-icon_40.png");
+    public static final ImageIcon moviePlayButtonHoverIcon = new ImageIcon(
+    "img/Button-Play-icon-hover_40.png");
     public static final ImageIcon movieSeenButtonIcon = new ImageIcon(
-            "img/eye_50.png");
+            "img/eye_40.png");
     public static final ImageIcon movieFavoriteButtonIcon = new ImageIcon(
-            "img/Favorite-icon_50.png");
+            "img/Favorite-icon_40.png");
     public static final ImageIcon movieStarButtonIcon = new ImageIcon(
-            "img/Button-Favorite-icon_50.png");
+            "img/Button-Favorite-icon_40.png");
+
+    public static final ImageIcon movieSeenButtonIconDisabled = new ImageIcon(
+            "img/eye_40_disabled.png");
+    public static final ImageIcon movieFavoriteButtonIconDisabled = new ImageIcon(
+            "img/Favorite-icon_40_disabled.png");
+    public static final ImageIcon movieStarButtonIconDisabled = new ImageIcon(
+            "img/Button-Favorite-icon_40_disabled.png");
     
     public static BufferedImage movieMoveDownButtonIcon;
     public static BufferedImage movieMoveDownButtonHoverIcon;
@@ -105,13 +114,6 @@ public final class Localization {
             e.printStackTrace();
         }
     }
-
-    public static final ImageIcon movieSeenButtonIconDisabled = new ImageIcon(
-            "img/eye_40_disabled.png");
-    public static final ImageIcon movieFavoriteButtonIconDisabled = new ImageIcon(
-            "img/Favorite-icon_40_disabled.png");
-    public static final ImageIcon movieStarButtonIconDisabled = new ImageIcon(
-            "img/Button-Favorite-icon_40_disabled.png");
 
     public static final String movieNoYearText = "Okänt";
 
@@ -190,7 +192,7 @@ public final class Localization {
     public static final String unknownRatingText = "Inget betyg hittades.";
     public static final String unknownDirectorText = "Ingen regissör hittades.";
     public static final String unknownCastText = "Inga skådespelare hittades.";
-    public static final int minimumCoverLight = -30;
+    public static final int minimumCoverLight = -15;
     public static final int animationDelayMs = 16;
     public static final int preDelayDarken = 15;
 
@@ -204,6 +206,6 @@ public final class Localization {
             "img/Favorite-icon-16.png");
     public static final Icon listsSeenIcon = new ImageIcon("img/eye_16.png");
     public static final Icon listsAddIcon = new ImageIcon("img/plus_16.png");
-    public static final int playlistDefaultTextSize = 12;
+    public static final int playlistDefaultTextSize = 14;
     public static final int playlistAllMoviesTextSize = 22;
 }
