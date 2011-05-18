@@ -220,27 +220,10 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
         // pressed.
         // TODO: Although, the user could click anywhere. Fix needed supporting
         // all panels...
-        addNewPlaylistPanel.addMouseListener(new MouseListener() {
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-            }
-
+        addNewPlaylistPanel.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 requestFocus();
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-            }
-
-            @Override
-            public void mouseClicked(MouseEvent e) {
             }
         });
 
