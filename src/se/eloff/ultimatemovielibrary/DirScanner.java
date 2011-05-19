@@ -32,7 +32,8 @@ public class DirScanner {
     private static final String[] fileIgnoreList = { "sample" };
     private static final String[] splitWords = { "xvid", "720", "1080",
             "bluray", "264", "brrip", "engsub", "swesub", "cd", "dvd", "disk",
-            "part", "dvdrip", "retail", "proper", "limited", "unrated", "divx" };
+            "part", "dvdrip", "retail", "proper", "limited", "unrated", "divx",
+            "extended" };
     private static final String[] discWords = { "cd", "disc" };
 
     private Boolean stopScanning = false;
@@ -53,7 +54,6 @@ public class DirScanner {
             } else if (!stopScanning && hasValidExtension(file)) {
                 LocalMovie movie = movieFromPath(file);
                 if (!stopScanning && movie != null) {
-                    // movies.add(movie);
                     Dao<LocalMovie, Integer> db;
                     try {
                         db = DatabaseManager.getInstance().getMovieDao();
