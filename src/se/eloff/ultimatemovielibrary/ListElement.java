@@ -388,6 +388,9 @@ public class ListElement extends JPanel implements MovieListener {
                         yearLabel.setText(Integer.toString(movie.getYear()));
                     else
                         yearLabel.setText(Localization.movieNoYearText);
+                    if (isSelected) {
+                        parentPanel.setSelectedElement(ListElement.this);
+                    }
                 }
             });
         }
