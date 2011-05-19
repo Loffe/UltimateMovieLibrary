@@ -198,10 +198,9 @@ public abstract class ResultPanel extends JScrollPane implements
 
     protected synchronized void addMovieToList(LocalMovie movie) {
         try {
-        resultPanel.add(new ListElement(movie, this, i));
-        }
-        catch(Exception e){
-            System.out.println("error in addnew mopvie");
+            resultPanel.add(new ListElement(movie, this, i++));
+        } catch (Exception e) {
+            System.out.println("error in addnew movie");
         }
     }
 
