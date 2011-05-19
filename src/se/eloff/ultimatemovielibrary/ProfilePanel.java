@@ -163,13 +163,13 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
                             hideSeenMoviesCheckBox.setSelected(false);
                             hideSeenMoviesCheckBox.setEnabled(false);
                             lastSearchId = MovieSearchProvider
-                                    .searchByNameSeen(name, resultPanel,
+                                    .searchByNameSeen("", resultPanel,
                                             getOrderColumn(),
                                             isOrderAscending(), true);
                         } else {
                             hideSeenMoviesCheckBox.setEnabled(true);
                             lastSearchId = MovieSearchProvider.searchByList(
-                                    name, resultPanel, getOrderColumn(),
+                                    "", resultPanel, getOrderColumn(),
                                     isOrderAscending(), selectedList,
                                     hideSeenMoviesCheckBox.isSelected());
                         }
