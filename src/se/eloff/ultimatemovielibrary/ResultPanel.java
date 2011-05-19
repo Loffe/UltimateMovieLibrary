@@ -3,6 +3,7 @@ package se.eloff.ultimatemovielibrary;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -12,14 +13,10 @@ import java.util.List;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
-import javax.swing.KeyStroke;
-
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.QueryBuilder;
 
@@ -97,6 +94,18 @@ public abstract class ResultPanel extends JScrollPane implements
                 e.consume();
             }
         });
+
+        DatabaseManager.getInstance().addMovieListener(new MovieListener() {
+
+            @Override
+            public void onMovieUpdated(LocalMovie movie) {
+            }
+
+            @Override
+            public void onMovieAdded(LocalMovie movie) {
+                addMovieToList(movie);
+            }
+        });
     }
 
     private JComponent createHeader() {
@@ -144,29 +153,54 @@ public abstract class ResultPanel extends JScrollPane implements
     }
 
     @Override
-    public synchronized void searchFinished(List<LocalMovie> movies,
-            int searchKey) {
+    public synchronized void searchFinished(final List<LocalMovie> movies,
+            final int searchKey) {
 
-        if (lastSearchId == searchKey) {
-            resultPanel.removeAll();
-            if (movies.isEmpty()) {
-                if (parentPanel.getSelecteListId() == 1){
-                    resultPanel.add(new JLabel(Localization.searchNoMatchText));
+        EventQueue.invokeLater(new Runnable() {
+
+            @Override
+            public void run() {
+                if (lastSearchId == searchKey) {
+                    for (Component comp : resultPanel.getComponents()) {
+                        try {
+                            ListElement element = (ListElement) comp;
+                            element.destroy();
+                        } catch (Exception e) {
+
+                        }
+                    }
+                    resultPanel.removeAll();
+                    if (movies.isEmpty()) {
+                        if (parentPanel.getSelecteListId() == 1) {
+                            resultPanel.add(new JLabel(
+                                    Localization.searchNoMatchText));
+                        } else {
+                            resultPanel.add(new JLabel(
+                                    Localization.searchInListNoMatch));
+                        }
+                        setSelectedElement(null);
+                        repaint();
+                    } else {
+                        i = 0;
+                        for (LocalMovie movie : movies) {
+                            addMovieToList(movie);
+                        }
+                        setSelectedElement((ListElement) resultPanel
+                                .getComponent(0));
+                    }
+                    revalidate();
                 }
-                else
-                {
-                    resultPanel.add(new JLabel(Localization.searchInListNoMatch));
-                }
-                setSelectedElement(null);
-                repaint();
-            } else {
-                int i = 0;
-                for (LocalMovie movie : movies) {
-                    resultPanel.add(new ListElement(movie, this, i++));
-                }
-                setSelectedElement((ListElement) resultPanel.getComponent(0));
             }
-            revalidate();
+        });
+    }
+
+    static int i = 0;
+
+    protected synchronized void addMovieToList(LocalMovie movie) {
+        try {
+            resultPanel.add(new ListElement(movie, this, i++));
+        } catch (Exception e) {
+            System.out.println("error in addnew movie");
         }
     }
 
@@ -239,9 +273,9 @@ public abstract class ResultPanel extends JScrollPane implements
     private void switchPositions(ListElement moveUpElement,
             ListElement moveDownElement, int moveDownElementPos) {
         resultPanel.add(moveUpElement, moveDownElementPos);
-        moveUpElement.setPosition(moveUpElement.getPosition() -1);
+        moveUpElement.setPosition(moveUpElement.getPosition() - 1);
         resultPanel.add(moveDownElement, moveDownElementPos + 1);
-        moveDownElement.setPosition(moveDownElement.getPosition() +1);
+        moveDownElement.setPosition(moveDownElement.getPosition() + 1);
 
         // save the new positions to the db
         try {
@@ -298,7 +332,7 @@ public abstract class ResultPanel extends JScrollPane implements
                     selectedElementPosition - 1);
             revalidate();
             setSelectedElement((ListElement) resultPanel
-                            .getComponent(selectedElementPosition - 1));
+                    .getComponent(selectedElementPosition - 1));
         }
     }
 

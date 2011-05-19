@@ -226,12 +226,15 @@ public class MovieInfoDownloader {
                 // update the movie
                 Dao<LocalMovie, Integer> dbMovie = DatabaseManager
                         .getInstance().getMovieDao();
-
-                localMovie.setRating(Math.round((float) movie.getRating() / 2));
+                dbMovie.refresh(localMovie);
+                if (localMovie.getRating() == 0)
+                    localMovie
+                            .setRating(Math.round((float) movie.getRating() / 2));
                 localMovie.setName(movie.getName());
                 localMovie.setYear(movie.getReleasedDate().getYear() + 1900);
                 localMovie.setInfo_id(info.getId());
                 dbMovie.update(localMovie);
+                DatabaseManager.getInstance().fireMovieUpdatedEvent(localMovie);
             } catch (SQLException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();

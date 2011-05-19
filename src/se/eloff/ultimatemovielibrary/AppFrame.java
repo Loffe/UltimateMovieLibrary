@@ -8,6 +8,7 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+import java.awt.GridLayout;
 import java.awt.HeadlessException;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -27,23 +28,16 @@ import javax.swing.JRootPane;
 /**
  * AppFrame. The main window of the Ultimate Movie Library.
  */
-public class AppFrame extends JFrame implements ActionListener {
+public class AppFrame extends JFrame {
 
     private static final long serialVersionUID = 5297734322373835993L;
     private WatchFolderManagerDialog watchFolderManagerPanel;
-    // private ViewPanel searchPanel;
     private ProfilePanel profilePanel;
-    // private ViewPanel recomendPanel;
-    // private DefaultMenuBar botMenu;
     private DefaultMenuBar topMenu;
-    private JPanel centerPanel;
-    // private JPanel homePanel;
     private JPanel topPanel = new JPanel();
-    private JPanel infoPanel;
+    private JPanel statusPanel;
     private JLabel titleLabel;
     public static JLabel loadingLabel;
-
-    // private JLabel breadCrumbLabel;
 
     /**
      * Constructor. Creates a new AppFrame window.
@@ -62,20 +56,6 @@ public class AppFrame extends JFrame implements ActionListener {
         this.setExtendedState(this.getExtendedState() | JFrame.MAXIMIZED_BOTH);
 
         watchFolderManagerPanel = new WatchFolderManagerDialog(this);
-        watchFolderManagerPanel.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                updateCurrentPanel();
-            }
-        });
-        watchFolderManagerPanel.addHierarchyListener(new HierarchyListener() {
-            @Override
-            public void hierarchyChanged(HierarchyEvent e) {
-                if(!watchFolderManagerPanel.isShowing()) {
-                    updateCurrentPanel();
-                }
-            }
-        });
 
         this.addWindowListener(new WindowAdapter() {
             @Override
@@ -85,89 +65,36 @@ public class AppFrame extends JFrame implements ActionListener {
             }
         });
 
-        centerPanel = new JPanel();
-        centerPanel.setLayout(new CardLayout());
-
-        // searchPanel = new SearchPanel();
-        // recomendPanel = new RecommendPanel();
         profilePanel = new ProfilePanel();
-        // homePanel = new HomePanel(this);
 
-        // centerPanel.add(searchPanel, GuiPanel.Search.name());
-        // centerPanel.add(recomendPanel, GuiPanel.Recommend.name());
-        centerPanel.add(profilePanel, GuiPanel.Profile.name());
-        // centerPanel.add(homePanel, GuiPanel.Home.name());
-
-        infoPanel = new JPanel();
+        statusPanel = new JPanel();
         titleLabel = new JLabel(Localization.title);
         titleLabel.setFont(new Font(titleLabel.getFont().getName(), titleLabel
                 .getFont().getStyle(), Localization.titleFontSize));
-        
-        
-        // breadCrumbLabel = new JLabel();
-        // breadCrumbLabel.setFont(new Font(breadCrumbLabel.getFont().getName(),
-        // breadCrumbLabel.getFont().getStyle(),
-        // Localization.breadCrumbFontSize));
 
-        infoPanel.add(new JLabel(new ImageIcon(Localization.icon)));
-        infoPanel.add(titleLabel);
-        infoPanel.add(new JLabel("   "));
-        infoPanel.add(Localization.loadingLabel);
-        infoPanel.add(Localization.loadingTextLabel); 
+        statusPanel.add(new JLabel(new ImageIcon(Localization.icon)));
+        statusPanel.add(titleLabel);
+        statusPanel.add(new JLabel("   "));
+        statusPanel.add(Localization.loadingLabel);
+        statusPanel.add(Localization.loadingTextLabel); 
         
         
         if (!WatchFolderManager.isScanInProgress() && !MovieInfoDownloader.isUpdateInProgress()) {
         Localization.loadingLabel.setVisible(false);
         }
-        
-        // infoPanel.add(breadCrumbLabel);
 
         // Assemble menus
         initializeTopMenu();
-        // botMenu = new BotMenuBar();
-        // botMenu.addActionListener(this);
 
         topPanel.setLayout(new BorderLayout());
-        topPanel.add(infoPanel, BorderLayout.WEST);
+        topPanel.add(statusPanel, BorderLayout.WEST);
         topPanel.add(topMenu, BorderLayout.EAST);
         getContentPane().add(topPanel, BorderLayout.PAGE_START);
-        getContentPane().add(centerPanel, BorderLayout.CENTER);
-        // getContentPane().add(botMenu, BorderLayout.PAGE_END);
+        getContentPane().add(profilePanel, BorderLayout.CENTER);
 
-        setCurrentPanel(GuiPanel.Profile);
         setVisible(true);
     }
 
-    /**
-     * Change the current panel to the specified GuiPanel.
-     * 
-     * @param panel
-     *            the panel to switch to.
-     */
-    public void setCurrentPanel(GuiPanel panel) {
-        // botMenu.setVisible(true);
-        CardLayout layout = (CardLayout) centerPanel.getLayout();
-        /*
-         * switch (panel) { case Search:
-         * breadCrumbLabel.setText(Localization.searchTitle);
-         * searchPanel.update(); break; case Recommend:
-         * breadCrumbLabel.setText(Localization.recommendTitle);
-         * recomendPanel.update(); break; case Profile: //
-         * breadCrumbLabel.setText(Localization.profileTitle); break; case Home:
-         * breadCrumbLabel.setText(Localization.homeTitle);
-         * botMenu.setVisible(false); break; }
-         */
-        layout.show(centerPanel, panel.name());
-    }
-
-    /**
-     * Update current panel. Refresh content.
-     */
-    public void updateCurrentPanel() {
-        // searchPanel.update();
-        // recomendPanel.update();
-        profilePanel.resultPanel.search();
-    }
 
     /**
      * Initialize the top menu.
@@ -241,19 +168,4 @@ public class AppFrame extends JFrame implements ActionListener {
                 gd.setFullScreenWindow(null);
         }
     }
-
-    /*
-     * Enumeration of all the GuiPanels able to be shown in the center panel.
-     */
-    enum GuiPanel {
-        Profile
-        // Home, Search, Recommend
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        GuiPanel panel = GuiPanel.valueOf(e.getActionCommand());
-        setCurrentPanel(panel);
-    }
-
 }

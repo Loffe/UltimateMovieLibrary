@@ -24,6 +24,7 @@ public class DatabaseManager {
     private Dao<WatchFolder, Integer> watchFolderManager;
 
     private ArrayList<ListDataListener> listeners = new ArrayList<ListDataListener>();
+    private ArrayList<MovieListener> movieListeners = new ArrayList<MovieListener>();
 
     public void addPlaylistChangeListener(ListDataListener listener) {
         listeners.add(listener);
@@ -33,9 +34,30 @@ public class DatabaseManager {
         listeners.remove(listener);
     }
 
+    public void addMovieListener(MovieListener listener) {
+        movieListeners.add(listener);
+    }
+
+    public void removeMovieListener(MovieListener listener) {
+        movieListeners.remove(listener);
+    }
+
     protected void firePlaylistAddedEvent(ListDataEvent e) {
         for (ListDataListener l : listeners) {
             l.contentsChanged(e);
+        }
+    }
+
+    public void fireMovieAddedEvent(LocalMovie movie) {
+        ArrayList<MovieListener> clone = (ArrayList<MovieListener>)movieListeners.clone();
+        for (MovieListener l : clone) {
+            l.onMovieAdded(movie);
+        }
+    }
+
+    public void fireMovieUpdatedEvent(LocalMovie movie) {
+        for (MovieListener l : movieListeners) {
+            l.onMovieUpdated(movie);
         }
     }
 

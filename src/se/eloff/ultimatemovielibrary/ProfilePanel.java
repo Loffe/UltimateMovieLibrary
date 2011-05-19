@@ -48,8 +48,26 @@ import javax.swing.event.ListSelectionListener;
 
 import com.j256.ormlite.dao.Dao;
 
-public class ProfilePanel extends ViewPanel implements DocumentListener {
+public class ProfilePanel extends JPanel implements DocumentListener {
 
+    private static final long serialVersionUID = 8595144249306891196L;
+
+    private JLabel titleLabel;
+    private JTextField searchTextField;
+    private JCheckBox hideSeenMoviesCheckBox;
+
+    private JList lists;
+    private JToggleButton recommendedMoviesButton;
+    private Box centerBox;
+    private RecommendPanel recommendPanel;
+    private JPanel addNewPlaylistPanel;
+    private JLabel addPlaylistLabel;
+    public ResultPanel resultPanel;
+    protected MovieInfoPanel movieInfoPanel;
+
+    private boolean showsRecommended = false;
+    private ListElement selectedElement = null;
+    
     private final class PlaylistTransferHandler extends TransferHandler {
 
         private static final long serialVersionUID = -7206124317179587726L;
@@ -78,6 +96,7 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
             return true;
 
         }
+        
 
         protected Transferable createTransferable(JComponent c) {
             return new StringSelection("Whaaat?");
@@ -88,27 +107,9 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
         }
     }
 
-    private static final long serialVersionUID = 8595144249306891196L;
-
-    private JLabel titleLabel;
-    private JTextField searchTextField;
-    private JCheckBox hideSeenMoviesCheckBox;
-
-    private JList lists;
-    private JToggleButton recommendedMoviesButton;
-    private Box centerBox;
-    private RecommendPanel recommendPanel;
-    private JPanel addNewPlaylistPanel;
-    private JLabel addPlaylistLabel;
-
-    private boolean showsRecommended = false;
-
-    private ListElement selectedElement = null;
-
     public void setSelectedElement(ListElement element) {
         if (element != null) {
-            if ((selectedElement != null && !selectedElement.getMovie().equals(
-                    element.getMovie()))
+            if ((selectedElement != null)
                     || selectedElement == null)
                 movieInfoPanel.refresh(element.getMovie());
         } else
@@ -134,7 +135,6 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
     private DefaultListModel listModel;
 
     public ProfilePanel() {
-        setTitle(Localization.profileTitle);
         initComponents();
         lists.setSelectedIndex(0);
         resultPanel.search();
