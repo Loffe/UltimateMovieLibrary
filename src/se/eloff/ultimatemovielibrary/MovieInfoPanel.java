@@ -1,15 +1,19 @@
 package se.eloff.ultimatemovielibrary;
 
+import java.awt.AlphaComposite;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.RescaleOp;
 import java.io.File;
@@ -214,7 +218,7 @@ public class MovieInfoPanel extends JPanel {
         if (showButtons) {
             buttonPanel.removeAll();
             buttonPanel.add(elementButtons);
-          //  buttonPanel.revalidate();
+            // buttonPanel.revalidate();
         }
         MovieInfo info = null;
         if (movie.getInfo_id() != -1) {
@@ -395,12 +399,37 @@ public class MovieInfoPanel extends JPanel {
             float scaleFactor = x / (x - (float) (light));
             RescaleOp op = new RescaleOp(scaleFactor, 0, null);
             imageActive = op.filter(image, null);
-            g2.drawImage(imageActive, null, 0, 0);
+
+            int imageWidth = imageActive.getWidth();
+            int imageHeight = imageActive.getHeight();
+
+            BufferedImage reflection = new BufferedImage(imageWidth,
+                    imageHeight, BufferedImage.TYPE_INT_ARGB);
+            Graphics2D reflectionGraphics = reflection.createGraphics();
+
+            AffineTransform tranform = AffineTransform.getScaleInstance(1.0,
+                    -1.0);
+            tranform.translate(0, -imageHeight);
+            reflectionGraphics.drawImage(imageActive, tranform, this);
+
+            GradientPaint painter = new GradientPaint(0.0f, 0.0f, new Color(
+                    0.0f, 0.0f, 0.0f, 0.5f), 0.0f, 40, new Color(0.0f, 0.0f,
+                    0.0f, 1.0f));
+
+            reflectionGraphics.setComposite(AlphaComposite.DstOut);
+            reflectionGraphics.setPaint(painter);
+            reflectionGraphics.fill(new Rectangle2D.Double(0, 0, imageWidth,
+                    imageHeight));
+            reflectionGraphics.dispose();
+
+            g2.drawImage(imageActive, 0, Localization.movieCoverHeight
+                    - imageHeight, this);
+            g2.drawImage(reflection, 0, Localization.movieCoverHeight, this);
 
             if (isActive()) {
                 int xPos = image.getWidth() / 2
                         - Localization.moviePlayButtonIcon.getIconWidth() / 2;
-                int yPos = image.getHeight() / 2
+                int yPos = Localization.movieCoverHeight / 2
                         - Localization.moviePlayButtonIcon.getIconHeight() / 2;
                 g2.drawImage(Localization.moviePlayButtonIcon.getImage(), xPos,
                         yPos, null);
@@ -410,19 +439,19 @@ public class MovieInfoPanel extends JPanel {
         @Override
         public Dimension getPreferredSize() {
             return new Dimension(Localization.movieCoverWidth,
-                    Localization.movieCoverHeight);
+                    Localization.movieCoverHeight + 40);
         }
 
         @Override
         public Dimension getMinimumSize() {
             return new Dimension(Localization.movieCoverWidth,
-                    Localization.movieCoverHeight);
+                    Localization.movieCoverHeight + 40);
         }
 
         @Override
         public Dimension getMaximumSize() {
             return new Dimension(Localization.movieCoverWidth,
-                    Localization.movieCoverHeight);
+                    Localization.movieCoverHeight + 40);
         }
 
         @Override

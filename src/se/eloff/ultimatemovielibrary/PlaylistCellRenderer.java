@@ -18,7 +18,6 @@ public class PlaylistCellRenderer extends JLabel implements ListCellRenderer {
 
     public Component getListCellRendererComponent(JList list, Object value,
             int index, boolean isSelected, boolean cellHasFocus) {
-        
         setText(value.toString());
         setIcon(null);
         setFont(new Font(getFont().getName(), Font.PLAIN,

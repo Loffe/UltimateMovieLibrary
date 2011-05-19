@@ -34,7 +34,7 @@ public class WatchFolderManagerDialog extends JDialog {
      *            the parent window
      */
     public WatchFolderManagerDialog(Window owner) {
-        super(owner, Localization.manageWatchFolderHeading,
+        super(owner, "",
                 ModalityType.APPLICATION_MODAL);
         setVisible(false);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);

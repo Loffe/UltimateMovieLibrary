@@ -178,7 +178,7 @@ public final class Localization {
 
     // MovieInfo
     public static final int movieCoverWidth = 154;
-    public static final int movieCoverHeight = 250;
+    public static final int movieCoverHeight = 240;
     public static final int moviePlotWidth = 300;
     public static final int moviePlotHeight = 150;
     public static final int movieInfoWidth = 310;
