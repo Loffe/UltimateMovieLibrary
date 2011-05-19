@@ -386,7 +386,6 @@ public class MovieInfoPanel extends JPanel {
                 image.setRGB(x, 0, color.getRGB());
                 image.setRGB(x, 1, color.getRGB());
                 image.setRGB(x, image.getHeight() - 1, color.getRGB());
-                image.setRGB(x, image.getHeight() - 2, color.getRGB());
             }
             this.repaint();
         }
