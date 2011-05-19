@@ -34,7 +34,7 @@ import sun.awt.VerticalBagLayout;
  * 
  * @author david
  */
-public class ListElement extends JPanel {
+public class ListElement extends JPanel implements MovieListener {
 
     private static final long serialVersionUID = -6318896437132825786L;
 
@@ -56,9 +56,15 @@ public class ListElement extends JPanel {
     public ListElement(LocalMovie movie, ResultPanel parentPanel, int position) {
         this.parentPanel = parentPanel;
         this.movie = movie;
-        elementButtons = new ListElementButtons(movie, parentPanel.getParenPanel());
+        elementButtons = new ListElementButtons(movie,
+                parentPanel.getParenPanel());
         initComponents();
         this.position = position;
+        DatabaseManager.getInstance().addMovieListener(this);
+    }
+
+    public void destroy() {
+        DatabaseManager.getInstance().removeMovieListener(this);
     }
 
     public LocalMovie getMovie() {
@@ -68,7 +74,7 @@ public class ListElement extends JPanel {
     private void initComponents() {
         setFocusable(true);
         playButton = new JButton();
-        
+
         playButton.setContentAreaFilled(false);
 
         titleLabel = new JLabel();
@@ -107,7 +113,8 @@ public class ListElement extends JPanel {
                 Graphics2D g2 = (Graphics2D) g;
                 g2.scale(1.0, 1.0);
                 if (getModel().isRollover())
-                    g2.drawImage(Localization.movieMoveUpButtonHoverIcon, 0, 0, null);
+                    g2.drawImage(Localization.movieMoveUpButtonHoverIcon, 0, 0,
+                            null);
                 else
                     g2.drawImage(Localization.movieMoveUpButtonIcon, 0, 0, null);
             }
@@ -130,9 +137,11 @@ public class ListElement extends JPanel {
                 Graphics2D g2 = (Graphics2D) g;
                 g2.scale(1.0, 1.0);
                 if (getModel().isRollover())
-                    g2.drawImage(Localization.movieMoveDownButtonHoverIcon, 0, 0, null);
+                    g2.drawImage(Localization.movieMoveDownButtonHoverIcon, 0,
+                            0, null);
                 else
-                    g2.drawImage(Localization.movieMoveDownButtonIcon, 0, 0, null);
+                    g2.drawImage(Localization.movieMoveDownButtonIcon, 0, 0,
+                            null);
             }
         };
 
@@ -150,15 +159,11 @@ public class ListElement extends JPanel {
         moveUpButton.setVisible(false);
         moveDownButton.setVisible(false);
 
-        
-
         rating.setRating(movie.getRating());
 
         playButton.setIcon(Localization.moviePlayButtonIcon);
         playButton.setToolTipText(Localization.toolTipsPlay);
         playButton.setRolloverIcon(Localization.moviePlayButtonHoverIcon);
-
-        
 
         titleLabel.setFont(new Font(titleLabel.getFont().getName(), titleLabel
                 .getFont().getStyle(), Localization.movieTitleFontSize));
@@ -173,8 +178,6 @@ public class ListElement extends JPanel {
         else
             yearLabel.setText(Localization.movieNoYearText);
         yearLabel.setAlignmentY(0.0F);
-
-
 
         javax.swing.GroupLayout layout = new GroupLayout(this);
 
@@ -268,12 +271,10 @@ public class ListElement extends JPanel {
                                 .addGroup(
                                         layout.createParallelGroup(
                                                 GroupLayout.Alignment.LEADING)
-                                               
-                                                .addComponent(
-                                                        elementButtons,
-                                                        GroupLayout.PREFERRED_SIZE,
-                                                        52,
-                                                        GroupLayout.PREFERRED_SIZE))
+
+                                        .addComponent(elementButtons,
+                                                GroupLayout.PREFERRED_SIZE, 52,
+                                                GroupLayout.PREFERRED_SIZE))
                                 .addContainerGap(10, Short.MAX_VALUE)));
         playButton.addActionListener(new ActionListener() {
             @Override
@@ -347,7 +348,6 @@ public class ListElement extends JPanel {
             }
         });
 
-        
     }
 
     public void setSelected(boolean selected, boolean showMoveArrows) {
@@ -365,5 +365,20 @@ public class ListElement extends JPanel {
 
     public int getPosition() {
         return position;
+    }
+
+    @Override
+    public void onMovieAdded(LocalMovie movie) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void onMovieUpdated(LocalMovie movie) {
+        if (movie.equals(this.movie)) {
+            this.movie = movie;
+            initComponents();
+        }
+
     }
 }

@@ -148,14 +148,21 @@ public abstract class ResultPanel extends JScrollPane implements
             int searchKey) {
 
         if (lastSearchId == searchKey) {
+            for (Component comp : resultPanel.getComponents()) {
+                try {
+                    ListElement element = (ListElement) comp;
+                    element.destroy();
+                } catch (Exception e) {
+
+                }
+            }
             resultPanel.removeAll();
             if (movies.isEmpty()) {
-                if (parentPanel.getSelecteListId() == 1){
+                if (parentPanel.getSelecteListId() == 1) {
                     resultPanel.add(new JLabel(Localization.searchNoMatchText));
-                }
-                else
-                {
-                    resultPanel.add(new JLabel(Localization.searchInListNoMatch));
+                } else {
+                    resultPanel
+                            .add(new JLabel(Localization.searchInListNoMatch));
                 }
                 setSelectedElement(null);
                 repaint();
@@ -239,9 +246,9 @@ public abstract class ResultPanel extends JScrollPane implements
     private void switchPositions(ListElement moveUpElement,
             ListElement moveDownElement, int moveDownElementPos) {
         resultPanel.add(moveUpElement, moveDownElementPos);
-        moveUpElement.setPosition(moveUpElement.getPosition() -1);
+        moveUpElement.setPosition(moveUpElement.getPosition() - 1);
         resultPanel.add(moveDownElement, moveDownElementPos + 1);
-        moveDownElement.setPosition(moveDownElement.getPosition() +1);
+        moveDownElement.setPosition(moveDownElement.getPosition() + 1);
 
         // save the new positions to the db
         try {
@@ -298,7 +305,7 @@ public abstract class ResultPanel extends JScrollPane implements
                     selectedElementPosition - 1);
             revalidate();
             setSelectedElement((ListElement) resultPanel
-                            .getComponent(selectedElementPosition - 1));
+                    .getComponent(selectedElementPosition - 1));
         }
     }
 
