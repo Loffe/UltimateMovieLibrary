@@ -1,6 +1,7 @@
 *~
 *.class
 *bin/*
-database.db
+database.db*
 *TMDBAPIKey.*
 *thumbs/*
+*.log

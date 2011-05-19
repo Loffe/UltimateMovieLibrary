@@ -27,10 +27,12 @@ import com.j256.ormlite.dao.Dao;
 public class DirScanner {
 
     private static final String[] extensions = { "avi", "mpg", "mkv", "mp4" };
-    private static final String[] ignoreList = { "sample", "subs", "subtitles" };
+    private static final String[] folderIgnoreList = { "sample", "subs",
+            "subtitles" };
+    private static final String[] fileIgnoreList = { "sample" };
     private static final String[] splitWords = { "xvid", "720", "1080",
             "bluray", "264", "brrip", "engsub", "swesub", "cd", "dvd", "disk",
-            "part" };
+            "part", "dvdrip", "retail", "proper", "limited", "unrated", "divx" };
     private static final String[] discWords = { "cd", "disc" };
 
     private Boolean stopScanning = false;
@@ -64,7 +66,7 @@ public class DirScanner {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    System.out.println("Adding Movie: '" + movie.getName()
+                    System.out.println("Adding: '" + movie.getName()
                             + "' year: " + movie.getYear() + " disc: "
                             + movie.getDiscnumber());
                 }
@@ -101,10 +103,9 @@ public class DirScanner {
         String folderName = folder.toString().toLowerCase();
         String subfolder = folderName.substring(
                 folderName.lastIndexOf('\\') + 1, folderName.length());
-        // System.out.println("Subfolder: "+subfolder);
-        for (String string : ignoreList) {
-            if (subfolder.equals(string)) {
-                System.out.println("ignoring: " + folderName);
+        for (String ignoreString : folderIgnoreList) {
+            if (subfolder.equals(ignoreString)) {
+                System.out.println("Ignoring: '" + folderName + "'");
                 return false;
             }
         }
@@ -160,7 +161,7 @@ public class DirScanner {
         movieName = movieName.substring(0, movieName.lastIndexOf('.'));
 
         // then remove all ._ and replace with space
-        movieName = movieName.replaceAll("[._]", " ").toLowerCase();
+        movieName = movieName.replaceAll("[._-]", " ").toLowerCase();
 
         // then try to split it at a potential yearstamp, if no year split at
         // the first of the splitWords list
@@ -204,6 +205,13 @@ public class DirScanner {
         newMovieName = newMovieName.trim();
         if (newMovieName.isEmpty())
             return null;
+        for (String ignoreString : fileIgnoreList) {
+            if (movieName.equals(ignoreString)) {
+                System.out.println("Ignoring: '" + file.getPath().toLowerCase()
+                        + "'");
+                return null;
+            }
+        }
         return new LocalMovie(newMovieName, year, path,
                 discNumberFromFileName(movieName), 0);
     }
