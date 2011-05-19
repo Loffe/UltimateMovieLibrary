@@ -198,10 +198,9 @@ public abstract class ResultPanel extends JScrollPane implements
 
     protected synchronized void addMovieToList(LocalMovie movie) {
         try {
-        resultPanel.add(new ListElement(movie, this, i));
-        }
-        catch(Exception e){
-            System.out.println("error in addnew mopvie");
+            resultPanel.add(new ListElement(movie, this, i++));
+        } catch (Exception e) {
+            System.out.println("error in addnew movie");
         }
     }
 
@@ -285,18 +284,18 @@ public abstract class ResultPanel extends JScrollPane implements
                     .getMovieListDao();
             QueryBuilder<MovieList, Integer> queryUpElement = movieListDb
                     .queryBuilder();
-            queryUpElement.where().eq("movie_id",
-                    moveUpElement.getMovie().getId()).and().eq("list_id",
-                    parentPanel.getSelecteListId());
+            queryUpElement.where()
+                    .eq("movie_id", moveUpElement.getMovie().getId()).and()
+                    .eq("list_id", parentPanel.getSelecteListId());
             queryUpElement.distinct();
             MovieList listItemUp = (MovieList) movieListDb.query(
                     queryUpElement.prepare()).get(0);
 
             QueryBuilder<MovieList, Integer> queryDownElement = movieListDb
                     .queryBuilder();
-            queryDownElement.where().eq("movie_id",
-                    moveDownElement.getMovie().getId()).and().eq("list_id",
-                    parentPanel.getSelecteListId());
+            queryDownElement.where()
+                    .eq("movie_id", moveDownElement.getMovie().getId()).and()
+                    .eq("list_id", parentPanel.getSelecteListId());
             queryDownElement.distinct();
             MovieList listItemDown = (MovieList) movieListDb.query(
                     queryDownElement.prepare()).get(0);
@@ -325,8 +324,9 @@ public abstract class ResultPanel extends JScrollPane implements
 
     public void moveSelectedElementUp() {
         if (selectedElementPosition != 0 && resultPanel.getComponentCount() > 1) {
-            switchPositions((ListElement) resultPanel
-                    .getComponent(selectedElementPosition),
+            switchPositions(
+                    (ListElement) resultPanel
+                            .getComponent(selectedElementPosition),
                     (ListElement) resultPanel
                             .getComponent(selectedElementPosition - 1),
                     selectedElementPosition - 1);
@@ -339,8 +339,9 @@ public abstract class ResultPanel extends JScrollPane implements
     public void moveSelectedElementDown() {
         if (selectedElementPosition != resultPanel.getComponentCount() - 1
                 && resultPanel.getComponentCount() > 1) {
-            switchPositions((ListElement) resultPanel
-                    .getComponent(selectedElementPosition + 1),
+            switchPositions(
+                    (ListElement) resultPanel
+                            .getComponent(selectedElementPosition + 1),
                     (ListElement) resultPanel
                             .getComponent(selectedElementPosition),
                     selectedElementPosition);
