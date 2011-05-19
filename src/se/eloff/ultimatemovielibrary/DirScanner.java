@@ -61,6 +61,8 @@ public class DirScanner {
                     } catch (SQLException e) {
                         System.out.println("Failed to save to db, maybe the "
                                 + "movie is allready saved once");
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                     System.out.println("Adding Movie: '" + movie.getName()
                             + "' year: " + movie.getYear() + " disc: "

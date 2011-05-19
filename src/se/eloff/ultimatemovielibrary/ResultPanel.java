@@ -185,6 +185,7 @@ public abstract class ResultPanel extends JScrollPane implements
                         setSelectedElement(null);
                         repaint();
                     } else {
+                        i = 0;
                         for (LocalMovie movie : movies) {
                             addMovieToList(movie);
                         }
@@ -199,8 +200,13 @@ public abstract class ResultPanel extends JScrollPane implements
 
     static int i = 0;
 
-    protected void addMovieToList(LocalMovie movie) {
-        resultPanel.add(new ListElement(movie, this, i++));
+    protected synchronized void addMovieToList(LocalMovie movie) {
+        try {
+            resultPanel.add(new ListElement(movie, this, i++));
+        } catch(Exception e) {
+            System.out.println("nu gick det bajs");
+            e.printStackTrace();
+        }
     }
 
     @Override
