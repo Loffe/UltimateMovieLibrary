@@ -48,7 +48,7 @@ import javax.swing.event.ListSelectionListener;
 
 import com.j256.ormlite.dao.Dao;
 
-public class ProfilePanel extends ViewPanel implements DocumentListener {
+public class ProfilePanel extends JPanel implements DocumentListener {
 
     private final class PlaylistTransferHandler extends TransferHandler {
 
@@ -78,6 +78,7 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
             return true;
 
         }
+        
 
         protected Transferable createTransferable(JComponent c) {
             return new StringSelection("Whaaat?");
@@ -100,6 +101,9 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
     private RecommendPanel recommendPanel;
     private JPanel addNewPlaylistPanel;
     private JLabel addPlaylistLabel;
+    public ResultPanel resultPanel;
+    protected MovieInfoPanel movieInfoPanel;
+    private String title;
 
     private boolean showsRecommended = false;
 
@@ -133,7 +137,7 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
     private DefaultListModel listModel;
 
     public ProfilePanel() {
-        setTitle(Localization.profileTitle);
+        title = (Localization.profileTitle);
         initComponents();
         lists.setSelectedIndex(0);
         resultPanel.search();
