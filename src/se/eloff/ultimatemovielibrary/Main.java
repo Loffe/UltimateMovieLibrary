@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import javax.swing.UIManager;
 
 import de.javasoft.plaf.synthetica.SyntheticaBlackEyeLookAndFeel;
+import de.javasoft.plaf.synthetica.SyntheticaLookAndFeel;
 
 public class Main {
 
@@ -22,6 +23,7 @@ public class Main {
 
             try {
                 Class.forName("com.sun.awt.AWTUtilities");
+                SyntheticaLookAndFeel.setWindowsDecorated(false);
                 UIManager.setLookAndFeel(new SyntheticaBlackEyeLookAndFeel());
             } catch (ClassNotFoundException e) {
                 UIManager

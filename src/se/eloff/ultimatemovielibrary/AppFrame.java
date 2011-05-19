@@ -32,7 +32,7 @@ public class AppFrame extends JFrame {
 
     private static final long serialVersionUID = 5297734322373835993L;
     private WatchFolderManagerDialog watchFolderManagerPanel;
-    private ProfilePanel profilePanel;
+    private MainPanel profilePanel;
     private DefaultMenuBar topMenu;
     private JPanel topPanel = new JPanel();
     private JPanel statusPanel;
@@ -65,7 +65,7 @@ public class AppFrame extends JFrame {
             }
         });
 
-        profilePanel = new ProfilePanel();
+        profilePanel = new MainPanel();
 
         statusPanel = new JPanel();
         titleLabel = new JLabel(Localization.title);
