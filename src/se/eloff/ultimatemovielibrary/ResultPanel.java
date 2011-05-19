@@ -165,6 +165,14 @@ public abstract class ResultPanel extends JScrollPane implements
             @Override
             public void run() {
                 if (lastSearchId == searchKey) {
+                    for (Component comp : resultPanel.getComponents()) {
+                        try {
+                            ListElement element = (ListElement) comp;
+                            element.destroy();
+                        } catch (Exception e) {
+
+                        }
+                    }
                     resultPanel.removeAll();
                     if (movies.isEmpty()) {
                         if (parentPanel.getSelecteListId() == 1) {

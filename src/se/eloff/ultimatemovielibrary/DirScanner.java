@@ -56,6 +56,8 @@ public class DirScanner {
                     try {
                         db = DatabaseManager.getInstance().getMovieDao();
                         db.create(movie);
+                        DatabaseManager.getInstance()
+                                .fireMovieAddedEvent(movie);
                     } catch (SQLException e) {
                         System.out.println("Failed to save to db, maybe the "
                                 + "movie is allready saved once");
