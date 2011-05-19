@@ -49,7 +49,8 @@ public class DatabaseManager {
     }
 
     public void fireMovieAddedEvent(LocalMovie movie) {
-        for (MovieListener l : movieListeners) {
+        ArrayList<MovieListener> clone = (ArrayList<MovieListener>)movieListeners.clone();
+        for (MovieListener l : clone) {
             l.onMovieAdded(movie);
         }
     }

@@ -181,6 +181,7 @@ public abstract class ResultPanel extends JScrollPane implements
                         setSelectedElement(null);
                         repaint();
                     } else {
+                        i = 0;
                         for (LocalMovie movie : movies) {
                             addMovieToList(movie);
                         }
