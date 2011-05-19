@@ -26,10 +26,10 @@ public class ListElementButtons extends JPanel {
     public JPopupMenu playlistMenu;
     private LocalMovie movie;
 
-    private final ProfilePanel parentPanel;
+    private final MainPanel parentPanel;
 
     public ListElementButtons(final LocalMovie movie,
-            final ProfilePanel parentPanel) {
+            final MainPanel parentPanel) {
         this.movie = movie;
         this.parentPanel = parentPanel;
 

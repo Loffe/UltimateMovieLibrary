@@ -63,14 +63,14 @@ public class MovieInfoPanel extends JPanel {
     private ListElementButtons elementButtons;
     private JPanel buttonPanel = new JPanel();
 
-    private final ProfilePanel parentPanel;
+    private final MainPanel parentPanel;
 
     private boolean showButtons = false;
 
     /**
      * Constructor. Creates a new MovieInfoPanel to show info about a movie.
      */
-    public MovieInfoPanel(ProfilePanel parentPanel, boolean showButtons) {
+    public MovieInfoPanel(MainPanel parentPanel, boolean showButtons) {
         this.parentPanel = parentPanel;
         this.showButtons = showButtons;
         // Set fix size

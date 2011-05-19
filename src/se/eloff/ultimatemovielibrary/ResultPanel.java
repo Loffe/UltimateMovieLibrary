@@ -32,15 +32,15 @@ public abstract class ResultPanel extends JScrollPane implements
     protected String orderColumn = "position";
     private boolean orderAscending = true;
 
-    private ProfilePanel parentPanel;
+    private MainPanel parentPanel;
 
-    public ProfilePanel getParenPanel() {
+    public MainPanel getParenPanel() {
         return parentPanel;
     }
 
     private int selectedElementPosition = -1;
 
-    public ResultPanel(ProfilePanel parentPanel) {
+    public ResultPanel(MainPanel parentPanel) {
         this.parentPanel = parentPanel;
 
         resultPanel = new JPanel();
@@ -99,12 +99,12 @@ public abstract class ResultPanel extends JScrollPane implements
 
             @Override
             public void onMovieUpdated(LocalMovie movie) {
-                search();
+                //search();
             }
 
             @Override
             public void onMovieAdded(LocalMovie movie) {
-                addMovieToList(movie);
+                //addMovieToList(movie);
                 search();
             }
         });

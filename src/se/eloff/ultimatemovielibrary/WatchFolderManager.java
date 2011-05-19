@@ -106,6 +106,7 @@ public class WatchFolderManager {
                 deleteLists.where().eq("movie_id", localMovie.getId());
                 dbMovieList.delete(deleteLists.prepare());
             }
+            DatabaseManager.getInstance().fireMovieAddedEvent(null);
             return true;
 
         } catch (SQLException e) {
