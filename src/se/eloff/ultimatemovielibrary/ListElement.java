@@ -375,12 +375,10 @@ public class ListElement extends JPanel implements MovieListener {
 
     @Override
     public void onMovieUpdated(final LocalMovie movie) {
-        System.out.println("updatera i listelement");
         if (movie.getId() == this.movie.getId()) {
             EventQueue.invokeLater(new Runnable() {
                 @Override
                 public void run() {
-                    System.out.println("updater i listelement ==");
                     ListElement.this.movie = movie;
                     rating.setRating(movie.getRating());
                     titleLabel.setText(movie.getName());
