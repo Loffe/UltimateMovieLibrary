@@ -13,14 +13,10 @@ import java.util.List;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
-import javax.swing.KeyStroke;
-
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.QueryBuilder;
 
@@ -199,8 +195,13 @@ public abstract class ResultPanel extends JScrollPane implements
 
     static int i = 0;
 
-    protected void addMovieToList(LocalMovie movie) {
-        resultPanel.add(new ListElement(movie, this, i++));
+    protected synchronized void addMovieToList(LocalMovie movie) {
+        try {
+        resultPanel.add(new ListElement(movie, this, i));
+        }
+        catch(Exception e){
+            System.out.println("error in addnew mopvie");
+        }
     }
 
     @Override

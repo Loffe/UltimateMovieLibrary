@@ -226,7 +226,7 @@ public class MovieInfoDownloader {
                 // update the movie
                 Dao<LocalMovie, Integer> dbMovie = DatabaseManager
                         .getInstance().getMovieDao();
-
+                DatabaseManager.getInstance().getMovieDao().refresh(localMovie);
                 if (localMovie.getRating() == 0)
                     localMovie
                             .setRating(Math.round((float) movie.getRating() / 2));
