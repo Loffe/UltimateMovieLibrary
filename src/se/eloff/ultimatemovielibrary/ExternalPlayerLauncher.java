@@ -45,9 +45,7 @@ public class ExternalPlayerLauncher {
                 dt.open(new File(movie.getFilepath()));
 
             else {
-                Runtime.getRuntime().exec(
-                        moviePlayer.getCanonicalPath() + " "
-                                + movie.getFilepath());
+                Runtime.getRuntime().exec(new String[]{moviePlayer.getCanonicalPath(), movie.getFilepath()});
             }
 
         } catch (IOException e) {

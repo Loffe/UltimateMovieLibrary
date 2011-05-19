@@ -127,11 +127,7 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
 
         @Override
         public void contentsChanged(ListDataEvent e) {
-            try {
-                refreshPlaylists(listModel);
-            } catch (SQLException e1) {
-                e1.printStackTrace();
-            }
+            listModel.addElement(e.getSource());
         }
     };
 
@@ -399,6 +395,12 @@ public class ProfilePanel extends ViewPanel implements DocumentListener {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        
+        // Selection fix
+        if (listModel.getSize() > 0)
+            lists.setSelectedIndex(listModel.getSize()-1);
+        else
+            lists.setSelectedIndex(0);
 
     }
 
