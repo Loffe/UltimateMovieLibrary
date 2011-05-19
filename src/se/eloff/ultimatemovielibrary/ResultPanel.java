@@ -99,11 +99,13 @@ public abstract class ResultPanel extends JScrollPane implements
 
             @Override
             public void onMovieUpdated(LocalMovie movie) {
+                search();
             }
 
             @Override
             public void onMovieAdded(LocalMovie movie) {
                 addMovieToList(movie);
+                search();
             }
         });
     }
