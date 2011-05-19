@@ -13,6 +13,7 @@ package se.eloff.ultimatemovielibrary;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -374,10 +375,20 @@ public class ListElement extends JPanel implements MovieListener {
     }
 
     @Override
-    public void onMovieUpdated(LocalMovie movie) {
+    public void onMovieUpdated(final LocalMovie movie) {
         if (movie.equals(this.movie)) {
-            this.movie = movie;
-            initComponents();
+            EventQueue.invokeLater(new Runnable() {
+
+                private LocalMovie movie;
+
+                @Override
+                public void run() {
+                    this.movie = movie;
+                    initComponents();
+                    repaint();
+                }
+            });
+
         }
 
     }
