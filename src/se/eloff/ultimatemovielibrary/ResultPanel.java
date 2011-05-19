@@ -3,6 +3,7 @@ package se.eloff.ultimatemovielibrary;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -97,6 +98,18 @@ public abstract class ResultPanel extends JScrollPane implements
                 e.consume();
             }
         });
+
+        DatabaseManager.getInstance().addMovieListener(new MovieListener() {
+
+            @Override
+            public void onMovieUpdated(LocalMovie movie) {
+            }
+
+            @Override
+            public void onMovieAdded(LocalMovie movie) {
+                addMovieToList(movie);
+            }
+        });
     }
 
     private JComponent createHeader() {
@@ -144,30 +157,42 @@ public abstract class ResultPanel extends JScrollPane implements
     }
 
     @Override
-    public synchronized void searchFinished(List<LocalMovie> movies,
-            int searchKey) {
+    public synchronized void searchFinished(final List<LocalMovie> movies,
+            final int searchKey) {
 
-        if (lastSearchId == searchKey) {
-            resultPanel.removeAll();
-            if (movies.isEmpty()) {
-                if (parentPanel.getSelecteListId() == 1){
-                    resultPanel.add(new JLabel(Localization.searchNoMatchText));
+        EventQueue.invokeLater(new Runnable() {
+
+            @Override
+            public void run() {
+                if (lastSearchId == searchKey) {
+                    resultPanel.removeAll();
+                    if (movies.isEmpty()) {
+                        if (parentPanel.getSelecteListId() == 1) {
+                            resultPanel.add(new JLabel(
+                                    Localization.searchNoMatchText));
+                        } else {
+                            resultPanel.add(new JLabel(
+                                    Localization.searchInListNoMatch));
+                        }
+                        setSelectedElement(null);
+                        repaint();
+                    } else {
+                        for (LocalMovie movie : movies) {
+                            addMovieToList(movie);
+                        }
+                        setSelectedElement((ListElement) resultPanel
+                                .getComponent(0));
+                    }
+                    revalidate();
                 }
-                else
-                {
-                    resultPanel.add(new JLabel(Localization.searchInListNoMatch));
-                }
-                setSelectedElement(null);
-                repaint();
-            } else {
-                int i = 0;
-                for (LocalMovie movie : movies) {
-                    resultPanel.add(new ListElement(movie, this, i++));
-                }
-                setSelectedElement((ListElement) resultPanel.getComponent(0));
             }
-            revalidate();
-        }
+        });
+    }
+
+    static int i = 0;
+
+    protected void addMovieToList(LocalMovie movie) {
+        resultPanel.add(new ListElement(movie, this, i++));
     }
 
     @Override
@@ -239,9 +264,9 @@ public abstract class ResultPanel extends JScrollPane implements
     private void switchPositions(ListElement moveUpElement,
             ListElement moveDownElement, int moveDownElementPos) {
         resultPanel.add(moveUpElement, moveDownElementPos);
-        moveUpElement.setPosition(moveUpElement.getPosition() -1);
+        moveUpElement.setPosition(moveUpElement.getPosition() - 1);
         resultPanel.add(moveDownElement, moveDownElementPos + 1);
-        moveDownElement.setPosition(moveDownElement.getPosition() +1);
+        moveDownElement.setPosition(moveDownElement.getPosition() + 1);
 
         // save the new positions to the db
         try {
@@ -250,18 +275,18 @@ public abstract class ResultPanel extends JScrollPane implements
                     .getMovieListDao();
             QueryBuilder<MovieList, Integer> queryUpElement = movieListDb
                     .queryBuilder();
-            queryUpElement.where()
-                    .eq("movie_id", moveUpElement.getMovie().getId()).and()
-                    .eq("list_id", parentPanel.getSelecteListId());
+            queryUpElement.where().eq("movie_id",
+                    moveUpElement.getMovie().getId()).and().eq("list_id",
+                    parentPanel.getSelecteListId());
             queryUpElement.distinct();
             MovieList listItemUp = (MovieList) movieListDb.query(
                     queryUpElement.prepare()).get(0);
 
             QueryBuilder<MovieList, Integer> queryDownElement = movieListDb
                     .queryBuilder();
-            queryDownElement.where()
-                    .eq("movie_id", moveDownElement.getMovie().getId()).and()
-                    .eq("list_id", parentPanel.getSelecteListId());
+            queryDownElement.where().eq("movie_id",
+                    moveDownElement.getMovie().getId()).and().eq("list_id",
+                    parentPanel.getSelecteListId());
             queryDownElement.distinct();
             MovieList listItemDown = (MovieList) movieListDb.query(
                     queryDownElement.prepare()).get(0);
@@ -290,24 +315,22 @@ public abstract class ResultPanel extends JScrollPane implements
 
     public void moveSelectedElementUp() {
         if (selectedElementPosition != 0 && resultPanel.getComponentCount() > 1) {
-            switchPositions(
-                    (ListElement) resultPanel
-                            .getComponent(selectedElementPosition),
+            switchPositions((ListElement) resultPanel
+                    .getComponent(selectedElementPosition),
                     (ListElement) resultPanel
                             .getComponent(selectedElementPosition - 1),
                     selectedElementPosition - 1);
             revalidate();
             setSelectedElement((ListElement) resultPanel
-                            .getComponent(selectedElementPosition - 1));
+                    .getComponent(selectedElementPosition - 1));
         }
     }
 
     public void moveSelectedElementDown() {
         if (selectedElementPosition != resultPanel.getComponentCount() - 1
                 && resultPanel.getComponentCount() > 1) {
-            switchPositions(
-                    (ListElement) resultPanel
-                            .getComponent(selectedElementPosition + 1),
+            switchPositions((ListElement) resultPanel
+                    .getComponent(selectedElementPosition + 1),
                     (ListElement) resultPanel
                             .getComponent(selectedElementPosition),
                     selectedElementPosition);
