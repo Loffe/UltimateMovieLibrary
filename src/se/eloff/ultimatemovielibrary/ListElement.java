@@ -170,7 +170,6 @@ public class ListElement extends JPanel implements MovieListener {
                 .getFont().getStyle(), Localization.movieTitleFontSize));
         titleLabel.setText(movie.getName());
         titleLabel.setAlignmentY(0.0F);
-        titleLabel.setText(movie.getName());
 
         yearLabel.setFont(new Font(yearLabel.getFont().getName(), yearLabel
                 .getFont().getStyle(), Localization.movieYearFontSize));
@@ -376,20 +375,21 @@ public class ListElement extends JPanel implements MovieListener {
 
     @Override
     public void onMovieUpdated(final LocalMovie movie) {
-        if (movie.equals(this.movie)) {
+        System.out.println("updatera i listelement");
+        if (movie.getId() == this.movie.getId()) {
             EventQueue.invokeLater(new Runnable() {
-
-                private LocalMovie movie;
-
                 @Override
                 public void run() {
-                    this.movie = movie;
-                    initComponents();
-                    repaint();
+                    System.out.println("updater i listelement ==");
+                    ListElement.this.movie = movie;
+                    rating.setRating(movie.getRating());
+                    titleLabel.setText(movie.getName());
+                    if (movie.getYear() != 0)
+                        yearLabel.setText(Integer.toString(movie.getYear()));
+                    else
+                        yearLabel.setText(Localization.movieNoYearText);
                 }
             });
-
         }
-
     }
 }
