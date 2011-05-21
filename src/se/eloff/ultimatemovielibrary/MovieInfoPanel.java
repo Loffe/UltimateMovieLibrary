@@ -39,7 +39,6 @@ public class MovieInfoPanel extends JPanel {
 
     private Cover cover = new Cover();
 
-    private JPanel plotPanel = new JPanel();
     private JLabel plotLabel = new JLabel();
     private JTextArea plot = new JTextArea();
     private JScrollPane plotScrollPane = new JScrollPane(plot);
@@ -103,7 +102,6 @@ public class MovieInfoPanel extends JPanel {
         plotLabel.setText(Localization.moviePlotLabel);
         plotLabel.setFont(new Font(plotLabel.getFont().getName(), Font.BOLD,
                 plotLabel.getFont().getSize()));
-        // plotPanel.add(plotLabel);
         plot.setLineWrap(true);
         plot.setWrapStyleWord(true);
         plot.setEditable(false);
@@ -187,7 +185,7 @@ public class MovieInfoPanel extends JPanel {
         title.setText(" ");
         title.setToolTipText("");
         year.setText(" ");
-        cover.refresh(Localization.movieInfoStandardCover);
+        cover.refresh(null);
 
         plot.setText(Localization.unknownPlotText);
         plotScrollPane.getVerticalScrollBar().setValue(0);
@@ -369,10 +367,14 @@ public class MovieInfoPanel extends JPanel {
         }
 
         public void refresh(String src) {
-            try {
-                image = ImageIO.read(new File(src));
-            } catch (Exception e) {
-                e.printStackTrace();
+            if (src == null) {
+                image = Localization.movieInfoStandardCover;
+            } else {
+                try {
+                    image = ImageIO.read(new File(src));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
             // Adds black border
             Color color = Localization.coverBorderColor;

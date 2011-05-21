@@ -3,8 +3,8 @@ package se.eloff.ultimatemovielibrary;
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 
 import javax.imageio.ImageIO;
 import javax.swing.Icon;
@@ -17,21 +17,121 @@ import javax.swing.JLabel;
  */
 public final class Localization {
 
+    /**
+     * The current instance of the Localization object.
+     */
+    private static Localization instance;
+
+    /**
+     * The relative path to all the images from this class.
+     */
+    private static final String imgPath = "img/";
+
+    /**
+     * Constructor. Creates a new Localization object.
+     */
+    private Localization() {
+
+    }
+
+    /**
+     * Get the current instance of the Localization object.
+     * 
+     * @return the current Localization instance.
+     */
+    public static Localization getInstance() {
+        if (instance == null)
+            instance = new Localization();
+        return instance;
+    }
+
+    /**
+     * Get the URL of the specified relative path.
+     * 
+     * @param path
+     *            the relative path to get the URL for.
+     * @return the URL of the specified path.
+     */
+    private static URL url(String path) {
+        System.out.println("Loading resource '" + path + "'");
+        return getInstance().getClass().getResource(path);
+    }
+
+    /**
+     * Get an ImageIcon using the image at the specified relative path.
+     * 
+     * @param path
+     *            the relative path of the image to use.
+     * @return an ImageIcon using the image at the specified relative path.
+     */
+    private static ImageIcon icon(String path) {
+        path = correctImgPath(path);
+        ImageIcon imageIcon = new ImageIcon(url(path));
+
+        // Fall back to a totally transparent image if needed
+        if (imageIcon.getImage() == null) {
+            imageIcon = new ImageIcon(url("no-image.png"));
+        }
+
+        return imageIcon;
+    }
+
+    /**
+     * Get the Image at the specified relative path.
+     * 
+     * @param path
+     *            the relative path of the image to use.
+     * @return the Image at the specified relative path.
+     */
+    private static Image img(String path) {
+        return icon(path).getImage();
+    }
+
+    /**
+     * Get a BufferedImage using the image at the specified relative path.
+     * 
+     * @param path
+     *            the relative path of the image to use.
+     * @return a BufferedImage using the image at the specified relative path.
+     */
+    private static BufferedImage bufimg(String path) {
+        path = correctImgPath(path);
+        BufferedImage img = null;
+        try {
+            img = ImageIO.read(url(path));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return img;
+    }
+
+    /**
+     * Correct the specified image path by prepending the relative imgPath if
+     * needed.
+     * 
+     * @param path
+     *            the path to correct.
+     * @return the corrected String.
+     */
+    private static String correctImgPath(String path) {
+        if (!(path.startsWith(imgPath) || path.startsWith("/" + imgPath)))
+            path = imgPath + path;
+        return path;
+    }
+
     // App
     public static final String title = "Ultimate Movie Library";
     public static final int titleFontSize = 24;
-    public static final Image icon = new ImageIcon("img/video_16.png")
-            .getImage();
+    public static final Image icon = img("video_16.png");
 
-    public static final ImageIcon loader = new ImageIcon("img/mozilla_blu.gif");
+    public static final ImageIcon loader = icon("mozilla_blu.gif");
     public static JLabel loadingTextLabel = new JLabel();
     public static JLabel loadingLabel = new JLabel(loader);
     public static String scanningFoldersText = "Söker efter filmer i bevakade kataloger...";
     public static String updatingMoviesInfoText = "Hämtar och uppdaterar information för film";
 
     // Watch Folder Manager
-    public static final ImageIcon watchFolderIcon = new ImageIcon(
-            "img/folder_32.png");
+    public static final ImageIcon watchFolderIcon = icon("folder_32.png");
     public static final int watchFolderTextSize = 14;
     public static final String manageWatchFolderHeading = "Hantera bevakade kataloger";
     public static final int manageWatchFolderHeadingFontSize = 20;
@@ -39,13 +139,11 @@ public final class Localization {
 
     public static final String addWatchFolderButtonText = "Bevaka en katalog ...";
     public static final String addWatchFolderButtonToolTip = "Lägg till en katalog att bevaka";
-    public static final ImageIcon addWatchFolderButtonIcon = new ImageIcon(
-            "img/Folder-Add-64.png");
+    public static final ImageIcon addWatchFolderButtonIcon = icon("Folder-Add-64.png");
 
     public static final String removeWatchFolderButtonText = null;
     public static final String removeWatchFolderButtonToolTip = "Sluta bevaka den här katalogen";
-    public static final ImageIcon removeWatchFolderButtonIcon = new ImageIcon(
-            "img/delete_16.png");
+    public static final ImageIcon removeWatchFolderButtonIcon = icon("delete_16.png");
     public static final String removeWatchFolderConfirmationText = "Vill du sluta bevaka katalogen?\n";
 
     public static final String closeWatchFolderButtonText = "Stäng";
@@ -66,10 +164,8 @@ public final class Localization {
     public static final String searchOrderButtonMovieRating = "Betyg";
     public static final String searchOrderButtonMovieRatingToolTip = "Sortera filmer efter betyg";
 
-    public static final ImageIcon searchToggleSeenButtonIcon = new ImageIcon(
-            "img/eye_50_crossed_disabled.png");
-    public static final ImageIcon searchToggleSeenButtonIconHide = new ImageIcon(
-            "img/eye_50_crossed.png");
+    public static final ImageIcon searchToggleSeenButtonIcon = icon("eye_50_crossed_disabled.png");
+    public static final ImageIcon searchToggleSeenButtonIconHide = icon("eye_50_crossed.png");
     public static final String toolTipsSearchSeen = "Visa endast ej sedda filmer (dölj sedda filmer)";
     public static final String toolTipsSearchSeenDisable = "Visa alla filmer";
 
@@ -77,46 +173,26 @@ public final class Localization {
     public static final String recommendTitle = "Rekommendationer";
     public static final String recommendRefreshButtonText = "Rekommendationer";
     public static final String recommendRefreshButtonToolTip = "Uppdatera och visa rekommenderade filmer";
-    public static final ImageIcon recommendRefreshButtonIcon = new ImageIcon(
-            "img/Button-Refresh-icon_20.png");
+    public static final ImageIcon recommendRefreshButtonIcon = icon("Button-Refresh-icon_20.png");
     public static final String recommendRefreshNoMatchText = "Inga filmer i databasen.";
     public static final String recommendRefreshProgressText = "Laddar filmer...";
     public static final int numberOfRecommendedMovies = 3;
 
     // MovieElement
-    public static final ImageIcon moviePlayButtonIcon = new ImageIcon(
-            "img/Button-Play-icon_40.png");
-    public static final ImageIcon moviePlayButtonHoverIcon = new ImageIcon(
-    "img/Button-Play-icon-hover_40.png");
-    public static final ImageIcon movieSeenButtonIcon = new ImageIcon(
-            "img/eye_40.png");
-    public static final ImageIcon movieFavoriteButtonIcon = new ImageIcon(
-            "img/Favorite-icon_40.png");
-    public static final ImageIcon movieStarButtonIcon = new ImageIcon(
-            "img/Button-Favorite-icon_40.png");
+    public static final ImageIcon moviePlayButtonIcon = icon("Button-Play-icon_40.png");
+    public static final ImageIcon moviePlayButtonHoverIcon = icon("Button-Play-icon-hover_40.png");
+    public static final ImageIcon movieSeenButtonIcon = icon("eye_40.png");
+    public static final ImageIcon movieFavoriteButtonIcon = icon("Favorite-icon_40.png");
+    public static final ImageIcon movieStarButtonIcon = icon("Button-Favorite-icon_40.png");
 
-    public static final ImageIcon movieSeenButtonIconDisabled = new ImageIcon(
-            "img/eye_40_disabled.png");
-    public static final ImageIcon movieFavoriteButtonIconDisabled = new ImageIcon(
-            "img/Favorite-icon_40_disabled.png");
-    public static final ImageIcon movieStarButtonIconDisabled = new ImageIcon(
-            "img/Button-Favorite-icon_40_disabled.png");
-    
-    public static BufferedImage movieMoveDownButtonIcon;
-    public static BufferedImage movieMoveDownButtonHoverIcon;
-    public static BufferedImage movieMoveUpButtonIcon;
-    public static BufferedImage movieMoveUpButtonHoverIcon;
-    static {
-        try {
-            System.out.println("read image icons");
-            movieMoveDownButtonIcon = ImageIO.read(new File("img/navigate-down-icon.png"));
-            movieMoveDownButtonHoverIcon = ImageIO.read(new File("img/navigate-down-hover-icon.png"));
-            movieMoveUpButtonIcon = ImageIO.read(new File("img/navigate-up-icon.png"));
-            movieMoveUpButtonHoverIcon = ImageIO.read(new File("img/navigate-up-hover-icon.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+    public static final ImageIcon movieSeenButtonIconDisabled = icon("eye_40_disabled.png");
+    public static final ImageIcon movieFavoriteButtonIconDisabled = icon("Favorite-icon_40_disabled.png");
+    public static final ImageIcon movieStarButtonIconDisabled = icon("Button-Favorite-icon_40_disabled.png");
+
+    public static BufferedImage movieMoveDownButtonIcon = bufimg("img/navigate-down-icon.png");
+    public static BufferedImage movieMoveDownButtonHoverIcon = bufimg("img/navigate-down-hover-icon.png");
+    public static BufferedImage movieMoveUpButtonIcon = bufimg("img/navigate-up-icon.png");
+    public static BufferedImage movieMoveUpButtonHoverIcon = bufimg("img/navigate-up-hover-icon.png");
 
     public static final String movieNoYearText = "Okänt";
 
@@ -125,30 +201,23 @@ public final class Localization {
     public static final int movieTitleFontSize = 24;
     public static final int movieYearFontSize = 16;
 
-    public static final Image ratingRemoveRatingImage = new ImageIcon(
-            "img/rating-remove-vote.png").getImage();
-    public static final Image ratingRemoveRatingActiveImage = new ImageIcon(
-            "img/rating-remove-vote-active.png").getImage();
+    public static final Image ratingRemoveRatingImage = img("rating-remove-vote.png");
+    public static final Image ratingRemoveRatingActiveImage = img("rating-remove-vote-active.png");
 
     public static final String managePlaylistsMenuTitle = "Hantera listor";
     public static final String managePlaylistsMenuDescriptionText = "Lägg till film i befintlig lista:";
-    public static final Icon managePlaylistsButtonIcon = new ImageIcon(
-            "img/arrow-down.png");
+    public static final Icon managePlaylistsButtonIcon = icon("arrow-down.png");
     public static final String managePlaylistsButtonToolTipText = "Hantera listor";
 
     // Menu
     public static final String menuManageWatchFolderText = null;
-    public static final ImageIcon menuManageWatchFolderIcon = new ImageIcon(
-            "img/Folder-Add_16.png");
+    public static final ImageIcon menuManageWatchFolderIcon = icon("Folder-Add_16.png");
     public static final String menuExitText = null;
-    public static final ImageIcon menuExitIcon = new ImageIcon(
-            "img/delete_16.png");
+    public static final ImageIcon menuExitIcon = icon("delete_16.png");
 
     // ResultPanel
-    public static final ImageIcon resultPanelArrowUp = new ImageIcon(
-            "img/arrow-up.png");
-    public static final ImageIcon resultPanelArrowDown = new ImageIcon(
-            "img/arrow-down.png");
+    public static final ImageIcon resultPanelArrowUp = icon("arrow-up.png");
+    public static final ImageIcon resultPanelArrowDown = icon("arrow-down.png");
 
     public static final String toolTipsMoveUpButton = "Flytta upp film";
     public static final String toolTipsMoveDownButton = "Flytta ner film";
@@ -174,7 +243,6 @@ public final class Localization {
 
     public static final Color selectedListElementColor = Color.DARK_GRAY;
     public static final Color HoverListElementColor = new Color(50, 50, 50);
-    // new Color(0, 200, 251);
 
     // MovieInfo
     public static final int movieCoverWidth = 154;
@@ -188,7 +256,7 @@ public final class Localization {
     public static final String movieRatingLabel = "Online-betyg: ";
     public static final String movieDirectorLabel = "Regissör: ";
     public static final String movieCastLabel = "Skådespelare: ";
-    public static final String movieInfoStandardCover = "img/no-poster.png";
+    public static final BufferedImage movieInfoStandardCover = bufimg("img/no-poster.png");
     public static final String translationFailedText = "Översättningen misslyckades! Engelsk version: ";
     public static final String unknownPlotText = "Ingen handling hittades.";
     public static final String unknownGenreText = "Inga genrer hittades.";
@@ -204,14 +272,12 @@ public final class Localization {
     public static final String playlistCreateNewMessage = "Namn på ny spellista";
     public static final String playlistCreateNewHeading = "Ny spellista";
     public static final String playlistDelete = "Ta bort";
-    public static final Icon listsWishIcon = new ImageIcon(
-            "img/Button-Favorite-icon_16.png");
-    public static final Icon listsFavoriteIcon = new ImageIcon(
-            "img/Favorite-icon-16.png");
-    public static final Icon listsSeenIcon = new ImageIcon("img/eye_16.png");
-    public static final Icon listsAddIcon = new ImageIcon("img/plus_16.png");
+    public static final Icon listsWishIcon = icon("Button-Favorite-icon_16.png");
+    public static final Icon listsFavoriteIcon = icon("Favorite-icon-16.png");
+    public static final Icon listsSeenIcon = icon("eye_16.png");
+    public static final Icon listsAddIcon = icon("plus_16.png");
     public static final int playlistDefaultTextSize = 14;
     public static final int playlistAllMoviesTextSize = 22;
     public static final int playlistCreateNewTextSize = playlistDefaultTextSize;
-    
+
 }
